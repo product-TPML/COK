@@ -1,0 +1,17 @@
+# YouTube Season 4 Links — Cuisines of Karnataka
+
+1. [White Chicken Pulao | Light, Aromatic & Irresistible Karnataka-Style Recipe](https://www.youtube.com/watch?v=9ig2P5uQeLo&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=1)
+2. [Naati Koli Bassaru | Authentic Country Chicken Curry from Karnataka](https://www.youtube.com/watch?v=xNlR6VPTUOc&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=2)
+3. [The Easiest Mutton Fry Ever | Made with Just a Few Ingredients](https://www.youtube.com/watch?v=nol4d9eqjyo&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=3)
+4. [Crispy, Juicy & So Bengaluru! Authentic Mutton Kheema Vade Recipe](https://www.youtube.com/watch?v=rtLm3RqLnLc&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=4)
+5. [Bengaluru's Famous Kaal Soup | Mutton Leg Soup Recipe](https://www.youtube.com/watch?v=Pc1QVxb2V4s&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=5)
+6. [Kanakapura Style River Fish Curry | Authentic Karnataka Village Recipe](https://www.youtube.com/watch?v=SO9jaLxrPsQ&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=6)
+7. [Kollegal Style Mutton Pulao | White Pulao with Nalli (Mutton Shanks)](https://www.youtube.com/watch?v=s5jHf8M_hSE&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=7)
+8. [Kadle Manoli Recipe | Ivy Gourd + Black Chickpeas in Coconut Masala](https://www.youtube.com/watch?v=pESOxDDF7B4&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=8)
+9. [Deepavali Special Batani Kurma | Peas & Potato Festive Curry](https://www.youtube.com/watch?v=rsJy07KbZhE&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=9)
+10. [Raichur Tuntapur Chicken | Smoky, Juicy Skewers from Karnataka](https://www.youtube.com/watch?v=oFWVuSiZZ64&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=10)
+11. [Crispy Bonda + Dal Soup | Bengaluru's Beloved Bonda Soup Recipe](https://www.youtube.com/watch?v=jz7W4rcZYOs&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=11)
+12. [Cucumber Curry Karnataka Style | Southekayi Muddipalya Recipe](https://www.youtube.com/watch?v=L-j5T-ZQdMg&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=12)
+13. [Karnataka's Beloved Winter Special | Avarekalu Curry](https://www.youtube.com/watch?v=z9Zb3HCb29M&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=13)
+14. [Hurugadle Nippattu | Must-Try Festive Snack This Dasara](https://www.youtube.com/watch?v=4dMkfUiECkc&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=15)
+15. [Traditional Crunchy Jackfruit Snack Recipe | Halasina Mulka](https://www.youtube.com/watch?v=u1rGS26Likc&list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=16)

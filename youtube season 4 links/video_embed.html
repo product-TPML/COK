@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Season 4 — Complete Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #09090b;
+      --surface: #13131a;
+      --surface-hover: #1a1a25;
+      --border: #272730;
+      --border-hover: #3f3f4f;
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --accent: #e11d48;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+      --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-top: 1rem;
+    }
+
+    h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .accent-line {
+      width: 60px;
+      height: 3px;
+      background: var(--accent);
+      margin: 1rem auto 0;
+      border-radius: 2px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 640px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+      .container {
+        padding: 2.5rem 1.5rem 4rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.75rem;
+      }
+      .container {
+        padding: 3rem 2rem 5rem;
+      }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-hover);
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .poster {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease, filter 0.4s ease;
+    }
+
+    .card:hover .poster img {
+      transform: scale(1.05);
+      filter: brightness(1.1);
+    }
+
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease;
+    }
+
+    .poster:hover .play-overlay {
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .play-btn {
+      width: 64px;
+      height: 64px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, background 0.3s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .poster:hover .play-btn {
+      transform: scale(1.1);
+      background: #fff;
+    }
+
+    .play-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--accent);
+      margin-left: 3px;
+    }
+
+    .player {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .player iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .card.active .poster {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .card.active .player {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .card-info {
+      padding: 1rem 1.25rem 1.25rem;
+    }
+
+    .episode-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Sora', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 0.375rem;
+    }
+
+    .episode-label::before {
+      content: '';
+      display: block;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .episode-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text);
+    }
+
+    .loading-hint {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.9);
+      background: rgba(0,0,0,0.5);
+      padding: 4px 12px;
+      border-radius: 20px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .poster:hover .loading-hint {
+      opacity: 1;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Season 4</h1>
+      <p class="subtitle">All episodes — click any thumbnail to watch</p>
+      <div class="accent-line"></div>
+    </header>
+
+    <div class="grid" id="video-grid"></div>
+
+    <footer>
+      <p>Playlist: PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5</p>
+    </footer>
+  </div>
+
+  <script>
+    const videos = [
+      { id: '9ig2P5uQeLo', episode: 1, title: 'White Chicken Pulao | Karnataka-Style Recipe' },
+      { id: 'xNlR6VPTUOc', episode: 2, title: 'Naati Koli Bassaru | Authentic Country Chicken Curry' },
+      { id: 'nol4d9eqjyo', episode: 3, title: 'The Easiest Mutton Fry Ever' },
+      { id: 'rtLm3RqLnLc', episode: 4, title: 'Authentic Mutton Kheema Vade' },
+      { id: 'Pc1QVxb2V4s', episode: 5, title: "Bengaluru's Famous Kaal Soup" },
+      { id: 'SO9jaLxrPsQ', episode: 6, title: 'Kanakapura Style River Fish Curry' },
+      { id: 's5jHf8M_hSE', episode: 7, title: 'Kollegal Style Mutton Pulao with Nalli' },
+      { id: 'pESOxDDF7B4', episode: 8, title: 'Kadle Manoli | Ivy Gourd & Black Chickpeas' },
+      { id: 'rsJy07KbZhE', episode: 9, title: 'Deepavali Special Batani Kurma' },
+      { id: 'oFWVuSiZZ64', episode: 10, title: 'Raichur Tuntapur Chicken' },
+      { id: 'jz7W4rcZYOs', episode: 11, title: 'Crispy Bonda + Dal Soup' },
+      { id: 'L-j5T-ZQdMg', episode: 12, title: 'Cucumber Curry Karnataka Style' },
+      { id: 'z9Zb3HCb29M', episode: 13, title: "Karnataka's Beloved Avarekalu Curry" },
+      { id: '4dMkfUiECkc', episode: 15, title: 'Hurugadle Nippattu Festive Snack' },
+      { id: 'u1rGS26Likc', episode: 16, title: 'Traditional Crunchy Jackfruit Snack | Halasina Mulka' },
+    ];
+
+    const grid = document.getElementById('video-grid');
+
+    videos.forEach((video, index) => {
+      const card = document.createElement('article');
+      card.className = 'card';
+
+      const playlistIndex = index + 1;
+      const embedUrl = `https://www.youtube.com/embed/${video.id}?list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=${playlistIndex}`;
+      const thumbUrl = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+
+      card.innerHTML = `
+        <div class="video-wrapper">
+          <div class="poster" role="button" aria-label="Play Episode ${video.episode}">
+            <img src="${thumbUrl}" alt="Episode ${video.episode} thumbnail" loading="lazy">
+            <div class="play-overlay">
+              <div class="play-btn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+            <span class="loading-hint">Click to load video</span>
+          </div>
+          <div class="player"></div>
+        </div>
+        <div class="card-info">
+          <div class="episode-label">Episode ${video.episode}</div>
+          <div class="episode-title">${video.title}</div>
+        </div>
+      `;
+
+      const poster = card.querySelector('.poster');
+      const playerContainer = card.querySelector('.player');
+
+      poster.addEventListener('click', () => {
+        if (card.classList.contains('active')) return;
+
+        card.classList.add('active');
+
+        const iframe = document.createElement('iframe');
+        iframe.setAttribute('src', embedUrl);
+        iframe.setAttribute('title', `YouTube video player - Episode ${video.episode}`);
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        iframe.setAttribute('allowfullscreen', '');
+
+        playerContainer.appendChild(iframe);
+      });
+
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
