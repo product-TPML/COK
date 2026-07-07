@@ -419,6 +419,67 @@
       color: var(--text);
     }
 
+    .jump-search {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0 1.25rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .jump-search input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 2rem 0.5rem 0.75rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .jump-search input:focus {
+      border-color: var(--accent);
+    }
+
+    .jump-search input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .jump-search-icon {
+      flex-shrink: 0;
+      color: var(--text-muted);
+      display: flex;
+    }
+
+    .jump-search-clear {
+      position: absolute;
+      right: 1.6rem;
+      top: 50%;
+      transform: translateY(-62%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.125rem;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s ease;
+    }
+
+    .jump-search-clear.visible {
+      display: flex;
+    }
+
+    .jump-search-clear:hover {
+      color: var(--text);
+    }
+
     .jump-panel-body {
       overflow-y: auto;
       padding: 0.5rem;
@@ -509,6 +570,21 @@
       <h3>Jump to Episode</h3>
       <button class="jump-panel-close" id="jump-close" aria-label="Close panel">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="jump-search">
+      <span class="jump-search-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </span>
+      <input type="text" id="jump-search-input" placeholder="Search episodes..." autocomplete="off">
+      <button class="jump-search-clear" id="jump-search-clear" aria-label="Clear search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
@@ -701,6 +777,10 @@
     const jumpPanel = document.getElementById('jump-panel');
     const jumpClose = document.getElementById('jump-close');
     const jumpPanelBody = document.getElementById('jump-panel-body');
+    const jumpSearchInput = document.getElementById('jump-search-input');
+    const jumpSearchClear = document.getElementById('jump-search-clear');
+
+    let jumpEpisodeItems = [];
 
     function highlightCard(card) {
       if (!card) return;
@@ -711,6 +791,7 @@
 
     function buildJumpPanel() {
       jumpPanelBody.innerHTML = '';
+      jumpEpisodeItems = [];
       seasons.forEach(season => {
         const group = document.createElement('div');
         group.className = 'jump-season-group';
@@ -723,6 +804,7 @@
         season.videos.forEach((video, idx) => {
           const item = document.createElement('div');
           item.className = 'jump-episode';
+          item.dataset.title = video.title.toLowerCase();
           item.innerHTML = `
             <span class="jump-episode-num">${video.episode}</span>
             <span class="jump-episode-title">${video.title}</span>
@@ -742,25 +824,50 @@
             }
           });
           group.appendChild(item);
+          jumpEpisodeItems.push({ item, group });
         });
 
         jumpPanelBody.appendChild(group);
       });
     }
 
+    function filterJumpPanel(query) {
+      const q = query.trim().toLowerCase();
+      jumpSearchClear.classList.toggle('visible', q.length > 0);
+
+      jumpEpisodeItems.forEach(({ item, group }) => {
+        const matches = !q || item.dataset.title.includes(q);
+        item.style.display = matches ? '' : 'none';
+      });
+
+      jumpPanelBody.querySelectorAll('.jump-season-group').forEach(group => {
+        const visible = group.querySelectorAll('.jump-episode:not([style*="display: none"])').length > 0;
+        group.style.display = visible ? '' : 'none';
+      });
+    }
+
     function openJumpPanel() {
       jumpOverlay.classList.add('open');
       jumpPanel.classList.add('open');
+      jumpSearchInput.focus();
     }
 
     function closeJumpPanel() {
       jumpOverlay.classList.remove('open');
       jumpPanel.classList.remove('open');
+      jumpSearchInput.value = '';
+      filterJumpPanel('');
     }
 
     jumpFab.addEventListener('click', openJumpPanel);
     jumpClose.addEventListener('click', closeJumpPanel);
     jumpOverlay.addEventListener('click', closeJumpPanel);
+    jumpSearchInput.addEventListener('input', (e) => filterJumpPanel(e.target.value));
+    jumpSearchClear.addEventListener('click', () => {
+      jumpSearchInput.value = '';
+      filterJumpPanel('');
+      jumpSearchInput.focus();
+    });
 
     buildJumpPanel();
   </script>
