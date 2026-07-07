@@ -42,39 +42,49 @@
       padding: 2rem 1rem 4rem;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 3rem;
-      padding-top: 1rem;
+    .season-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
     }
 
-    h1 {
+    .season-tab {
       font-family: 'Sora', sans-serif;
-      font-size: clamp(1.75rem, 5vw, 2.5rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: 0.5rem;
-    }
-
-    .subtitle {
+      font-size: 0.875rem;
+      font-weight: 600;
       color: var(--text-muted);
-      font-size: 1rem;
-      font-weight: 400;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.5rem 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .accent-line {
-      width: 60px;
-      height: 3px;
+    .season-tab:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+      background: var(--surface-hover);
+    }
+
+    .season-tab.active {
+      color: #fff;
       background: var(--accent);
-      margin: 1rem auto 0;
-      border-radius: 2px;
+      border-color: var(--accent);
     }
 
     .grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.25rem;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .grid.switching {
+      opacity: 0;
+      transform: translateY(12px);
     }
 
     @media (min-width: 640px) {
@@ -104,12 +114,25 @@
       overflow: hidden;
       transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
       box-shadow: var(--shadow);
+      animation: cardIn 0.45s ease backwards;
+      animation-delay: calc(var(--i, 0) * 45ms);
     }
 
     .card:hover {
       transform: translateY(-4px);
       box-shadow: var(--shadow-hover);
       border-color: var(--border-hover);
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .video-wrapper {
@@ -270,11 +293,7 @@
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>Season 4</h1>
-      <p class="subtitle">All episodes — click any thumbnail to watch</p>
-      <div class="accent-line"></div>
-    </header>
+    <nav class="season-tabs" id="season-tabs"></nav>
 
     <div class="grid" id="video-grid"></div>
 
@@ -284,32 +303,106 @@
   </div>
 
   <script>
-    const videos = [
-      { id: '9ig2P5uQeLo', episode: 1, title: 'White Chicken Pulao | Karnataka-Style Recipe' },
-      { id: 'xNlR6VPTUOc', episode: 2, title: 'Naati Koli Bassaru | Authentic Country Chicken Curry' },
-      { id: 'nol4d9eqjyo', episode: 3, title: 'The Easiest Mutton Fry Ever' },
-      { id: 'rtLm3RqLnLc', episode: 4, title: 'Authentic Mutton Kheema Vade' },
-      { id: 'Pc1QVxb2V4s', episode: 5, title: "Bengaluru's Famous Kaal Soup" },
-      { id: 'SO9jaLxrPsQ', episode: 6, title: 'Kanakapura Style River Fish Curry' },
-      { id: 's5jHf8M_hSE', episode: 7, title: 'Kollegal Style Mutton Pulao with Nalli' },
-      { id: 'pESOxDDF7B4', episode: 8, title: 'Kadle Manoli | Ivy Gourd & Black Chickpeas' },
-      { id: 'rsJy07KbZhE', episode: 9, title: 'Deepavali Special Batani Kurma' },
-      { id: 'oFWVuSiZZ64', episode: 10, title: 'Raichur Tuntapur Chicken' },
-      { id: 'jz7W4rcZYOs', episode: 11, title: 'Crispy Bonda + Dal Soup' },
-      { id: 'L-j5T-ZQdMg', episode: 12, title: 'Cucumber Curry Karnataka Style' },
-      { id: 'z9Zb3HCb29M', episode: 13, title: "Karnataka's Beloved Avarekalu Curry" },
-      { id: '4dMkfUiECkc', episode: 15, title: 'Hurugadle Nippattu Festive Snack' },
-      { id: 'u1rGS26Likc', episode: 16, title: 'Traditional Crunchy Jackfruit Snack | Halasina Mulka' },
+    const seasons = [
+      {
+        number: 4,
+        playlist: 'PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5',
+        videos: [
+          { id: '9ig2P5uQeLo', episode: 1, title: 'White Chicken Pulao | Karnataka-Style Recipe' },
+          { id: 'xNlR6VPTUOc', episode: 2, title: 'Naati Koli Bassaru | Authentic Country Chicken Curry' },
+          { id: 'nol4d9eqjyo', episode: 3, title: 'The Easiest Mutton Fry Ever' },
+          { id: 'rtLm3RqLnLc', episode: 4, title: 'Authentic Mutton Kheema Vade' },
+          { id: 'Pc1QVxb2V4s', episode: 5, title: "Bengaluru's Famous Kaal Soup" },
+          { id: 'SO9jaLxrPsQ', episode: 6, title: 'Kanakapura Style River Fish Curry' },
+          { id: 's5jHf8M_hSE', episode: 7, title: 'Kollegal Style Mutton Pulao with Nalli' },
+          { id: 'pESOxDDF7B4', episode: 8, title: 'Kadle Manoli | Ivy Gourd & Black Chickpeas' },
+          { id: 'rsJy07KbZhE', episode: 9, title: 'Deepavali Special Batani Kurma' },
+          { id: 'oFWVuSiZZ64', episode: 10, title: 'Raichur Tuntapur Chicken' },
+          { id: 'jz7W4rcZYOs', episode: 11, title: 'Crispy Bonda + Dal Soup' },
+          { id: 'L-j5T-ZQdMg', episode: 12, title: 'Cucumber Curry Karnataka Style' },
+          { id: 'z9Zb3HCb29M', episode: 13, title: "Karnataka's Beloved Avarekalu Curry" },
+          { id: '4dMkfUiECkc', episode: 15, title: 'Hurugadle Nippattu Festive Snack' },
+          { id: 'u1rGS26Likc', episode: 16, title: 'Traditional Crunchy Jackfruit Snack | Halasina Mulka' },
+        ]
+      },
+      {
+        number: 3,
+        playlist: 'PL4tXltXT0TCU5bijdggUhhp65gaUXp1Pd',
+        videos: [
+          { id: 'JwCSxMWWQ-g', episode: 1, title: 'Spicy Mutton Nalli Fry: The Unexpected Star' },
+          { id: 'pZ3pfJVNCms', episode: 2, title: 'This Smoked Boneless Chicken Fry' },
+          { id: 'U1Co_jCbsfQ', episode: 3, title: 'Mysuru Mutton Chops' },
+          { id: 'gnMbEjUvhGg', episode: 4, title: 'Saoji-Style Mutton Khara Boti' },
+          { id: 'mwJB5Z0vdY0', episode: 5, title: 'Spicy & Tangy Prawn Pulimunchi' },
+          { id: 'WdwTo9qc03I', episode: 6, title: 'Beetroot Veg Soya Pulao' },
+          { id: 'huescaAAIlY', episode: 7, title: 'How to Make Raw Banana Curry' },
+          { id: 'H4F_s68bfdM', episode: 8, title: 'Hubballi Mutton Green Curry' },
+          { id: 'hyNhPulo2Ec', episode: 9, title: 'Dandeli Chicken Kadai Roast' },
+          { id: 'Sz25EkQMHys', episode: 10, title: 'Easy Malnad Chicken Curry' },
+          { id: 'YxZ8gZnjCks', episode: 11, title: 'Hurali Kaalu Bassaaru' },
+          { id: 'wuL4uL5Gmoc', episode: 12, title: 'Paneer Ghee Roast' },
+          { id: 'CHzGK7qoJJE', episode: 13, title: 'Dasara Special Crisp Karjikai' },
+          { id: 'hJ42w9Og0ek', episode: 14, title: 'Akki Kadlebele Payasa' },
+          { id: 'sd1dJ3WrL-M', episode: 15, title: 'Perfect Sajjige for Satyanarayana Pooja' },
+        ]
+      },
+      {
+        number: 2,
+        playlist: 'PL4tXltXT0TCVjk9lcnaWtr4bXFaqYURaF',
+        videos: [
+          { id: 'pTgU87_KKG0', episode: 1, title: 'Egg Curry with a Twist' },
+          { id: '5ZMBCI1I-ZQ', episode: 2, title: 'Restaurant Style Chicken Sukka' },
+          { id: '0lKYSrr_mRs', episode: 3, title: 'Fish Curry from Coastal Karnataka' },
+          { id: '8FUL1OQxisA', episode: 4, title: 'Coorg Chicken with a Secret Ingredient' },
+          { id: 'FcqBPAK66c0', episode: 5, title: "Puneeth Rajkumar's Favourite Biryani" },
+          { id: '005KpLOOymM', episode: 6, title: 'Gadagi Mutton Masala Bijapur Style' },
+          { id: 'CMaL5byAyQk', episode: 7, title: 'Authentic Ankola Konkani Fish Recipe' },
+          { id: 'V6CfmwQCrZc', episode: 8, title: 'Hubli Dharwad Street Style Girmit' },
+          { id: 'tzFp4sx3o20', episode: 9, title: 'Donna Menasinakai Palya' },
+          { id: 'qayD-b28ArE', episode: 10, title: 'Wadi-style Chicken Biryani' },
+          { id: 'PjprZ1H-WFo', episode: 11, title: 'Scrumptious Goli Bajji' },
+          { id: 'TQioXkVR0Uk', episode: 12, title: 'Thalipattu | Akki Rotti' },
+          { id: '_DUEnhjSMAE', episode: 13, title: 'Vangi Bath | Brinjal Rice' },
+          { id: 'rgtzrW2aWbA', episode: 14, title: 'Special Chiroti for Dasara' },
+          { id: 'BVTgsE8afmg', episode: 15, title: 'Badam Puri' },
+        ]
+      },
+      {
+        number: 1,
+        playlist: 'PL4tXltXT0TCWC5CzGx_f7DhNXw0D24GXz',
+        videos: [
+          { id: '_BHnfdWDKYw', episode: 1, title: 'How to make Donne Biryani' },
+          { id: '583WfxFQiU8', episode: 2, title: "Donne Biryani | Bengaluru's own biryani" },
+          { id: 'H-nUl7If054', episode: 3, title: 'How to make Nati Koli Masala and Palak Poori' },
+          { id: 'zSr-ss5r6-0', episode: 4, title: 'Nati Koli Masala and Palak Poori' },
+          { id: '6hugJyRqylc', episode: 5, title: 'How to make Prawn Fry' },
+          { id: 'jhJhsAiVHyE', episode: 6, title: 'Prawn Fry | Spicy tasty appetiser' },
+          { id: '5tQoXV1nLvs', episode: 7, title: 'How to make Mutton Pepper Fry' },
+          { id: 'fpFX2o4HKKI', episode: 8, title: 'Mutton Pepper Fry | Lip-smacking favourite' },
+          { id: 'JccvJGfzUpk', episode: 9, title: 'How to make Kane Rava Fry' },
+          { id: 'Pys2TonUk0w', episode: 10, title: "Kane Rava Fry | Karnataka's coastal favorite" },
+          { id: '10MHb34MjuI', episode: 11, title: 'How to make Maddur Vada' },
+          { id: 'rg24GX7MbGA', episode: 12, title: 'Maddur Vada' },
+          { id: 'PUmpM8MfTMo', episode: 13, title: 'How to make Ennegayi' },
+          { id: 'XjvaRWnqjVI', episode: 14, title: 'Ennegayi | Super hit from North Karnataka' },
+          { id: 'W9kFbnnZj34', episode: 15, title: 'How to make Puliyogare' },
+        ]
+      }
     ];
 
     const grid = document.getElementById('video-grid');
+    const tabsContainer = document.getElementById('season-tabs');
+    const footerText = document.querySelector('footer p');
 
-    videos.forEach((video, index) => {
+    let currentSeason = 0;
+
+    function buildCard(video, index, season) {
       const card = document.createElement('article');
       card.className = 'card';
+      card.style.setProperty('--i', index);
 
       const playlistIndex = index + 1;
-      const embedUrl = `https://www.youtube.com/embed/${video.id}?list=PL4tXltXT0TCWhrTT31fLGpTr2VoHHov5&index=${playlistIndex}`;
+      const embedUrl = `https://www.youtube.com/embed/${video.id}?list=${season.playlist}&index=${playlistIndex}`;
       const thumbUrl = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
 
       card.innerHTML = `
@@ -338,7 +431,6 @@
 
       poster.addEventListener('click', () => {
         if (card.classList.contains('active')) return;
-
         card.classList.add('active');
 
         const iframe = document.createElement('iframe');
@@ -350,8 +442,43 @@
         playerContainer.appendChild(iframe);
       });
 
-      grid.appendChild(card);
+      return card;
+    }
+
+    function renderSeason(index) {
+      const season = seasons[index];
+
+      document.title = `Season ${season.number} — Complete Collection`;
+      footerText.textContent = `Playlist: ${season.playlist}`;
+
+      tabsContainer.querySelectorAll('.season-tab').forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
+
+      grid.classList.add('switching');
+
+      setTimeout(() => {
+        grid.innerHTML = '';
+        season.videos.forEach((video, i) => {
+          grid.appendChild(buildCard(video, i, season));
+        });
+        grid.classList.remove('switching');
+      }, 220);
+    }
+
+    seasons.forEach((s, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'season-tab';
+      btn.textContent = `Season ${s.number}`;
+      btn.addEventListener('click', () => {
+        if (i === currentSeason) return;
+        currentSeason = i;
+        renderSeason(i);
+      });
+      tabsContainer.appendChild(btn);
     });
+
+    renderSeason(0);
   </script>
 </body>
 </html>
