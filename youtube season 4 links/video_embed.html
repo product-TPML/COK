@@ -35,6 +35,25 @@
       color: var(--text);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      scrollbar-width: thin;
+      scrollbar-color: #332F2A transparent;
+    }
+
+    body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    body::-webkit-scrollbar-thumb {
+      background: #332F2A;
+      border-radius: 4px;
+    }
+
+    body::-webkit-scrollbar-thumb:hover {
+      background: #4A453E;
     }
 
     .container {
@@ -722,6 +741,15 @@
 
       poster.addEventListener('click', () => {
         if (card.classList.contains('active')) return;
+
+        // stop any previously playing video
+        const prevActive = grid.querySelector('.card.active');
+        if (prevActive) {
+          prevActive.classList.remove('active');
+          const prevPlayer = prevActive.querySelector('.player');
+          if (prevPlayer) prevPlayer.innerHTML = '';
+        }
+
         card.classList.add('active');
 
         const iframe = document.createElement('iframe');
