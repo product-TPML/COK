@@ -29,6 +29,234 @@
       --radius: 16px;
     }
 
+    /* Site Header */
+    .site-header {
+      font-family: 'Sora', sans-serif;
+      position: relative;
+      z-index: 50;
+    }
+
+    /* Top red bar (75px) */
+    .header-top {
+      background: #A5161C;
+      height: 75px;
+      position: relative;
+    }
+
+    .header-top-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      position: relative;
+    }
+
+    .header-top-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 2px;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .logo img {
+      height: 62px;
+      width: auto;
+      display: block;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    .mobile-menu-btn svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .header-top-right {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .desktop-menu-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    .desktop-menu-btn svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Bottom strip (42px) */
+    .header-strip {
+      background: #000;
+      height: 42px;
+      position: relative;
+      display: none;
+    }
+
+    .header-strip::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.04);
+      pointer-events: none;
+    }
+
+    .strip-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      height: 100%;
+      position: relative;
+    }
+
+    .strip-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .strip-nav {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      height: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .strip-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Sora', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      height: 100%;
+      transition: background 0.2s ease;
+    }
+
+    .strip-nav a:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* Mobile nav overlay */
+    .mobile-nav {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .mobile-nav.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 280px;
+      max-width: 80vw;
+      height: 100%;
+      background: #A5161C;
+      padding: 1.5rem;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-nav.open .mobile-nav-panel {
+      transform: translateX(0);
+    }
+
+    .mobile-nav-close {
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      padding: 0.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+    }
+
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .mobile-nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* Desktop */
+    @media (min-width: 768px) {
+      .header-top-inner {
+        padding: 0 2rem;
+      }
+
+      .logo img {
+        height: 58px;
+      }
+
+      .header-strip {
+        display: block;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .header-top-inner {
+        padding: 0 3rem;
+      }
+
+      .logo img {
+        height: 64px;
+      }
+    }
+
     body {
       font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
       background-color: var(--bg);
@@ -566,6 +794,68 @@
   </style>
 </head>
 <body>
+  <header class="site-header">
+    <div class="header-top">
+      <div class="header-top-inner">
+        <div class="header-top-left">
+          <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <a href="#" class="logo">
+            <img src="logo.jpg" alt="COK — Cooking with Kannadigas">
+          </a>
+        </div>
+        <div class="header-top-right">
+          <button class="desktop-menu-btn" id="desktop-menu-btn" aria-label="Open menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-strip">
+      <div class="strip-inner">
+        <div class="strip-divider" style="left:20%"></div>
+        <div class="strip-divider" style="left:40%"></div>
+        <div class="strip-divider" style="left:60%"></div>
+        <div class="strip-divider" style="left:80%"></div>
+        <nav class="strip-nav">
+          <a href="#">Home</a>
+          <a href="#">Recipes</a>
+          <a href="#">Gallery</a>
+          <a href="#">Contest</a>
+          <a href="#">Game</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="mobile-nav" id="mobile-nav">
+      <div class="mobile-nav-panel">
+        <button class="mobile-nav-close" id="mobile-nav-close" aria-label="Close menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <nav class="mobile-nav-links">
+          <a href="#">Home</a>
+          <a href="#">Recipes</a>
+          <a href="#">Gallery</a>
+          <a href="#">Contest</a>
+          <a href="#">Game</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
   <div class="container">
     <nav class="season-tabs" id="season-tabs"></nav>
 
@@ -903,6 +1193,24 @@
     });
 
     buildJumpPanel();
+
+    /* Mobile header nav */
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const desktopMenuBtn = document.getElementById('desktop-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileNavClose = document.getElementById('mobile-nav-close');
+
+    function openMobileNav() { mobileNav.classList.add('open'); }
+    function closeMobileNav() { mobileNav.classList.remove('open'); }
+
+    if (mobileNav && mobileNavClose) {
+      mobileNavClose.addEventListener('click', closeMobileNav);
+      mobileNav.addEventListener('click', (e) => {
+        if (e.target === mobileNav) closeMobileNav();
+      });
+    }
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileNav);
+    if (desktopMenuBtn) desktopMenuBtn.addEventListener('click', openMobileNav);
   </script>
 </body>
 </html>
