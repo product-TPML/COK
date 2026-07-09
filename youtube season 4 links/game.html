@@ -83,6 +83,22 @@ canvas {
   margin-left:auto; border:1px solid var(--accent); border-radius:4px; padding:0 5px; line-height:16px;
 }
 
+/* ---- RECIPE PREVIEW ---- */
+#recipePreview h1 { font-size:20px; margin-bottom:10px; }
+#rpIngredients { display:flex; flex-wrap:wrap; gap:4px; justify-content:center; margin-bottom:18px; }
+#rpIngredients .check-item { cursor:default; }
+#rpProceed {
+  position:relative; overflow:hidden; background:var(--border); border:none; color:var(--text);
+  font-family:var(--font-heading); font-weight:700; font-size:14px; padding:10px 32px; border-radius:8px;
+  cursor:pointer; transition:color .2s;
+}
+#rpProceed::after {
+  content:''; position:absolute; inset:0; background:var(--accent);
+  animation:fillBtn 2s linear forwards; border-radius:8px;
+}
+#rpProceed span { position:relative; z-index:1; }
+@keyframes fillBtn { from { width:0%; } to { width:100%; } }
+
 /* ===== OVERLAYS ===== */
 .overlay {
   position:absolute; inset:0; z-index:30;
@@ -153,15 +169,6 @@ canvas {
 .stat-row { display:flex; gap:12px; margin:4px 0; font-size:13px; color:var(--text-muted); }
 .stat-row strong { color:var(--accent); font-weight:700; }
 
-/* ---- TIMER ---- */
-#timerBarWrap {
-  flex:1; height:6px; background:var(--border); border-radius:3px;
-  overflow:hidden; max-width:100px; margin-left:auto;
-}
-#timerBar {
-  height:100%; width:0%; background:var(--accent); border-radius:3px;
-}
-
 /* ---- FLASH OVERLAY ---- */
 #flashOverlay {
   position:absolute; inset:0; z-index:15;
@@ -231,7 +238,6 @@ canvas {
       <div id="streakDisplay">🔥 Streak: <span id="streakNum">0</span></div>
       <div id="scoreDisplay">🏆 <span id="scoreNum">0</span></div>
       <div id="levelDisplay">L<span id="levelNum">1</span></div>
-      <div id="timerBarWrap"><div id="timerBar"></div></div>
     </div>
 
     <!-- HEADER -->
@@ -248,6 +254,13 @@ canvas {
       <div class="stat-row" id="titleBestStreak"></div>
       <div class="stat-row" id="titleBestScore"></div>
       <button class="btn" id="startBtn">Tap to Start</button>
+    </div>
+
+    <!-- RECIPE PREVIEW -->
+    <div id="recipePreview" class="overlay">
+      <h1 id="rpDishName"></h1>
+      <div id="rpIngredients"></div>
+      <button class="btn" id="rpProceed"><span>Proceed</span></button>
     </div>
 
     <!-- DISH COMPLETE (brief celebration) -->
@@ -327,21 +340,21 @@ const INGREDIENT_EMOJI = {
 };
 
 const DISHES = [
-  { name:'White Chicken Pulao', ingredients:['Chicken','Rice','Coconut','Curry Leaves'], videoId:'9ig2P5uQeLo' },
-  { name:'Naati Koli Bassaru', ingredients:['Chicken','Chickpeas','Coconut','Mustard'], videoId:'xNlR6VPTUOc' },
-  { name:'Quick Mutton Fry', ingredients:['Mutton','Garlic','Curry Leaves','Pepper'], videoId:'nol4d9eqjyo' },
-  { name:'Mutton Kheema Vade', ingredients:['Mutton','Mint','Coriander','Dill'], videoId:'rtLm3RqLnLc' },
-  { name:'Kaal Soup', ingredients:['Mutton','Ginger','Garlic','Pepper'], videoId:'Pc1QVxb2V4s' },
-  { name:'Kanakapura Fish Curry', ingredients:['Fish','Chilli','Tamarind','Coconut'], videoId:'SO9jaLxrPsQ' },
-  { name:'Kollegal Mutton Pulao', ingredients:['Mutton','Rice','Coriander','Mint'], videoId:'s5jHf8M_hSE' },
-  { name:'Kadle Manoli', ingredients:['Ivy Gourd','Chickpeas','Coconut'], videoId:'pESOxDDF7B4' },
-  { name:'Batani Kurma', ingredients:['Peas','Potato','Cashews','Coconut'], videoId:'rsJy07KbZhE' },
-  { name:'Raichur Tuntapur Chicken', ingredients:['Chicken','Garlic','Curry Leaves','Spices'], videoId:'oFWVuSiZZ64' },
-  { name:'Bonda Soup', ingredients:['Urad Dal','Moong Dal','Coconut','Curry Leaves'], videoId:'jz7W4rcZYOs' },
-  { name:'Southekayi Muddipalya', ingredients:['Cucumber','Coconut','Mustard','Curry Leaves'], videoId:'L-j5T-ZQdMg' },
-  { name:'Avarekalu Curry', ingredients:['Hyacinth Beans','Coconut','Mustard','Curry Leaves'], videoId:'z9Zb3HCb29M' },
-  { name:'Hurugadle Nippattu', ingredients:['Fried Gram','Rice Flour','Curry Leaves','Spices'], videoId:'4dMkfUiECkc' },
-  { name:'Halasina Mulka', ingredients:['Jackfruit','Rice Flour','Jaggery','Coconut'], videoId:'u1rGS26Likc' }
+  { name:'White Chicken Pulao', ingredients:['Chicken','Rice','Coconut','Curry Leaves','Ginger','Spices'], videoId:'9ig2P5uQeLo' },
+  { name:'Naati Koli Bassaru', ingredients:['Chicken','Chickpeas','Coconut','Mustard','Curry Leaves','Spices'], videoId:'xNlR6VPTUOc' },
+  { name:'Quick Mutton Fry', ingredients:['Mutton','Garlic','Curry Leaves','Pepper','Ginger','Chilli'], videoId:'nol4d9eqjyo' },
+  { name:'Mutton Kheema Vade', ingredients:['Mutton','Mint','Coriander','Dill','Garlic','Ginger'], videoId:'rtLm3RqLnLc' },
+  { name:'Kaal Soup', ingredients:['Mutton','Ginger','Garlic','Pepper','Coriander','Spices'], videoId:'Pc1QVxb2V4s' },
+  { name:'Kanakapura Fish Curry', ingredients:['Fish','Chilli','Tamarind','Coconut','Curry Leaves','Mustard'], videoId:'SO9jaLxrPsQ' },
+  { name:'Kollegal Mutton Pulao', ingredients:['Mutton','Rice','Coriander','Mint','Curry Leaves','Spices'], videoId:'s5jHf8M_hSE' },
+  { name:'Kadle Manoli', ingredients:['Ivy Gourd','Chickpeas','Coconut','Mustard','Curry Leaves'], videoId:'pESOxDDF7B4' },
+  { name:'Batani Kurma', ingredients:['Peas','Potato','Cashews','Coconut','Spices','Curry Leaves'], videoId:'rsJy07KbZhE' },
+  { name:'Raichur Tuntapur Chicken', ingredients:['Chicken','Garlic','Curry Leaves','Spices','Chilli','Ginger'], videoId:'oFWVuSiZZ64' },
+  { name:'Bonda Soup', ingredients:['Urad Dal','Moong Dal','Coconut','Curry Leaves','Ginger','Mustard'], videoId:'jz7W4rcZYOs' },
+  { name:'Southekayi Muddipalya', ingredients:['Cucumber','Coconut','Mustard','Curry Leaves','Chilli','Spices'], videoId:'L-j5T-ZQdMg' },
+  { name:'Avarekalu Curry', ingredients:['Hyacinth Beans','Coconut','Mustard','Curry Leaves','Spices','Chilli'], videoId:'z9Zb3HCb29M' },
+  { name:'Hurugadle Nippattu', ingredients:['Fried Gram','Rice Flour','Curry Leaves','Spices','Mustard','Chilli'], videoId:'4dMkfUiECkc' },
+  { name:'Halasina Mulka', ingredients:['Jackfruit','Rice Flour','Jaggery','Coconut','Spices','Ginger'], videoId:'u1rGS26Likc' }
 ];
 
 const YT_LIST_ID = 'PL4tXltXT0TCWhrTT31fLGpTr2VoHHHov5';
@@ -380,6 +393,10 @@ const titleBestStreak = document.getElementById('titleBestStreak');
 const titleBestScore = document.getElementById('titleBestScore');
 const startBtn = document.getElementById('startBtn');
 
+const recipePreview = document.getElementById('recipePreview');
+const rpDishName = document.getElementById('rpDishName');
+const rpProceed = document.getElementById('rpProceed');
+
 const dishComplete = document.getElementById('dishComplete');
 const dcIcons = document.getElementById('dcIcons');
 const dcDishName = document.getElementById('dcDishName');
@@ -392,7 +409,6 @@ const goThumbWrap = document.getElementById('goThumbWrap');
 const goThumb = document.getElementById('goThumb');
 const restartBtn = document.getElementById('restartBtn');
 
-const timerBar = document.getElementById('timerBar');
 const completeModal = document.getElementById('completeModal');
 const modalDishName = document.getElementById('modalDishName');
 const modalIngredients = document.getElementById('modalIngredients');
@@ -420,7 +436,6 @@ let fallingTokens = [];
 let ingredientCooldowns = {};  // name -> expiry timestamp
 let lastSpawnTime = 0;
 let lastDishIndex = -1;
-let dishStartTime = 0;
 let particles = [];
 
 // Basket
@@ -620,7 +635,7 @@ function spawnToken() {
     lane,
     y: -TOKEN_HEIGHT,
     ingredient,
-    speed: lv.speed,
+    speed: lv.speed * (0.95 + Math.random() * 0.1),
     correct: currentDish.ingredients.includes(ingredient),
     processed: false,
     missed: false
@@ -869,8 +884,6 @@ function pickNewDish() {
   ingredientCooldowns = {};
   lastSpawnTime = performance.now();
 
-  dishStartTime = performance.now();
-
   // Update UI
   dishNameEl.textContent = currentDish.name;
   updateChecklist();
@@ -900,8 +913,6 @@ function resetGame() {
   basket.startX = basket.x;
 
   particles = [];
-  dishStartTime = 0;
-  timerBar.style.width = '100%';
 
   // Reset UI
   updateHud();
@@ -912,6 +923,7 @@ function resetGame() {
   dishComplete.classList.remove('visible');
   completeModal.classList.remove('visible');
   levelUpBanner.classList.remove('visible');
+  recipePreview.classList.remove('visible');
   flashOverlay.style.opacity = '0';
 }
 
@@ -922,13 +934,37 @@ function showTitleScreen() {
   updateTitleStats();
 }
 
+function showRecipePreview() {
+  resetGame();
+  // Pick a random dish to preview
+  const idx = Math.floor(Math.random()*DISHES.length);
+  const dish = DISHES[idx];
+  rpDishName.textContent = dish.name;
+  let html = '';
+  for (const ing of dish.ingredients) {
+    const emoji = INGREDIENT_EMOJI[ing] || '';
+    html += '<span class="check-item">'+emoji+' '+ing+'</span>';
+  }
+  document.getElementById('rpIngredients').innerHTML = html;
+  recipePreview.classList.add('visible');
+  // Re-trigger the fill animation
+  rpProceed.style.animation = 'none';
+  void rpProceed.offsetWidth;
+  rpProceed.style.animation = '';
+  _previewDishIdx = idx;
+}
+
+let _previewDishIdx;
+
 function startGame() {
+  if (state === STATE.PLAYING) return;
   resetGame();
   state = STATE.PLAYING;
   showHud(true);
 
   // Pick first dish
-  let idx = Math.floor(Math.random()*DISHES.length);
+  let idx = _previewDishIdx !== undefined ? _previewDishIdx : Math.floor(Math.random()*DISHES.length);
+  _previewDishIdx = undefined;
   currentDishIndex = idx;
   currentDish = DISHES[idx];
   lastDishIndex = idx;
@@ -936,7 +972,6 @@ function startGame() {
   fallingTokens = [];
   ingredientCooldowns = {};
   lastSpawnTime = performance.now();
-  dishStartTime = performance.now();
 
   dishNameEl.textContent = currentDish.name;
   updateChecklist();
@@ -951,13 +986,6 @@ function updateTitleStats() {
   loadBest();
   titleBestStreak.innerHTML = bestStreak > 0 ? 'Best Streak: <strong>'+bestStreak+'</strong>' : '';
   titleBestScore.innerHTML = bestScore > 0 ? 'Best Score: <strong>'+bestScore+'</strong>' : '';
-}
-
-function updateTimer() {
-  if (!dishStartTime) { timerBar.style.width = '100%'; return; }
-  const elapsed = (performance.now() - dishStartTime) / 1000;
-  const pct = Math.min(elapsed / 30 * 100, 100);
-  timerBar.style.width = (100 - pct) + '%';
 }
 
 // ---- BASKET ANIMATION ----
@@ -1290,9 +1318,6 @@ function gameLoop(time) {
   lastFrameTime = time;
 
   if (state === STATE.PLAYING) {
-    // Update timer
-    updateTimer();
-
     // Update visual effects (basket bounce/shake)
     updateVisualEffects(dt);
 
@@ -1344,8 +1369,6 @@ function gameLoop(time) {
     if (checkDishComplete()) {
       transitionToDishComplete();
     }
-  } else if (state === STATE.DISH_COMPLETE) {
-    // Timer keeps displaying but doesn't advance (paused)
   }
 
   // Always render
@@ -1378,9 +1401,11 @@ window.addEventListener('orientationchange', function() {
 });
 
 // ---- START / RESTART / NEXT DISH ----
-startBtn.addEventListener('click', startGame);
+startBtn.addEventListener('click', showRecipePreview);
 restartBtn.addEventListener('click', showTitleScreen);
 nextDishBtn.addEventListener('click', completeDishAdvance);
+rpProceed.addEventListener('animationend', startGame);
+rpProceed.addEventListener('click', startGame);
 
 // ---- CTA TRACKING ----
 document.querySelectorAll('.cta-link').forEach(el => {
