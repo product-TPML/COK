@@ -192,7 +192,8 @@ canvas {
   position:relative; width:100%; max-width:320px; aspect-ratio:16/9; border-radius:8px; overflow:hidden;
   background:#000; margin:4px 0 8px; cursor:pointer;
 }
-.thumb-wrap img { width:100%; height:100%; object-fit:cover; display:block; }
+.thumb-wrap iframe { width:100%; height:100%; display:block; }
+#completeModal .thumb-wrap { aspect-ratio:16/11; min-height:180px; }
 .thumb-wrap .play-icon {
   position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
   font-size:44px; color:rgba(255,255,255,0.85); text-shadow:0 2px 8px rgba(0,0,0,0.6);
@@ -283,10 +284,8 @@ canvas {
             <h2 style="color:#2ECC54;margin:0 0 2px;font-size:22px;">🎉 Dish Complete!</h2>
             <h1 id="modalDishBack" style="font-family:var(--font-heading);font-weight:700;font-size:22px;color:var(--accent);margin:0 0 10px;"></h1>
             <div class="thumb-wrap" id="modalThumbWrap">
-              <img id="modalThumb" src="" alt="Video thumbnail" class="modal-thumb-img">
-              <div class="play-icon">▶</div>
+              <iframe id="modalVideo" width="100%" height="100%" src="" frameborder="0" allowfullscreen allow="encrypted-media"></iframe>
             </div>
-            <a id="modalWatchLink" href="#" target="_blank" rel="noopener" class="modal-watch-link">Watch full recipe ↗</a>
             <button class="btn" id="nextDishBtn">Next Dish →</button>
           </div>
         </div>
@@ -417,9 +416,8 @@ const restartBtn = document.getElementById('restartBtn');
 const completeModal = document.getElementById('completeModal');
 const modalDishFront = document.getElementById('modalDishFront');
 const modalIngredients = document.getElementById('modalIngredients');
-const modalThumb = document.getElementById('modalThumb');
+const modalVideo = document.getElementById('modalVideo');
 const modalThumbWrap = document.getElementById('modalThumbWrap');
-const modalWatchLink = document.getElementById('modalWatchLink');
 const nextDishBtn = document.getElementById('nextDishBtn');
 const flashOverlay = document.getElementById('flashOverlay');
 
@@ -807,20 +805,13 @@ function transitionToDishComplete() {
     ingHtml += '<span>'+emoji+' '+ing+'</span>';
   }
   modalIngredients.innerHTML = ingHtml;
-  modalThumb.src = 'https://img.youtube.com/vi/'+currentDish.videoId+'/hqdefault.jpg';
-  modalWatchLink.href = 'https://www.youtube.com/watch?v='+currentDish.videoId+'&list='+YT_LIST_ID;
+  modalVideo.src = 'https://www.youtube.com/embed/'+currentDish.videoId+'?rel=0';
 
   // Reset flip to show front
   document.querySelector('.flip-inner').classList.remove('flipped');
 
   // Click thumbnail to open video
-  modalThumbWrap.onclick = function() {
-    window.open(modalWatchLink.href, '_blank');
-    trackEvent('watch_recipe_click', {
-      dish_name: currentDish.name,
-      video_id: currentDish.videoId
-    });
-  };
+  // YouTube iframe handles play natively — no click handler needed
 
   completeModal.classList.add('visible');
 
@@ -1420,16 +1411,6 @@ document.querySelectorAll('.cta-link').forEach(el => {
       video_id: dish ? dish.videoId : ''
     });
   });
-});
-
-// Modal watch link
-modalWatchLink.addEventListener('click', function() {
-  if (currentDish) {
-    trackEvent('watch_recipe_click', {
-      dish_name: currentDish.name,
-      video_id: currentDish.videoId
-    });
-  }
 });
 
 // ---- INIT ----
