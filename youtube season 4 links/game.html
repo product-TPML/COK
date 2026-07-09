@@ -141,8 +141,7 @@ canvas {
 }
 
 /* Dish complete */
-#dishComplete .dish-icons { font-size:28px; margin:6px 0; }
-#dishComplete h2, #completeModal h2 { color:#2ECC54; }
+#completeModal h2 { color:#2ECC54; }
 
 /* Game over */
 #gameOver h1 { color:#D4542E; }
@@ -211,9 +210,10 @@ canvas {
 #completeModal .btn { margin-top:4px; }
 
 /* ---- FLIP (ingredients → video card) ---- */
-.flip-inner { perspective:1000px; transform-style:preserve-3d; transition:transform .6s; width:100%; position:relative; min-height:280px; }
+.flip-inner { perspective:1000px; transform-style:preserve-3d; transition:transform .6s; width:100%; position:relative; min-height:280px; background:var(--surface); border-radius:16px; display:flex; }
 .flip-inner.flipped { transform:rotateY(180deg); }
 .flip-front, .flip-back { backface-visibility:hidden; width:100%; display:flex; flex-direction:column; align-items:center; }
+.flip-front { justify-content:center; flex:1; }
 .flip-back { position:absolute; inset:0; transform:rotateY(180deg); justify-content:center; }
 .flip-front #modalIngredients { display:flex; flex-wrap:wrap; gap:4px; justify-content:center; margin:4px 0; }
 .flip-front #modalIngredients span { font-size:13px; color:var(--text); display:inline-flex; align-items:center; gap:3px; padding:3px 8px; background:#1E1B18; border:1px solid #332F2A; border-radius:8px; }
@@ -270,13 +270,6 @@ canvas {
       <button class="btn" id="rpProceed"><span>Proceed</span></button>
     </div>
 
-    <!-- DISH COMPLETE (brief celebration) -->
-    <div id="dishComplete" class="overlay">
-      <h2>✨ Dish Complete!</h2>
-      <div class="dish-icons" id="dcIcons"></div>
-      <p id="dcDishName" style="font-size:15px;color:var(--text);margin:2px 0;"></p>
-    </div>
-
     <!-- COMPLETE MODAL (with flip: ingredients → video card) -->
     <div id="completeModal" class="overlay">
       <div class="modal-card">
@@ -287,6 +280,7 @@ canvas {
             <div id="modalIngredients"></div>
           </div>
           <div class="flip-back">
+            <h2 style="color:#2ECC54;margin:0 0 2px;font-size:22px;">🎉 Dish Complete!</h2>
             <h1 id="modalDishBack" style="font-family:var(--font-heading);font-weight:700;font-size:22px;color:var(--accent);margin:0 0 10px;"></h1>
             <div class="thumb-wrap" id="modalThumbWrap">
               <img id="modalThumb" src="" alt="Video thumbnail" class="modal-thumb-img">
@@ -411,9 +405,6 @@ const recipePreview = document.getElementById('recipePreview');
 const rpDishName = document.getElementById('rpDishName');
 const rpProceed = document.getElementById('rpProceed');
 
-const dishComplete = document.getElementById('dishComplete');
-const dcIcons = document.getElementById('dcIcons');
-const dcDishName = document.getElementById('dcDishName');
 const gameOver = document.getElementById('gameOver');
 const goScore = document.getElementById('goScore');
 const goBest = document.getElementById('goBest');
@@ -807,59 +798,45 @@ function transitionToDishComplete() {
   state = STATE.DISH_COMPLETE;
   particles = [];
 
-  // Brief celebration overlay (800ms)
-  const icons = currentDish.ingredients.map(ing => INGREDIENT_EMOJI[ing]||'').join(' ');
-  dcIcons.textContent = icons;
-  dcDishName.textContent = currentDish.name;
-  dishComplete.classList.add('visible');
+  // Populate both sides and show modal directly
+  modalDishFront.textContent = currentDish.name;
+  modalDishBack.textContent = currentDish.name;
+  let ingHtml = '';
+  for (const ing of currentDish.ingredients) {
+    const emoji = INGREDIENT_EMOJI[ing]||'';
+    ingHtml += '<span>'+emoji+' '+ing+'</span>';
+  }
+  modalIngredients.innerHTML = ingHtml;
+  modalThumb.src = 'https://img.youtube.com/vi/'+currentDish.videoId+'/hqdefault.jpg';
+  modalWatchLink.href = 'https://www.youtube.com/watch?v='+currentDish.videoId+'&list='+YT_LIST_ID;
 
-  // GA event after short delay
-  setTimeout(() => {
-    trackEvent('dish_completed', {
+  // Reset flip to show front
+  document.querySelector('.flip-inner').classList.remove('flipped');
+
+  // Click thumbnail to open video
+  modalThumbWrap.onclick = function() {
+    window.open(modalWatchLink.href, '_blank');
+    trackEvent('watch_recipe_click', {
       dish_name: currentDish.name,
-      streak: streak,
-      level: getLevel(streak)
+      video_id: currentDish.videoId
     });
-  }, 100);
+  };
 
-  // After 800ms celebration → show ingredients, then flip to video card
+  completeModal.classList.add('visible');
+
+  // Auto-flip after 2s, or tap front to flip
   setTimeout(() => {
-    dishComplete.classList.remove('visible');
+    document.querySelector('.flip-inner').classList.add('flipped');
+  }, 2000);
+  document.querySelector('.flip-front').onclick = function() {
+    document.querySelector('.flip-inner').classList.add('flipped');
+  };
 
-    // Populate both sides
-    modalDishFront.textContent = currentDish.name;
-    modalDishBack.textContent = currentDish.name;
-    let ingHtml = '';
-    for (const ing of currentDish.ingredients) {
-      const emoji = INGREDIENT_EMOJI[ing]||'';
-      ingHtml += '<span>'+emoji+' '+ing+'</span>';
-    }
-    modalIngredients.innerHTML = ingHtml;
-    modalThumb.src = 'https://img.youtube.com/vi/'+currentDish.videoId+'/hqdefault.jpg';
-    modalWatchLink.href = 'https://www.youtube.com/watch?v='+currentDish.videoId+'&list='+YT_LIST_ID;
-
-    // Reset flip to show front
-    document.querySelector('.flip-inner').classList.remove('flipped');
-
-    // Click thumbnail to open video
-    modalThumbWrap.onclick = function() {
-      window.open(modalWatchLink.href, '_blank');
-      trackEvent('watch_recipe_click', {
-        dish_name: currentDish.name,
-        video_id: currentDish.videoId
-      });
-    };
-
-    completeModal.classList.add('visible');
-
-    // Auto-flip after 2s, or tap front to flip
-    setTimeout(() => {
-      document.querySelector('.flip-inner').classList.add('flipped');
-    }, 2000);
-    document.querySelector('.flip-front').onclick = function() {
-      document.querySelector('.flip-inner').classList.add('flipped');
-    };
-  }, 800);
+  trackEvent('dish_completed', {
+    dish_name: currentDish.name,
+    streak: streak,
+    level: getLevel(streak)
+  });
 }
 
 function transitionToGameOver() {
@@ -946,7 +923,6 @@ function resetGame() {
   showHud(false);
   titleScreen.classList.remove('visible');
   gameOver.classList.remove('visible');
-  dishComplete.classList.remove('visible');
   completeModal.classList.remove('visible');
   levelUpBanner.classList.remove('visible');
   recipePreview.classList.remove('visible');
