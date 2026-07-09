@@ -73,9 +73,7 @@ canvas {
   font-family:var(--font-heading); font-weight:600; font-size:12px; color:var(--text); white-space:nowrap;
 }
 #streakDisplay span { color:var(--accent); }
-#heartsDisplay { font-size:15px; letter-spacing:2px; }
-.heart { transition:opacity .3s; }
-.heart.lost { opacity:.2; }
+
 
 /* ===== OVERLAYS ===== */
 .overlay {
@@ -213,13 +211,6 @@ canvas {
   100% { transform:translateX(0); }
 }
 
-/* ---- HEART BREAK ---- */
-@keyframes heartBreakAnim {
-  0% { transform:scale(1); opacity:1; }
-  40% { transform:scale(1.4); opacity:0.7; }
-  100% { transform:scale(0.3); opacity:0; }
-}
-.heart-break { animation:heartBreakAnim 350ms ease-out forwards; }
 </style>
 </head>
 <body>
@@ -230,7 +221,6 @@ canvas {
     <!-- HUD (top bar) -->
     <div id="hud">
       <div id="streakDisplay">🔥 Streak: <span id="streakNum">0</span></div>
-      <div id="heartsDisplay"></div>
       <div id="timerBarWrap"><div id="timerBar"></div></div>
     </div>
 
@@ -372,7 +362,6 @@ const dishNameEl = document.getElementById('dishName');
 const checklistEl = document.getElementById('checklist');
 const hudEl = document.getElementById('hud');
 const streakNumEl = document.getElementById('streakNum');
-const heartsDisplayEl = document.getElementById('heartsDisplay');
 
 const titleScreen = document.getElementById('titleScreen');
 const titleBestStreak = document.getElementById('titleBestStreak');
@@ -539,17 +528,8 @@ function updateChecklist() {
   checklistEl.innerHTML = html;
 }
 
-function updateHearts() {
-  let h = '';
-  for (let i=0; i<3; i++) {
-    h += '<span class="heart'+(i>=hearts?' lost':'')+'">❤</span>';
-  }
-  heartsDisplayEl.innerHTML = h;
-}
-
 function updateHud() {
   streakNumEl.textContent = streak;
-  updateHearts();
 }
 
 function showHeader(v) {
@@ -683,7 +663,6 @@ function checkCollisions() {
         token.flashColor = '#D4542E';
         token.flashTimer = 250;
         token.scale = 1;
-        updateHearts();
 
         // Basket shake
         shakeBasket();
@@ -692,21 +671,16 @@ function checkCollisions() {
         flashOverlay.style.opacity = '1';
         setTimeout(() => { flashOverlay.style.opacity = '0'; }, 100);
 
-        // Heart break animation on the just-lost heart
-        const heartEls = heartsDisplayEl.querySelectorAll('.heart');
-        if (heartEls.length > hearts) {
-          const lostEl = heartEls[hearts];
-          lostEl.classList.remove('lost');
-          lostEl.classList.add('heart-break');
-          setTimeout(() => { if (lostEl) lostEl.classList.remove('heart-break'); }, 400);
-        }
+        // Heart break animation (canvas-based)
+        heartAnimTimer = 350;
+        heartAnimIdx = hearts;
 
         trackEvent('wrong_ingredient_caught', {
           dish_name: currentDish.name,
           caught_ingredient: token.ingredient
         });
         if (hearts <= 0) {
-          transitionToGameOver();
+          setTimeout(function(){ transitionToGameOver(); }, 400);
           return;
         }
       }
@@ -890,6 +864,8 @@ function resetGame() {
   streak = 0;
   comboCount = 0;
   hearts = 3;
+  heartAnimTimer = 0;
+  heartAnimIdx = 0;
   currentDish = null;
   currentDishIndex = -1;
   caughtIngredients = new Set();
@@ -1009,6 +985,8 @@ function updateBasket(now) {
 let basketBounceTimer = 0;
 let basketShakeTimer = 0;
 let basketShakeOffset = 0;
+let heartAnimTimer = 0;
+let heartAnimIdx = 0;
 
 function bounceBasket() {
   basketBounceTimer = 200;
@@ -1027,6 +1005,7 @@ function updateVisualEffects(dt) {
   } else {
     basketShakeOffset = 0;
   }
+  if (heartAnimTimer > 0) heartAnimTimer -= dt * 1000;
 }
 
 // ---- RENDER ----
@@ -1162,6 +1141,35 @@ function render() {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('🧺', basket.x + basketShakeOffset, by + bh/2);
+
+  // Hearts above basket
+  ctx.fillStyle = '#E74C3C';
+  ctx.font = '14px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (let i=0; i<3; i++) {
+    const hx = basket.x + basketShakeOffset + (i - 1) * 18;
+    const hy = by - 8;
+    if (i >= hearts) {
+      if (i === heartAnimIdx && heartAnimTimer > 0) {
+        const t = 1 - heartAnimTimer / 350;
+        const s = t < 0.4 ? 1 + t : 1.4 - 1.1 * (t - 0.4) / 0.6;
+        ctx.save();
+        ctx.translate(hx, hy);
+        ctx.scale(s, s);
+        ctx.globalAlpha = 0.2 + (1 - t) * 0.8;
+        ctx.fillText('❤', 0, 0);
+        ctx.restore();
+      } else {
+        ctx.globalAlpha = 0.2;
+        ctx.fillText('❤', hx, hy);
+      }
+    } else {
+      ctx.globalAlpha = 1;
+      ctx.fillText('❤', hx, hy);
+    }
+  }
+  ctx.globalAlpha = 1;
 }
 
 // ---- INPUT ----
@@ -1354,7 +1362,6 @@ function init() {
   loadBest();
   updateTitleStats();
   updateHud();
-  updateHearts();
 
   // Initial basket position
   basket.x = getLaneCenter(1);
