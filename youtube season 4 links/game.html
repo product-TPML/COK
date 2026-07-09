@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>Recipe Catcher — Cuisines of Karnataka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #131110;
+  --surface: #1E1B18;
+  --border: #332F2A;
+  --accent: #F5C518;
+  --accent-secondary: #D4542E;
+  --text: #F0EDE8;
+  --text-muted: #7A756E;
+  --font-heading: 'Sora', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+html, body { margin:0; padding:0; overflow:hidden; height:100%; background:var(--bg); font-family:var(--font-body); color:var(--text); }
+
+#game {
+  position:fixed; inset:0; height:100dvh;
+  touch-action:none; overscroll-behavior:none;
+  user-select:none; -webkit-user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  background:var(--bg); overflow:hidden;
+}
+
+#game-inner {
+  position:relative; margin:0 auto; height:100dvh;
+  max-width:480px;
+}
+
+canvas {
+  display:block; position:absolute; left:0; top:0;
+  width:100%; height:100%;
+}
+
+/* ===== DOM OVERLAYS ===== */
+#header {
+  position:absolute; top:0; left:0; right:0; z-index:10;
+  padding:6px 10px 8px;
+  background:linear-gradient(to bottom, rgba(19,17,16,0.95) 60%, transparent);
+  pointer-events:none; display:none;
+}
+#header.visible { display:block; }
+#dishName {
+  font-family:var(--font-heading); font-weight:600; font-size:14px;
+  color:var(--accent); margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+#checklist { display:flex; flex-wrap:wrap; gap:2px 6px; }
+.check-item {
+  display:inline-flex; align-items:center; gap:2px;
+  font-size:12px; color:var(--text-muted); transition:color .2s;
+}
+.check-item.checked { color:var(--accent); }
+.check-item::before {
+  content:'☐'; font-size:13px; color:var(--text-muted); margin-right:1px; transition:color .2s;
+}
+.check-item.checked::before { content:'☑'; color:var(--accent); }
+
+#hud {
+  position:absolute; bottom:0; left:0; right:0; z-index:10;
+  padding:6px 12px;
+  background:linear-gradient(to top, rgba(19,17,16,0.92) 60%, transparent);
+  display:none; align-items:center; justify-content:space-between;
+}
+#hud.visible { display:flex; }
+#streakDisplay {
+  font-family:var(--font-heading); font-weight:600; font-size:13px; color:var(--text);
+}
+#streakDisplay span { color:var(--accent); }
+#heartsDisplay { font-size:18px; letter-spacing:2px; }
+.heart { transition:opacity .3s; }
+.heart.lost { opacity:.2; }
+
+/* ===== OVERLAYS ===== */
+.overlay {
+  position:absolute; inset:0; z-index:30;
+  display:none; flex-direction:column; align-items:center; justify-content:center;
+  background:rgba(19,17,16,0.88);
+  padding:20px; text-align:center;
+}
+.overlay.visible { display:flex; }
+.overlay h1 {
+  font-family:var(--font-heading); font-weight:700; font-size:28px; color:var(--accent); margin:0 0 6px;
+}
+.overlay h2 {
+  font-family:var(--font-heading); font-weight:600; font-size:20px; color:var(--text); margin:0 0 4px;
+}
+.overlay p { font-size:14px; color:var(--text-muted); margin:4px 0; max-width:320px; line-height:1.4; }
+.overlay .score-text { font-size:22px; font-weight:700; color:var(--accent); margin:4px 0; }
+.overlay .best-text { font-size:14px; color:var(--text-muted); margin:2px 0; }
+.overlay .cta-link {
+  display:inline-block; margin:10px 0 6px;
+  font-family:var(--font-heading); font-weight:600; font-size:15px;
+  color:var(--accent); text-decoration:none; pointer-events:auto;
+  padding:8px 16px; border:1px solid var(--accent); border-radius:6px;
+  transition:background .2s;
+}
+.overlay .cta-link:hover { background:rgba(245,197,24,0.1); }
+.btn {
+  font-family:var(--font-heading); font-weight:600; font-size:16px;
+  color:var(--bg); background:var(--accent); border:none;
+  padding:10px 28px; border-radius:8px; cursor:pointer; pointer-events:auto;
+  margin-top:8px; transition:opacity .2s;
+}
+.btn:hover { opacity:.9; }
+.onboarding {
+  font-size:14px; color:var(--text-muted); max-width:280px; line-height:1.5; margin:4px 0 10px;
+}
+
+/* Title screen specific */
+#titleScreen .game-subtitle {
+  font-size:13px; color:var(--text-muted); margin:0 0 12px;
+}
+
+/* Dish complete */
+#dishComplete .dish-icons { font-size:28px; margin:6px 0; }
+
+/* Level up banner */
+#levelUpBanner {
+  position:absolute; inset:0; z-index:25;
+  display:none; flex-direction:column; align-items:center; justify-content:center;
+  background:rgba(19,17,16,0.85); pointer-events:none;
+}
+#levelUpBanner.visible { display:flex; }
+#levelUpBanner .lvl-title {
+  font-family:var(--font-heading); font-weight:700; font-size:36px; color:var(--accent);
+  margin:0 0 4px;
+}
+#levelUpBanner .lvl-num {
+  font-family:var(--font-heading); font-weight:600; font-size:22px; color:var(--text);
+}
+
+/* Game over specific */
+#gameOver .last-dish { font-size:16px; font-weight:600; color:var(--text); margin:4px 0; }
+
+/* Heart icons for title/best display */
+.stat-row { display:flex; gap:12px; margin:4px 0; font-size:13px; color:var(--text-muted); }
+.stat-row strong { color:var(--accent); font-weight:700; }
+
+/* ---- TIMER ---- */
+#timer { font-family:var(--font-heading); font-size:13px; color:var(--text-muted); margin-left:auto; }
+
+/* ---- FLASH OVERLAY ---- */
+#flashOverlay {
+  position:absolute; inset:0; z-index:15;
+  background:rgba(212,84,46,0.15);
+  pointer-events:none; opacity:0; transition:opacity .1s;
+}
+
+/* ---- MODAL CARD ---- */
+#completeModal .modal-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:16px;
+  padding:20px 24px 24px; max-width:340px; width:88%; display:flex; flex-direction:column; align-items:center;
+}
+#completeModal .modal-card h2 { margin:0 0 2px; font-size:22px; }
+#completeModal .checklist-complete {
+  display:flex; flex-wrap:wrap; gap:4px 8px; justify-content:center; margin:4px 0 10px;
+}
+#completeModal .checklist-complete span { font-size:13px; color:var(--accent); display:inline-flex; align-items:center; gap:3px; }
+#completeModal .checklist-complete span::before { content:'☑'; color:var(--accent); font-size:14px; }
+
+.thumb-wrap {
+  position:relative; width:100%; max-width:320px; aspect-ratio:16/9; border-radius:8px; overflow:hidden;
+  background:#000; margin:4px 0 8px; cursor:pointer;
+}
+.thumb-wrap img { width:100%; height:100%; object-fit:cover; display:block; }
+.thumb-wrap .play-icon {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-size:44px; color:rgba(255,255,255,0.85); text-shadow:0 2px 8px rgba(0,0,0,0.6);
+  transition:transform .15s, color .15s;
+}
+.thumb-wrap:hover .play-icon { transform:scale(1.1); color:#fff; }
+
+.modal-watch-link {
+  display:inline-block; font-family:var(--font-heading); font-weight:600; font-size:14px;
+  color:var(--accent); text-decoration:none; margin:4px 0 10px; padding:6px 14px;
+  border:1px solid var(--accent); border-radius:6px; transition:background .2s;
+}
+.modal-watch-link:hover { background:rgba(245,197,24,0.12); }
+
+#completeModal .btn { margin-top:4px; }
+
+/* ---- BASKET ANIMATIONS ---- */
+@keyframes basketBounce {
+  0% { transform:scale(1); }
+  50% { transform:scale(1.15); }
+  100% { transform:scale(1); }
+}
+@keyframes basketShake {
+  0% { transform:translateX(0); }
+  15% { transform:translateX(-5px); }
+  30% { transform:translateX(5px); }
+  45% { transform:translateX(-4px); }
+  60% { transform:translateX(4px); }
+  75% { transform:translateX(-2px); }
+  90% { transform:translateX(2px); }
+  100% { transform:translateX(0); }
+}
+
+/* ---- HEART BREAK ---- */
+@keyframes heartBreakAnim {
+  0% { transform:scale(1); opacity:1; }
+  40% { transform:scale(1.4); opacity:0.7; }
+  100% { transform:scale(0.3); opacity:0; }
+}
+.heart-break { animation:heartBreakAnim 350ms ease-out forwards; }
+</style>
+</head>
+<body>
+<div id="game">
+  <div id="game-inner">
+    <canvas id="playCanvas"></canvas>
+
+    <!-- HEADER -->
+    <div id="header">
+      <div id="dishName"></div>
+      <div id="checklist"></div>
+    </div>
+
+    <!-- HUD -->
+    <div id="hud">
+      <div id="streakDisplay">🔥 Streak: <span id="streakNum">0</span></div>
+      <div id="heartsDisplay"></div>
+      <span id="timer">⏱ 00:00</span>
+    </div>
+
+    <!-- TITLE SCREEN -->
+    <div id="titleScreen" class="overlay visible">
+      <h1>Recipe Catcher</h1>
+      <div class="game-subtitle">Cuisines of Karnataka</div>
+      <p class="onboarding">Swipe or tap sides to move.<br>Catch the right ingredients.<br>Avoid spoiling the dish.</p>
+      <div class="stat-row" id="titleBestStreak"></div>
+      <div class="stat-row" id="titleBestScore"></div>
+      <button class="btn" id="startBtn">Tap to Start</button>
+    </div>
+
+    <!-- DISH COMPLETE (brief celebration) -->
+    <div id="dishComplete" class="overlay">
+      <h2>✨ Dish Complete!</h2>
+      <div class="dish-icons" id="dcIcons"></div>
+      <p id="dcDishName" style="font-size:15px;color:var(--text);margin:2px 0;"></p>
+    </div>
+
+    <!-- COMPLETE MODAL (with video thumbnail, no auto-advance) -->
+    <div id="completeModal" class="overlay">
+      <div class="modal-card">
+        <h2>🎉 Dish Complete!</h2>
+        <p id="modalDishName" style="font-size:16px;color:var(--text);margin:4px 0 8px;"></p>
+        <div id="modalIngredients"></div>
+        <div class="thumb-wrap" id="modalThumbWrap">
+          <img id="modalThumb" src="" alt="Video thumbnail" class="modal-thumb-img">
+          <div class="play-icon">▶</div>
+        </div>
+        <a id="modalWatchLink" href="#" target="_blank" rel="noopener" class="modal-watch-link">Watch full recipe ↗</a>
+        <button class="btn" id="nextDishBtn">Next Dish →</button>
+      </div>
+    </div>
+
+    <!-- FLASH OVERLAY (red screen flash on wrong catch) -->
+    <div id="flashOverlay"></div>
+
+    <!-- GAME OVER -->
+    <div id="gameOver" class="overlay">
+      <h1>Game Over</h1>
+      <div class="score-text" id="goScore"></div>
+      <div class="best-text" id="goBest"></div>
+      <div class="last-dish" id="goLastDish"></div>
+      <div class="thumb-wrap" id="goThumbWrap" style="margin:8px auto;">
+        <img id="goThumb" src="" alt="Video thumbnail" class="modal-thumb-img">
+        <div class="play-icon">▶</div>
+      </div>
+      <a class="cta-link" id="goCta" href="#" target="_blank" rel="noopener">Watch this recipe →</a>
+      <button class="btn" id="restartBtn">Play Again</button>
+    </div>
+
+    <!-- LEVEL UP BANNER -->
+    <div id="levelUpBanner">
+      <div class="lvl-title">LEVEL UP!</div>
+      <div class="lvl-num" id="lvlNum"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   RECIPE CATCHER — Cuisines of Karnataka
+   Single-file game, zero dependencies
+   ============================================================ */
+
+// --- EMIT ---
+(function(){ 'use strict';
+
+// ---- DATA ----
+const ALL_INGREDIENTS = [
+  'Chicken','Mutton','Fish','Rice','Coconut','Curry Leaves','Mustard',
+  'Tamarind','Garlic','Ginger','Pepper','Chilli','Mint','Coriander',
+  'Dill','Ivy Gourd','Chickpeas','Peas','Potato','Cashews','Urad Dal',
+  'Moong Dal','Cucumber','Hyacinth Beans','Fried Gram','Rice Flour',
+  'Jackfruit','Jaggery','Spices'
+];
+
+const INGREDIENT_EMOJI = {
+  'Chicken':'🍗','Mutton':'🍖','Fish':'🐟','Rice':'🍚','Coconut':'🥥',
+  'Curry Leaves':'🌿','Mustard':'🟡','Tamarind':'🟤','Garlic':'🧄',
+  'Ginger':'🫚','Pepper':'🫙','Chilli':'🌶','Mint':'🌱',
+  'Coriander':'🍃','Dill':'🌾','Ivy Gourd':'🥒','Chickpeas':'🫘',
+  'Peas':'🫛','Potato':'🥔','Cashews':'🥜','Urad Dal':'🟫',
+  'Moong Dal':'🟢','Cucumber':'🥒','Hyacinth Beans':'🫛',
+  'Fried Gram':'🟡','Rice Flour':'🌾','Jackfruit':'🍈',
+  'Jaggery':'🟫','Spices':'🧂'
+};
+
+const DISHES = [
+  { name:'White Chicken Pulao', ingredients:['Chicken','Rice','Coconut','Curry Leaves'], videoId:'9ig2P5uQeLo' },
+  { name:'Naati Koli Bassaru', ingredients:['Chicken','Chickpeas','Coconut','Mustard'], videoId:'xNlR6VPTUOc' },
+  { name:'Quick Mutton Fry', ingredients:['Mutton','Garlic','Curry Leaves','Pepper'], videoId:'nol4d9eqjyo' },
+  { name:'Mutton Kheema Vade', ingredients:['Mutton','Mint','Coriander','Dill'], videoId:'rtLm3RqLnLc' },
+  { name:'Kaal Soup', ingredients:['Mutton','Ginger','Garlic','Pepper'], videoId:'Pc1QVxb2V4s' },
+  { name:'Kanakapura Fish Curry', ingredients:['Fish','Chilli','Tamarind','Coconut'], videoId:'SO9jaLxrPsQ' },
+  { name:'Kollegal Mutton Pulao', ingredients:['Mutton','Rice','Coriander','Mint'], videoId:'s5jHf8M_hSE' },
+  { name:'Kadle Manoli', ingredients:['Ivy Gourd','Chickpeas','Coconut'], videoId:'pESOxDDF7B4' },
+  { name:'Batani Kurma', ingredients:['Peas','Potato','Cashews','Coconut'], videoId:'rsJy07KbZhE' },
+  { name:'Raichur Tuntapur Chicken', ingredients:['Chicken','Garlic','Curry Leaves','Spices'], videoId:'oFWVuSiZZ64' },
+  { name:'Bonda Soup', ingredients:['Urad Dal','Moong Dal','Coconut','Curry Leaves'], videoId:'jz7W4rcZYOs' },
+  { name:'Southekayi Muddipalya', ingredients:['Cucumber','Coconut','Mustard','Curry Leaves'], videoId:'L-j5T-ZQdMg' },
+  { name:'Avarekalu Curry', ingredients:['Hyacinth Beans','Coconut','Mustard','Curry Leaves'], videoId:'z9Zb3HCb29M' },
+  { name:'Hurugadle Nippattu', ingredients:['Fried Gram','Rice Flour','Curry Leaves','Spices'], videoId:'4dMkfUiECkc' },
+  { name:'Halasina Mulka', ingredients:['Jackfruit','Rice Flour','Jaggery','Coconut'], videoId:'u1rGS26Likc' }
+];
+
+const YT_LIST_ID = 'PL4tXltXT0TCWhrTT31fLGpTr2VoHHHov5';
+
+// ---- CONSTANTS ----
+const TOKEN_HEIGHT = 42;
+const BASKET_HEIGHT = 48;
+const BASKET_ANIM_MS = 120;
+const SWIPE_THRESHOLD = 30;
+
+const LEVEL_UP_MS = 800;
+
+const LEVELS = [
+  { speed:180, wrongPct:0.15, interval:1500 },
+  { speed:240, wrongPct:0.30, interval:1100 },
+  { speed:300, wrongPct:0.45, interval:800 }
+];
+
+const STATE = { IDLE:'idle', PLAYING:'playing', DISH_COMPLETE:'dish-complete', GAME_OVER:'game-over' };
+
+// ---- DOM REFS ----
+const inner = document.getElementById('game-inner');
+const canvas = document.getElementById('playCanvas');
+const ctx = canvas.getContext('2d');
+
+const headerEl = document.getElementById('header');
+const dishNameEl = document.getElementById('dishName');
+const checklistEl = document.getElementById('checklist');
+const hudEl = document.getElementById('hud');
+const streakNumEl = document.getElementById('streakNum');
+const heartsDisplayEl = document.getElementById('heartsDisplay');
+
+const titleScreen = document.getElementById('titleScreen');
+const titleBestStreak = document.getElementById('titleBestStreak');
+const titleBestScore = document.getElementById('titleBestScore');
+const startBtn = document.getElementById('startBtn');
+
+const dishComplete = document.getElementById('dishComplete');
+const dcIcons = document.getElementById('dcIcons');
+const dcDishName = document.getElementById('dcDishName');
+const gameOver = document.getElementById('gameOver');
+const goScore = document.getElementById('goScore');
+const goBest = document.getElementById('goBest');
+const goLastDish = document.getElementById('goLastDish');
+const goCta = document.getElementById('goCta');
+const goThumbWrap = document.getElementById('goThumbWrap');
+const goThumb = document.getElementById('goThumb');
+const restartBtn = document.getElementById('restartBtn');
+
+const timerEl = document.getElementById('timer');
+const completeModal = document.getElementById('completeModal');
+const modalDishName = document.getElementById('modalDishName');
+const modalIngredients = document.getElementById('modalIngredients');
+const modalThumb = document.getElementById('modalThumb');
+const modalThumbWrap = document.getElementById('modalThumbWrap');
+const modalWatchLink = document.getElementById('modalWatchLink');
+const nextDishBtn = document.getElementById('nextDishBtn');
+const flashOverlay = document.getElementById('flashOverlay');
+
+const levelUpBanner = document.getElementById('levelUpBanner');
+const lvlNum = document.getElementById('lvlNum');
+
+// ---- STATE ----
+let state = STATE.IDLE;
+let score = 0;
+let streak = 0;
+let comboCount = 0;
+let hearts = 3;
+let bestStreak = 0;
+let bestScore = 0;
+let currentDish = null;
+let currentDishIndex = -1;
+let caughtIngredients = null;  // Set
+let fallingTokens = [];
+let ingredientCooldowns = {};  // name -> expiry timestamp
+let lastSpawnTime = 0;
+let lastDishIndex = -1;
+let dishStartTime = 0;
+let particles = [];
+
+// Basket
+const basket = {
+  lane:1, targetLane:1, x:0, y:0,
+  startX:0, targetX:0, animating:false, animStart:0
+};
+
+// Layout (computed)
+let CANVAS_W = 0, CANVAS_H = 0;
+let laneWidth = 0, tokenWidth = 0, basketWidth = 0;
+let catchLineY = 0;
+let dpr = 1;
+
+// ---- HELPERS ----
+function getLevel(s) { return s <= 2 ? 1 : s <= 6 ? 2 : 3; }
+function getMultiplier(c) { return c <= 1 ? 1 : c === 2 ? 1.2 : c === 3 ? 1.5 : 2; }
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+}
+
+function shuffle(arr) {
+  for (let i=arr.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function getYtUrl(videoId) {
+  return 'https://www.youtube.com/watch?v='+videoId+'&list='+YT_LIST_ID;
+}
+
+// ---- LOCAL STORAGE ----
+function loadBest() {
+  try {
+    bestStreak = parseInt(localStorage.getItem('cok_best_streak')||'0');
+    bestScore = parseInt(localStorage.getItem('cok_best_score')||'0');
+  } catch(e) { bestStreak=0; bestScore=0; }
+}
+
+function saveBest() {
+  try {
+    if (streak > bestStreak) {
+      bestStreak = streak;
+      localStorage.setItem('cok_best_streak', String(bestStreak));
+      trackEvent('best_streak', { best_streak:bestStreak });
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      localStorage.setItem('cok_best_score', String(bestScore));
+    }
+  } catch(e) { /* localStorage unavailable */ }
+}
+
+// ---- ANALYTICS ----
+function trackEvent(eventName, params) {
+  try {
+    if (window.dataLayer && Array.isArray(window.dataLayer)) {
+      window.dataLayer.push({ event:eventName, game_name:'recipe_catcher', ...params });
+      return;
+    }
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', eventName, { game_name:'recipe_catcher', ...params });
+    }
+  } catch(e) { /* analytics never breaks game */ }
+}
+
+// ---- LAYOUT ----
+function computeLayout() {
+  dpr = window.devicePixelRatio || 1;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  let gw = vw;
+  let gh = vh;
+  const maxW = gh * 9 / 16;
+  if (gw > maxW) gw = Math.min(maxW, 480);
+  if (gw > 480) gw = 480;
+
+  inner.style.width = gw+'px';
+  inner.style.height = gh+'px';
+
+  canvas.width = Math.round(gw * dpr);
+  canvas.height = Math.round(gh * dpr);
+  canvas.style.width = gw+'px';
+  canvas.style.height = gh+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  CANVAS_W = gw;
+  CANVAS_H = gh;
+  laneWidth = CANVAS_W / 3;
+  tokenWidth = laneWidth * 0.78;
+  basketWidth = laneWidth * 0.80;
+  catchLineY = CANVAS_H * 0.82;
+
+}
+
+// ---- UI UPDATES ----
+function updateChecklist() {
+  if (!currentDish) return;
+  let html = '';
+  for (const ing of currentDish.ingredients) {
+    const caught = caughtIngredients && caughtIngredients.has(ing);
+    const emoji = INGREDIENT_EMOJI[ing] || '';
+    html += '<span class="check-item'+(caught?' checked':'')+'">'+emoji+' '+ing+'</span>';
+  }
+  checklistEl.innerHTML = html;
+}
+
+function updateHearts() {
+  let h = '';
+  for (let i=0; i<3; i++) {
+    h += '<span class="heart'+(i>=hearts?' lost':'')+'">❤</span>';
+  }
+  heartsDisplayEl.innerHTML = h;
+}
+
+function updateHud() {
+  streakNumEl.textContent = streak;
+  updateHearts();
+}
+
+function showHeader(v) {
+  headerEl.classList.toggle('visible', v);
+}
+
+function showHud(v) {
+  hudEl.classList.toggle('visible', v);
+}
+
+function setCta(el, dish) {
+  if (dish) {
+    el.href = getYtUrl(dish.videoId);
+    el.textContent = 'Watch this recipe →';
+    el.style.display = 'inline-block';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+// ---- SPAWN ALGORITHM ----
+function isFalling(ing) {
+  return fallingTokens.some(t => t.ingredient===ing && !t.processed && !t.missed);
+}
+
+function isInCooldown(ing) {
+  return ingredientCooldowns[ing] && ingredientCooldowns[ing] > Date.now();
+}
+
+function pickWrongIngredient() {
+  const pool = ALL_INGREDIENTS.filter(ing => !currentDish.ingredients.includes(ing));
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+function pickLaneWithSpacing() {
+  const minGap = TOKEN_HEIGHT * 1.5;
+  const lanes = shuffle([0,1,2]);
+  for (const lane of lanes) {
+    const blocked = fallingTokens.some(t =>
+      t.lane===lane && !t.processed && !t.missed && t.y < minGap
+    );
+    if (!blocked) return lane;
+  }
+  return -1; // all blocked
+}
+
+function spawnToken() {
+  if (state!==STATE.PLAYING || !currentDish) return;
+  const level = getLevel(streak);
+  const lv = LEVELS[level-1];
+  const isCorrect = Math.random() >= lv.wrongPct;
+
+  let ingredient;
+  if (isCorrect) {
+    const available = currentDish.ingredients.filter(ing =>
+      !caughtIngredients.has(ing) && !isFalling(ing) && !isInCooldown(ing)
+    );
+    if (available.length === 0) {
+      ingredient = pickWrongIngredient();
+    } else {
+      ingredient = available[Math.floor(Math.random()*available.length)];
+    }
+  } else {
+    ingredient = pickWrongIngredient();
+  }
+
+  const lane = pickLaneWithSpacing();
+  if (lane === -1) return; // skip this tick
+
+  fallingTokens.push({
+    lane,
+    y: -TOKEN_HEIGHT,
+    ingredient,
+    speed: lv.speed,
+    correct: currentDish.ingredients.includes(ingredient),
+    processed: false,
+    missed: false
+  });
+}
+
+// ---- COLLISION ----
+function checkCollisions() {
+  if (state!==STATE.PLAYING) return;
+  for (const token of fallingTokens) {
+    if (token.processed || token.missed) continue;
+    if (token.lane === basket.lane && (token.y + TOKEN_HEIGHT) >= catchLineY) {
+      token.processed = true;
+      if (token.correct) {
+        // Correct catch
+        caughtIngredients.add(token.ingredient);
+        comboCount++;
+        const mult = getMultiplier(comboCount);
+        score += Math.round(10 * mult);
+        token.flashColor = '#F5C518';
+        token.flashTimer = 250;
+        token.scale = 1;
+        updateChecklist();
+
+        // Basket bounce
+        const basketCx = basket.x;
+        const basketCy = catchLineY;
+        bounceBasket();
+
+        // Green screen flash (mirrors red flash for wrong)
+        flashOverlay.style.background = 'rgba(46,212,84,0.15)';
+        flashOverlay.style.opacity = '1';
+        setTimeout(() => {
+          flashOverlay.style.opacity = '0';
+          flashOverlay.style.background = 'rgba(212,84,46,0.15)';
+        }, 100);
+
+        // Particle burst
+        const pColors = ['#F5C518','#FFF8DC','#FFD700','#FFFFFF'];
+        for (let i=0; i<8; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 60 + Math.random() * 100;
+          particles.push({
+            x: basketCx,
+            y: basketCy,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 80,
+            alpha: 1,
+            radius: 2.5 + Math.random() * 2,
+            color: pColors[Math.floor(Math.random()*pColors.length)]
+          });
+        }
+      } else {
+        // Wrong catch
+        hearts--;
+        comboCount = 0;
+        token.flashColor = '#D4542E';
+        token.flashTimer = 250;
+        token.scale = 1;
+        updateHearts();
+
+        // Basket shake
+        shakeBasket();
+
+        // Red screen flash
+        flashOverlay.style.opacity = '1';
+        setTimeout(() => { flashOverlay.style.opacity = '0'; }, 100);
+
+        // Heart break animation on the just-lost heart
+        const heartEls = heartsDisplayEl.querySelectorAll('.heart');
+        if (heartEls.length > hearts) {
+          const lostEl = heartEls[hearts];
+          lostEl.classList.remove('lost');
+          lostEl.classList.add('heart-break');
+          setTimeout(() => { if (lostEl) lostEl.classList.remove('heart-break'); }, 400);
+        }
+
+        trackEvent('wrong_ingredient_caught', {
+          dish_name: currentDish.name,
+          caught_ingredient: token.ingredient
+        });
+        if (hearts <= 0) {
+          transitionToGameOver();
+          return;
+        }
+      }
+    }
+  }
+}
+
+// ---- MISSED ----
+function checkMissed() {
+  const now = Date.now();
+  for (const token of fallingTokens) {
+    if (token.processed || token.missed) continue;
+    if (token.y > CANVAS_H) {
+      token.missed = true;
+      if (token.correct) {
+        comboCount = 0;
+        const cooldown = 2000 + Math.random() * 1000;
+        ingredientCooldowns[token.ingredient] = now + cooldown;
+        // Clean up cooldown after expiry
+        setTimeout(() => {
+          if (ingredientCooldowns[token.ingredient] <= Date.now()) {
+            delete ingredientCooldowns[token.ingredient];
+          }
+        }, cooldown + 100);
+      }
+    }
+  }
+  // Clean up: remove missed tokens; keep processed only while flash active; remove off-screen unprocessed
+  fallingTokens = fallingTokens.filter(t => {
+    if (t.missed) return false;
+    if (t.processed) return t.flashTimer !== undefined && t.flashTimer > 0;
+    return t.y <= CANVAS_H + 50;
+  });
+}
+
+// ---- DISH COMPLETE CHECK ----
+function checkDishComplete() {
+  if (!currentDish) return false;
+  return currentDish.ingredients.every(ing => caughtIngredients.has(ing));
+}
+
+// ---- STATE TRANSITIONS ----
+function completeDishAdvance() {
+  // Scoring bonus
+  const dishBonus = 50;
+  const streakBonus = streak * 5;
+  score += dishBonus + streakBonus;
+
+  // Increment streak
+  const oldLevel = getLevel(streak);
+  streak++;
+  const newLevel = getLevel(streak);
+  updateHud();
+
+  // Save best
+  saveBest();
+
+  // Clean up modal
+  completeModal.classList.remove('visible');
+
+  // Level up?
+  if (newLevel > oldLevel) {
+    levelUpBanner.classList.add('visible');
+    lvlNum.textContent = 'Level '+newLevel;
+    setTimeout(() => {
+      levelUpBanner.classList.remove('visible');
+      pickNewDish();
+      state = STATE.PLAYING;
+    }, LEVEL_UP_MS);
+  } else {
+    pickNewDish();
+    state = STATE.PLAYING;
+  }
+}
+
+function transitionToDishComplete() {
+  state = STATE.DISH_COMPLETE;
+  particles = [];
+
+  // Brief celebration overlay (800ms)
+  const icons = currentDish.ingredients.map(ing => INGREDIENT_EMOJI[ing]||'').join(' ');
+  dcIcons.textContent = icons;
+  dcDishName.textContent = currentDish.name;
+  dishComplete.classList.add('visible');
+
+  // GA event after short delay
+  setTimeout(() => {
+    trackEvent('dish_completed', {
+      dish_name: currentDish.name,
+      streak: streak,
+      level: getLevel(streak)
+    });
+  }, 100);
+
+  // After 800ms celebration → show modal with thumbnail
+  setTimeout(() => {
+    dishComplete.classList.remove('visible');
+
+    // Populate modal
+    modalDishName.textContent = currentDish.name;
+    let ingHtml = '';
+    for (const ing of currentDish.ingredients) {
+      const emoji = INGREDIENT_EMOJI[ing]||'';
+      ingHtml += '<span>'+emoji+' '+ing+'</span>';
+    }
+    modalIngredients.innerHTML = ingHtml;
+    modalThumb.src = 'https://img.youtube.com/vi/'+currentDish.videoId+'/hqdefault.jpg';
+    modalWatchLink.href = 'https://www.youtube.com/watch?v='+currentDish.videoId+'&list='+YT_LIST_ID;
+
+    // Click thumbnail to open video
+    modalThumbWrap.onclick = function() {
+      window.open(modalWatchLink.href, '_blank');
+      trackEvent('watch_recipe_click', {
+        dish_name: currentDish.name,
+        video_id: currentDish.videoId
+      });
+    };
+
+    completeModal.classList.add('visible');
+  }, 800);
+}
+
+function transitionToGameOver() {
+  state = STATE.GAME_OVER;
+  showHeader(false);
+  showHud(false);
+
+  // Save best before showing
+  saveBest();
+
+  goScore.textContent = 'Score: '+score;
+  goBest.textContent = 'Best Streak: '+bestStreak;
+  if (currentDish) {
+    goLastDish.textContent = 'Last dish: '+currentDish.name;
+    setCta(goCta, currentDish);
+    goThumb.src = 'https://img.youtube.com/vi/'+currentDish.videoId+'/hqdefault.jpg';
+    goThumbWrap.style.display = 'block';
+    goThumbWrap.onclick = function() {
+      window.open(getYtUrl(currentDish.videoId), '_blank');
+      trackEvent('watch_recipe_click', {
+        dish_name: currentDish.name,
+        video_id: currentDish.videoId
+      });
+    };
+  } else {
+    goLastDish.textContent = '';
+    goCta.style.display = 'none';
+    goThumbWrap.style.display = 'none';
+  }
+  gameOver.classList.add('visible');
+
+  trackEvent('game_over', {
+    score, best_streak:bestStreak, dishes_completed:streak
+  });
+}
+
+function pickNewDish() {
+  // Exclude last dish
+  let available = DISHES.map((d,i)=>i).filter(i => i !== lastDishIndex);
+  // If only one left (shouldn't happen with 15 dishes), include all
+  if (available.length === 0) available = DISHES.map((d,i)=>i);
+  const idx = available[Math.floor(Math.random()*available.length)];
+  currentDishIndex = idx;
+  currentDish = DISHES[idx];
+  lastDishIndex = idx;
+  caughtIngredients = new Set();
+  fallingTokens = [];
+  ingredientCooldowns = {};
+  lastSpawnTime = performance.now();
+
+  dishStartTime = performance.now();
+
+  // Update UI
+  dishNameEl.textContent = currentDish.name;
+  updateChecklist();
+  showHeader(true);
+}
+
+function resetGame() {
+  score = 0;
+  streak = 0;
+  comboCount = 0;
+  hearts = 3;
+  currentDish = null;
+  currentDishIndex = -1;
+  caughtIngredients = new Set();
+  fallingTokens = [];
+  ingredientCooldowns = {};
+  lastSpawnTime = 0;
+  basket.lane = 1;
+  basket.targetLane = 1;
+  basket.animating = false;
+  basket.x = laneWidth * 1 + laneWidth/2;
+  basket.targetX = basket.x;
+  basket.startX = basket.x;
+
+  particles = [];
+  dishStartTime = 0;
+  timerEl.textContent = '⏱ 00:00';
+
+  // Reset UI
+  updateHud();
+  showHeader(false);
+  showHud(false);
+  titleScreen.classList.remove('visible');
+  gameOver.classList.remove('visible');
+  dishComplete.classList.remove('visible');
+  completeModal.classList.remove('visible');
+  levelUpBanner.classList.remove('visible');
+  flashOverlay.style.opacity = '0';
+}
+
+function showTitleScreen() {
+  resetGame();
+  state = STATE.IDLE;
+  titleScreen.classList.add('visible');
+  updateTitleStats();
+}
+
+function startGame() {
+  resetGame();
+  state = STATE.PLAYING;
+  showHud(true);
+
+  // Pick first dish
+  let idx = Math.floor(Math.random()*DISHES.length);
+  currentDishIndex = idx;
+  currentDish = DISHES[idx];
+  lastDishIndex = idx;
+  caughtIngredients = new Set();
+  fallingTokens = [];
+  ingredientCooldowns = {};
+  lastSpawnTime = performance.now();
+  dishStartTime = performance.now();
+
+  dishNameEl.textContent = currentDish.name;
+  updateChecklist();
+  showHeader(true);
+  updateHud();
+
+  trackEvent('game_start');
+  updateTitleStats();
+}
+
+function updateTitleStats() {
+  loadBest();
+  titleBestStreak.innerHTML = bestStreak > 0 ? 'Best Streak: <strong>'+bestStreak+'</strong>' : '';
+  titleBestScore.innerHTML = bestScore > 0 ? 'Best Score: <strong>'+bestScore+'</strong>' : '';
+}
+
+function updateTimer() {
+  if (!dishStartTime) { timerEl.textContent = '⏱ 00:00'; return; }
+  const elapsed = Math.floor((performance.now() - dishStartTime) / 1000);
+  const m = String(Math.floor(elapsed / 60)).padStart(2,'0');
+  const s = String(elapsed % 60).padStart(2,'0');
+  timerEl.textContent = '⏱ '+m+':'+s;
+}
+
+// ---- BASKET ANIMATION ----
+function getLaneCenter(lane) {
+  return lane * laneWidth + laneWidth / 2;
+}
+
+function moveBasketLeft() {
+  if (basket.targetLane > 0) {
+    basket.targetLane--;
+    startBasketAnim();
+  }
+}
+
+function moveBasketRight() {
+  if (basket.targetLane < 2) {
+    basket.targetLane++;
+    startBasketAnim();
+  }
+}
+
+function startBasketAnim() {
+  basket.animating = true;
+  basket.animStart = performance.now();
+  basket.startX = basket.x;
+  basket.targetX = getLaneCenter(basket.targetLane);
+}
+
+function updateBasket(now) {
+  if (basket.animating) {
+    const elapsed = now - basket.animStart;
+    const t = Math.min(elapsed / BASKET_ANIM_MS, 1);
+    // ease-out: 1 - (1-t)^2
+    const ease = 1 - Math.pow(1 - t, 2);
+    basket.x = basket.startX + (basket.targetX - basket.startX) * ease;
+    if (t >= 1) {
+      basket.x = basket.targetX;
+      basket.lane = basket.targetLane;
+      basket.animating = false;
+    }
+  }
+}
+
+// ---- VISUAL FEEDBACK ----
+let basketBounceTimer = 0;
+let basketShakeTimer = 0;
+let basketShakeOffset = 0;
+
+function bounceBasket() {
+  basketBounceTimer = 200;
+}
+
+function shakeBasket() {
+  basketShakeTimer = 300;
+}
+
+function updateVisualEffects(dt) {
+  if (basketBounceTimer > 0) basketBounceTimer -= dt * 1000;
+  if (basketShakeTimer > 0) {
+    basketShakeTimer -= dt * 1000;
+    const intensity = basketShakeTimer / 300;
+    basketShakeOffset = Math.sin(basketShakeTimer * 0.08) * 5 * intensity;
+  } else {
+    basketShakeOffset = 0;
+  }
+}
+
+// ---- RENDER ----
+function render() {
+  ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+
+  // Background
+  ctx.fillStyle = '#131110';
+  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+
+  // Lane dividers
+  ctx.strokeStyle = '#332F2A';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 6]);
+  for (let i=1; i<3; i++) {
+    const x = i * laneWidth;
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, CANVAS_H);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+
+  // Catch line (subtle)
+  ctx.strokeStyle = 'rgba(245,197,24,0.12)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, catchLineY);
+  ctx.lineTo(CANVAS_W, catchLineY);
+  ctx.stroke();
+
+  // Draw tokens
+  const now = performance.now();
+  for (const token of fallingTokens) {
+    const x = token.lane * laneWidth + (laneWidth - tokenWidth) / 2;
+    const y = token.y;
+    const w = tokenWidth;
+    const h = TOKEN_HEIGHT;
+    const r = 8;
+
+    // Flash timer
+    if (token.flashTimer !== undefined) {
+      token.flashTimer -= 16; // approximate per frame
+      if (token.flashTimer <= 0) {
+        token.flashTimer = undefined;
+      }
+    }
+
+    // Apply scale for catch shrink effect
+    const drawW = token.scale !== undefined ? w * Math.max(0.01, token.scale) : w;
+    const drawH = token.scale !== undefined ? h * Math.max(0.01, token.scale) : h;
+    const drawX = x + (w - drawW) / 2;
+    const drawY = y + (h - drawH) / 2;
+    const finalX = drawX, finalY = drawY, finalW = drawW, finalH = drawH;
+    const cornerR = token.scale !== undefined ? Math.max(1, r * (drawW / w)) : r;
+
+    // Card bg
+    ctx.fillStyle = '#1E1B18';
+    ctx.beginPath();
+    roundRect(ctx, finalX, finalY, finalW, finalH, Math.min(cornerR, finalW/2, finalH/2));
+    ctx.fill();
+
+    // Border
+    if (token.flashTimer !== undefined && token.flashTimer > 0) {
+      ctx.strokeStyle = token.flashColor || '#332F2A';
+      ctx.lineWidth = 2.5;
+    } else {
+      ctx.strokeStyle = '#332F2A';
+      ctx.lineWidth = 1.5;
+    }
+    ctx.beginPath();
+    roundRect(ctx, finalX, finalY, finalW, finalH, Math.min(cornerR, finalW/2, finalH/2));
+    ctx.stroke();
+
+    // Label: try one line first
+    const label = (INGREDIENT_EMOJI[token.ingredient]||'')+' '+token.ingredient;
+    ctx.fillStyle = '#F0EDE8';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Choose font size based on available width
+    let fontSize = 13;
+    const maxTextW = finalW * 0.85;
+    if (maxTextW > 20) {
+      ctx.font = fontSize+'px "DM Sans", sans-serif';
+      let metrics = ctx.measureText(label);
+      if (metrics.width > maxTextW && token.ingredient.length > 7) {
+        fontSize = 11;
+        ctx.font = fontSize+'px "DM Sans", sans-serif';
+        metrics = ctx.measureText(label);
+        if (metrics.width > maxTextW) {
+          // Two-line fallback: emoji on top, text below
+          ctx.font = '14px sans-serif';
+          ctx.fillText(INGREDIENT_EMOJI[token.ingredient]||'', finalX + finalW/2, finalY + finalH/2 - 6);
+          ctx.font = '10px "DM Sans", sans-serif';
+          ctx.fillText(token.ingredient, finalX + finalW/2, finalY + finalH/2 + 8);
+          continue;
+        }
+      }
+      ctx.fillText(label, finalX + finalW/2, finalY + finalH/2);
+    }
+  }
+
+  // Draw particles
+  for (const p of particles) {
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  // Draw basket (with shake offset and bounce scale)
+  const bScale = basketBounceTimer > 0 ? 1 + 0.15 * (basketBounceTimer/200) : 1;
+  const bw = basketWidth * bScale;
+  const bh = BASKET_HEIGHT * bScale;
+  const bx = basket.x + basketShakeOffset - bw/2;
+  const by = catchLineY - bh/2;
+  // Basket bg
+  ctx.fillStyle = '#1E1B18';
+  ctx.beginPath();
+  roundRect(ctx, bx, by, bw, bh, 10);
+  ctx.fill();
+  ctx.strokeStyle = '#F5C518';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  roundRect(ctx, bx, by, bw, bh, 10);
+  ctx.stroke();
+
+  // Basket emoji
+  ctx.font = '28px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🧺', basket.x + basketShakeOffset, by + bh/2);
+}
+
+// ---- INPUT ----
+let touchStartX = 0;
+let touchStartY = 0;
+let touchActive = false;
+
+function handleTap(side) {
+  // side: 'left' or 'right'
+  if (state === STATE.PLAYING) {
+    if (side === 'left') moveBasketLeft();
+    else moveBasketRight();
+  }
+}
+
+function handleSwipe(dx) {
+  if (state === STATE.PLAYING) {
+    if (dx < -SWIPE_THRESHOLD) moveBasketLeft();
+    else if (dx > SWIPE_THRESHOLD) moveBasketRight();
+  }
+}
+
+canvas.addEventListener('touchstart', function(e) {
+  if (state===STATE.IDLE || state===STATE.GAME_OVER || state===STATE.DISH_COMPLETE) return;
+  e.preventDefault();
+  const t = e.changedTouches[0];
+  touchStartX = t.clientX;
+  touchStartY = t.clientY;
+  touchActive = true;
+}, { passive:false });
+
+canvas.addEventListener('touchmove', function(e) {
+  if (state === STATE.IDLE || state === STATE.GAME_OVER || state === STATE.DISH_COMPLETE) return;
+  e.preventDefault();
+}, { passive:false });
+
+canvas.addEventListener('touchend', function(e) {
+  if (!touchActive) return;
+  touchActive = false;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - touchStartX;
+  const dy = t.clientY - touchStartY;
+
+  if (state === STATE.IDLE || state === STATE.GAME_OVER || state === STATE.DISH_COMPLETE) return;
+
+  // Swipe takes priority
+  if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+    handleSwipe(dx);
+  } else {
+    // Tap: check screen half
+    const rect = canvas.getBoundingClientRect();
+    const relX = touchStartX - rect.left;
+    if (relX < CANVAS_W / 2) handleTap('left');
+    else handleTap('right');
+  }
+}, { passive:false });
+
+// Keyboard
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowLeft') { e.preventDefault(); if (state===STATE.PLAYING) moveBasketLeft(); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); if (state===STATE.PLAYING) moveBasketRight(); }
+});
+
+// ---- GAME LOOP ----
+let lastFrameTime = 0;
+
+function gameLoop(time) {
+  const dt = Math.min((time - lastFrameTime) / 1000, 0.05);
+  lastFrameTime = time;
+
+  if (state === STATE.PLAYING) {
+    // Update timer
+    updateTimer();
+
+    // Update visual effects (basket bounce/shake)
+    updateVisualEffects(dt);
+
+    // Update basket animation
+    updateBasket(time);
+
+    // Spawn timer
+    const level = getLevel(streak);
+    const interval = LEVELS[level-1].interval;
+    if (time - lastSpawnTime >= interval) {
+      spawnToken();
+      lastSpawnTime = time;
+    }
+
+    // Move tokens
+    for (const token of fallingTokens) {
+      if (!token.processed && !token.missed) {
+        token.y += token.speed * dt;
+      }
+      // Token scale-down on catch (visually shrink over flash duration)
+      if (token.processed && token.scale !== undefined && token.scale > 0) {
+        token.scale = Math.max(0, token.scale - dt * 4);
+      }
+    }
+
+    // Update particles
+    for (let i=particles.length-1; i>=0; i--) {
+      const p = particles[i];
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.vy += 120 * dt; // gravity
+      p.alpha = Math.max(0, p.alpha - dt * 2.5);
+      if (p.alpha <= 0) particles.splice(i, 1);
+    }
+
+    // Collisions
+    checkCollisions();
+
+    // Missed
+    checkMissed();
+
+    // Clean up expired cooldowns
+    const now = Date.now();
+    for (const key of Object.keys(ingredientCooldowns)) {
+      if (ingredientCooldowns[key] <= now) delete ingredientCooldowns[key];
+    }
+
+    // Dish complete?
+    if (checkDishComplete()) {
+      transitionToDishComplete();
+    }
+  } else if (state === STATE.DISH_COMPLETE) {
+    // Timer keeps displaying but doesn't advance (paused)
+  }
+
+  // Always render
+  render();
+
+  requestAnimationFrame(gameLoop);
+}
+
+// ---- RESIZE HANDLING ----
+function recomputeLayout() {
+  computeLayout();
+  // Re-center basket
+  if (!basket.animating) {
+    basket.x = getLaneCenter(basket.lane);
+    basket.targetX = basket.x;
+    basket.startX = basket.x;
+  } else {
+    basket.targetX = getLaneCenter(basket.targetLane);
+    basket.startX = getLaneCenter(basket.lane);
+    // Restart animation (slightly off but recovers fast)
+  }
+}
+
+window.addEventListener('resize', recomputeLayout);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', recomputeLayout);
+}
+window.addEventListener('orientationchange', function() {
+  setTimeout(recomputeLayout, 150);
+});
+
+// ---- START / RESTART / NEXT DISH ----
+startBtn.addEventListener('click', startGame);
+restartBtn.addEventListener('click', showTitleScreen);
+nextDishBtn.addEventListener('click', completeDishAdvance);
+
+// ---- CTA TRACKING ----
+document.querySelectorAll('.cta-link').forEach(el => {
+  el.addEventListener('click', function() {
+    // Find dish from the closest context
+    let dish = currentDish;
+    // For game-over CTA, currentDish might be the last dish
+    trackEvent('watch_recipe_click', {
+      dish_name: dish ? dish.name : '',
+      video_id: dish ? dish.videoId : ''
+    });
+  });
+});
+
+// Modal watch link
+modalWatchLink.addEventListener('click', function() {
+  if (currentDish) {
+    trackEvent('watch_recipe_click', {
+      dish_name: currentDish.name,
+      video_id: currentDish.videoId
+    });
+  }
+});
+
+// ---- INIT ----
+function init() {
+  computeLayout();
+  loadBest();
+  updateTitleStats();
+  updateHud();
+  updateHearts();
+
+  // Initial basket position
+  basket.x = getLaneCenter(1);
+  basket.targetX = basket.x;
+  basket.startX = basket.x;
+
+  // Show title
+  titleScreen.classList.add('visible');
+
+  // Start game loop
+  lastFrameTime = performance.now();
+  requestAnimationFrame(gameLoop);
+}
+
+init();
+
+})();
+</script>
+</body>
+</html>
