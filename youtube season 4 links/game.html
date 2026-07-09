@@ -888,7 +888,7 @@ function resetGame() {
 
   particles = [];
   dishStartTime = 0;
-  timerBar.style.width = '0%';
+  timerBar.style.width = '100%';
 
   // Reset UI
   updateHud();
@@ -941,10 +941,10 @@ function updateTitleStats() {
 }
 
 function updateTimer() {
-  if (!dishStartTime) { timerBar.style.width = '0%'; return; }
+  if (!dishStartTime) { timerBar.style.width = '100%'; return; }
   const elapsed = (performance.now() - dishStartTime) / 1000;
-  const pct = Math.min(elapsed / 60 * 100, 100);
-  timerBar.style.width = pct + '%';
+  const pct = Math.min(elapsed / 30 * 100, 100);
+  timerBar.style.width = (100 - pct) + '%';
 }
 
 // ---- BASKET ANIMATION ----
