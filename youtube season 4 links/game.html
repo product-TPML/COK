@@ -78,6 +78,10 @@ canvas {
   font-family:var(--font-heading); font-weight:600; font-size:12px; color:var(--text); white-space:nowrap;
 }
 #scoreDisplay span { color:var(--accent); }
+#levelDisplay {
+  font-family:var(--font-heading); font-weight:700; font-size:11px; color:var(--accent);
+  margin-left:auto; border:1px solid var(--accent); border-radius:4px; padding:0 5px; line-height:16px;
+}
 
 /* ===== OVERLAYS ===== */
 .overlay {
@@ -226,6 +230,7 @@ canvas {
     <div id="hud">
       <div id="streakDisplay">🔥 Streak: <span id="streakNum">0</span></div>
       <div id="scoreDisplay">🏆 <span id="scoreNum">0</span></div>
+      <div id="levelDisplay">L<span id="levelNum">1</span></div>
       <div id="timerBarWrap"><div id="timerBar"></div></div>
     </div>
 
@@ -350,7 +355,7 @@ const SWIPE_THRESHOLD = 30;
 const LEVEL_UP_MS = 800;
 
 const LEVELS = [
-  { speed:180, wrongPct:0.45, interval:1000 },
+  { speed:240, wrongPct:0.45, interval:1000 },
   { speed:240, wrongPct:0.45, interval:900 },
   { speed:400, wrongPct:0.45, interval:800 }
 ];
@@ -368,6 +373,7 @@ const checklistEl = document.getElementById('checklist');
 const hudEl = document.getElementById('hud');
 const streakNumEl = document.getElementById('streakNum');
 const scoreNumEl = document.getElementById('scoreNum');
+const levelNumEl = document.getElementById('levelNum');
 
 const titleScreen = document.getElementById('titleScreen');
 const titleBestStreak = document.getElementById('titleBestStreak');
@@ -420,8 +426,11 @@ let particles = [];
 // Basket
 const basket = {
   lane:1, targetLane:1, x:0, y:0,
-  startX:0, targetX:0, animating:false, animStart:0
+  startX:0, targetX:0, animating:false, animStart:0,
+  jumpTimer:0, jumpDuration:0
 };
+
+const JUMP_DURATION = 550;
 
 // Layout (computed)
 let CANVAS_W = 0, CANVAS_H = 0;
@@ -537,6 +546,7 @@ function updateChecklist() {
 function updateHud() {
   streakNumEl.textContent = streak;
   scoreNumEl.textContent = score;
+  levelNumEl.textContent = getLevel(streak);
 }
 
 function showHeader(v) {
@@ -620,6 +630,7 @@ function spawnToken() {
 // ---- COLLISION ----
 function checkCollisions() {
   if (state!==STATE.PLAYING) return;
+  if (basket.jumpTimer > 0) return;
   for (const token of fallingTokens) {
     if (token.processed || token.missed) continue;
     if (token.lane === basket.lane && (token.y + TOKEN_HEIGHT) >= catchLineY && token.y <= catchLineY + BASKET_HEIGHT) {
@@ -882,6 +893,8 @@ function resetGame() {
   basket.lane = 1;
   basket.targetLane = 1;
   basket.animating = false;
+  basket.jumpTimer = 0;
+  basket.jumpDuration = 0;
   basket.x = laneWidth * 1 + laneWidth/2;
   basket.targetX = basket.x;
   basket.startX = basket.x;
@@ -992,6 +1005,7 @@ function updateBasket(now) {
 let basketBounceTimer = 0;
 let basketShakeTimer = 0;
 let basketShakeOffset = 0;
+let basketJumpOffset = 0;
 let heartAnimTimer = 0;
 let heartAnimIdx = 0;
 
@@ -1001,6 +1015,12 @@ function bounceBasket() {
 
 function shakeBasket() {
   basketShakeTimer = 300;
+}
+
+function doJump() {
+  const scale = [0, 1.2, 1, 0.7][getLevel(streak)];
+  basket.jumpTimer = JUMP_DURATION * scale;
+  basket.jumpDuration = basket.jumpTimer;
 }
 
 function updateVisualEffects(dt) {
@@ -1013,6 +1033,12 @@ function updateVisualEffects(dt) {
     basketShakeOffset = 0;
   }
   if (heartAnimTimer > 0) heartAnimTimer -= dt * 1000;
+  if (basket.jumpTimer > 0) {
+    basket.jumpTimer -= dt * 1000;
+    basketJumpOffset = Math.sin((1 - basket.jumpTimer / basket.jumpDuration) * Math.PI) * 50;
+  } else {
+    basketJumpOffset = 0;
+  }
 }
 
 // ---- RENDER ----
@@ -1131,7 +1157,7 @@ function render() {
   const bw = basketWidth * bScale;
   const bh = BASKET_HEIGHT * bScale;
   const bx = basket.x + basketShakeOffset - bw/2;
-  const by = catchLineY - bh/2;
+  const by = catchLineY - bh/2 - basketJumpOffset;
   // Basket bg
   ctx.fillStyle = '#1E1B18';
   ctx.beginPath();
@@ -1222,7 +1248,13 @@ canvas.addEventListener('touchend', function(e) {
 
   if (state === STATE.IDLE || state === STATE.GAME_OVER || state === STATE.DISH_COMPLETE) return;
 
-  // Swipe takes priority
+  // Swipe up = jump
+  if (dy < -SWIPE_THRESHOLD && Math.abs(dy) > Math.abs(dx)) {
+    if (state === STATE.PLAYING) { doJump(); }
+    return;
+  }
+
+  // Swipe left/right takes priority
   if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
     handleSwipe(dx);
   } else {
@@ -1238,6 +1270,16 @@ canvas.addEventListener('touchend', function(e) {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowLeft') { e.preventDefault(); if (state===STATE.PLAYING) moveBasketLeft(); }
   if (e.key === 'ArrowRight') { e.preventDefault(); if (state===STATE.PLAYING) moveBasketRight(); }
+  if (e.key === 'ArrowUp' || e.key === ' ') { e.preventDefault(); if (state===STATE.PLAYING) doJump(); }
+  if (e.key === '1') { streak = 0; updateHud(); }
+  if (e.key === '2') { streak = 2; updateHud(); }
+  if (e.key === '3') { streak = 4; updateHud(); }
+});
+
+document.getElementById('levelDisplay').addEventListener('click', function() {
+  const cur = getLevel(streak);
+  streak = cur === 1 ? 2 : cur === 2 ? 4 : 0;
+  updateHud();
 });
 
 // ---- GAME LOOP ----
