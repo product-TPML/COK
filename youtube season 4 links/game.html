@@ -180,6 +180,7 @@ canvas {
 #completeModal .modal-card {
   background:var(--surface); border:1px solid var(--border); border-radius:16px;
   padding:20px 24px 24px; max-width:340px; width:88%; display:flex; flex-direction:column; align-items:center;
+  position:relative;
 }
 #completeModal .modal-card h2 { margin:0 0 2px; font-size:22px; }
 #completeModal .checklist-complete {
@@ -209,7 +210,13 @@ canvas {
 
 #completeModal .btn { margin-top:4px; }
 
-/* ---- BASKET ANIMATIONS ---- */
+/* ---- FLIP (ingredients → video card) ---- */
+.flip-inner { perspective:1000px; transform-style:preserve-3d; transition:transform .6s; width:100%; position:relative; min-height:280px; }
+.flip-inner.flipped { transform:rotateY(180deg); }
+.flip-front, .flip-back { backface-visibility:hidden; width:100%; display:flex; flex-direction:column; align-items:center; }
+.flip-back { position:absolute; inset:0; transform:rotateY(180deg); justify-content:center; }
+.flip-front #modalIngredients { display:flex; flex-wrap:wrap; gap:4px; justify-content:center; margin:4px 0; }
+.flip-front #modalIngredients span { font-size:13px; color:var(--text); display:inline-flex; align-items:center; gap:3px; padding:3px 8px; background:#1E1B18; border:1px solid #332F2A; border-radius:8px; }
 @keyframes basketBounce {
   0% { transform:scale(1); }
   50% { transform:scale(1.15); }
@@ -270,18 +277,25 @@ canvas {
       <p id="dcDishName" style="font-size:15px;color:var(--text);margin:2px 0;"></p>
     </div>
 
-    <!-- COMPLETE MODAL (with video thumbnail, no auto-advance) -->
+    <!-- COMPLETE MODAL (with flip: ingredients → video card) -->
     <div id="completeModal" class="overlay">
       <div class="modal-card">
-        <h2>🎉 Dish Complete!</h2>
-        <p id="modalDishName" style="font-size:16px;color:var(--text);margin:4px 0 8px;"></p>
-        <div id="modalIngredients"></div>
-        <div class="thumb-wrap" id="modalThumbWrap">
-          <img id="modalThumb" src="" alt="Video thumbnail" class="modal-thumb-img">
-          <div class="play-icon">▶</div>
+        <div class="flip-inner">
+          <div class="flip-front">
+            <h2>🎉 Dish Complete!</h2>
+            <p id="modalDishFront" style="font-size:16px;color:var(--text);margin:4px 0 8px;"></p>
+            <div id="modalIngredients"></div>
+          </div>
+          <div class="flip-back">
+            <h1 id="modalDishBack" style="font-family:var(--font-heading);font-weight:700;font-size:22px;color:var(--accent);margin:0 0 10px;"></h1>
+            <div class="thumb-wrap" id="modalThumbWrap">
+              <img id="modalThumb" src="" alt="Video thumbnail" class="modal-thumb-img">
+              <div class="play-icon">▶</div>
+            </div>
+            <a id="modalWatchLink" href="#" target="_blank" rel="noopener" class="modal-watch-link">Watch full recipe ↗</a>
+            <button class="btn" id="nextDishBtn">Next Dish →</button>
+          </div>
         </div>
-        <a id="modalWatchLink" href="#" target="_blank" rel="noopener" class="modal-watch-link">Watch full recipe ↗</a>
-        <button class="btn" id="nextDishBtn">Next Dish →</button>
       </div>
     </div>
 
@@ -410,7 +424,7 @@ const goThumb = document.getElementById('goThumb');
 const restartBtn = document.getElementById('restartBtn');
 
 const completeModal = document.getElementById('completeModal');
-const modalDishName = document.getElementById('modalDishName');
+const modalDishFront = document.getElementById('modalDishFront');
 const modalIngredients = document.getElementById('modalIngredients');
 const modalThumb = document.getElementById('modalThumb');
 const modalThumbWrap = document.getElementById('modalThumbWrap');
@@ -808,12 +822,13 @@ function transitionToDishComplete() {
     });
   }, 100);
 
-  // After 800ms celebration → show modal with thumbnail
+  // After 800ms celebration → show ingredients, then flip to video card
   setTimeout(() => {
     dishComplete.classList.remove('visible');
 
-    // Populate modal
-    modalDishName.textContent = currentDish.name;
+    // Populate both sides
+    modalDishFront.textContent = currentDish.name;
+    modalDishBack.textContent = currentDish.name;
     let ingHtml = '';
     for (const ing of currentDish.ingredients) {
       const emoji = INGREDIENT_EMOJI[ing]||'';
@@ -822,6 +837,9 @@ function transitionToDishComplete() {
     modalIngredients.innerHTML = ingHtml;
     modalThumb.src = 'https://img.youtube.com/vi/'+currentDish.videoId+'/hqdefault.jpg';
     modalWatchLink.href = 'https://www.youtube.com/watch?v='+currentDish.videoId+'&list='+YT_LIST_ID;
+
+    // Reset flip to show front
+    document.querySelector('.flip-inner').classList.remove('flipped');
 
     // Click thumbnail to open video
     modalThumbWrap.onclick = function() {
@@ -833,6 +851,14 @@ function transitionToDishComplete() {
     };
 
     completeModal.classList.add('visible');
+
+    // Auto-flip after 2s, or tap front to flip
+    setTimeout(() => {
+      document.querySelector('.flip-inner').classList.add('flipped');
+    }, 2000);
+    document.querySelector('.flip-front').onclick = function() {
+      document.querySelector('.flip-inner').classList.add('flipped');
+    };
   }, 800);
 }
 
