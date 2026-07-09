@@ -27,106 +27,6 @@
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
       --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
       --radius: 16px;
-      --cok-red: #a5161c;
-      --cok-header-h: 120px;
-    }
-    @media (max-width: 767px) {
-      :root { --cok-header-h: 116px; }
-    }
-
-    /* ── COK Header (matches live site behavior) ── */
-    .cok-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-    }
-    .cok-primary {
-      background: var(--cok-red);
-      width: 100%;
-      position: relative;
-      z-index: 2;
-    }
-    .cok-primary-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 16px;
-      min-height: 80px;
-    }
-    .cok-primary-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .cok-signin {
-      color: #fff;
-      font-size: .875rem;
-      font-weight: 600;
-      text-decoration: none;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .cok-hamburger {
-      background: none;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      display: flex;
-      padding: 4px;
-    }
-
-    .cok-secondary {
-      background: #000;
-      width: 100%;
-      transition: max-height .35s ease, opacity .35s ease;
-      max-height: 40px;
-      opacity: 1;
-      overflow: hidden;
-    }
-    .cok-secondary.hidden {
-      max-height: 0;
-      opacity: 0;
-    }
-    .cok-secondary-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      overflow-x: auto;
-      height: 40px;
-      max-width: 1200px;
-      margin: 0 auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .cok-secondary-wrapper::-webkit-scrollbar { display: none; }
-    .cok-secondary-wrapper a {
-      color: #fff;
-      white-space: nowrap;
-      font-weight: 700;
-      font-size: 1rem;
-      font-family: 'DM Sans', sans-serif;
-      padding: 0 20px;
-      border-right: .5px solid #fff;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      transition: color .2s;
-    }
-    .cok-secondary-wrapper a:first-child { border-left: .5px solid #fff; }
-    .cok-secondary-wrapper a:hover { color: var(--accent); }
-
-    .cok-header-spacer { padding-top: var(--cok-header-h); }
-
-    @media (max-width: 767px) {
-      .cok-primary-wrapper { min-height: 74px; }
-      .cok-secondary { max-height: 36px; }
-      .cok-secondary-wrapper { height: 36px; }
-      .cok-secondary-wrapper a { height: 36px; font-size: .875rem; }
     }
 
     body {
@@ -445,24 +345,26 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
+      background: var(--accent-secondary);
+      border: none;
+      color: #fff;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: var(--shadow-hover);
+      box-shadow: 0 4px 16px rgba(212, 84, 46, 0.4);
       z-index: 100;
       transition: all 0.2s ease;
-      opacity: 0.7;
     }
 
     .jump-fab:hover {
-      opacity: 1;
-      background: var(--surface-hover);
-      border-color: var(--border-hover);
-      transform: scale(1.05);
+      background: #e8633a;
+      box-shadow: 0 6px 24px rgba(212, 84, 46, 0.55);
+      transform: scale(1.12);
+    }
+
+    .jump-fab svg {
+      stroke: #fff;
     }
 
     .jump-overlay {
@@ -488,12 +390,12 @@
       max-width: calc(100vw - 2rem);
       max-height: calc(100vh - 7rem);
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1px solid var(--accent-secondary);
       border-radius: var(--radius);
       z-index: 102;
       display: flex;
       flex-direction: column;
-      box-shadow: var(--shadow-hover);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 84, 46, 0.15);
       opacity: 0;
       visibility: hidden;
       transform: translateY(12px) scale(0.96);
@@ -513,13 +415,14 @@
       padding: 1rem 1.25rem;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(212,84,46,0.08) 0%, transparent 60%);
     }
 
     .jump-panel-header h3 {
       font-family: 'Sora', sans-serif;
       font-size: 1rem;
       font-weight: 600;
-      color: var(--text);
+      color: var(--accent);
     }
 
     .jump-panel-close {
@@ -535,7 +438,7 @@
     }
 
     .jump-panel-close:hover {
-      color: var(--text);
+      color: var(--accent-secondary);
     }
 
     .jump-search {
@@ -562,7 +465,8 @@
     }
 
     .jump-search input:focus {
-      border-color: var(--accent);
+      border-color: var(--accent-secondary);
+      box-shadow: 0 0 0 3px rgba(212, 84, 46, 0.15);
     }
 
     .jump-search input::placeholder {
@@ -642,6 +546,7 @@
 
     .jump-episode:hover {
       background: var(--surface-hover);
+      outline: 1px solid rgba(212, 84, 46, 0.2);
     }
 
     .jump-episode-num {
@@ -661,37 +566,6 @@
   </style>
 </head>
 <body>
-
-  <!-- COK Header (matches live site look & scroll behavior) -->
-  <header class="cok-header" id="cok-header">
-    <div class="cok-primary">
-      <div class="cok-primary-wrapper">
-        <a href="/" class="cok-logo-link">
-          <svg width="78" height="68" viewBox="0 0 78 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="78" height="68" rx="8" fill="#fff" opacity=".9"/>
-            <text x="39" y="42" text-anchor="middle" font-size="24" font-weight="700" font-family="DM Sans,sans-serif" fill="#a5161c">DH</text>
-          </svg>
-        </a>
-        <a href="/cuisines-of-karnataka" class="cok-brand-link">
-          <svg width="200" height="36" viewBox="0 0 287 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <text x="12" y="48" font-size="38" font-weight="700" font-family="Sora,sans-serif" fill="#fff">Cuisines of</text>
-            <text x="12" y="68" font-size="22" font-weight="500" font-family="DM Sans,sans-serif" fill="#F5C518">Karnataka</text>
-          </svg>
-        </a>
-        <div class="cok-primary-right">
-          <a href="/sign-in" class="cok-signin">Sign In</a>
-          <button class="cok-hamburger" aria-label="Menu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="21" y2="5"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="19" x2="21" y2="19"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-    <nav class="cok-secondary" id="cok-secondary">
-      <div class="cok-secondary-wrapper" id="cok-menu-wrapper"></div>
-    </nav>
-  </header>
-  <div class="cok-header-spacer"></div>
-
   <div class="container">
     <nav class="season-tabs" id="season-tabs"></nav>
 
@@ -1029,49 +903,6 @@
     });
 
     buildJumpPanel();
-
-    // ── COK Header: fetch menu + scroll behavior ──
-    (function() {
-      const menuWrapper = document.getElementById('cok-menu-wrapper');
-      const secondary = document.getElementById('cok-secondary');
-
-      (async function loadMenus() {
-        try {
-          const res = await fetch('/api/v1/config');
-          if (!res.ok) throw new Error(`API returned ${res.status}`);
-          const all = await res.json();
-          const items = Array.isArray(all)
-            ? all.filter(item => item['menu-group-slug'] === 'cok-menu')
-            : [];
-          const wrapper = document.getElementById('cok-menu-wrapper');
-          wrapper.innerHTML = '';
-          (items.length ? items : []).forEach(m => {
-            const a = document.createElement('a');
-            a.href = m.url || '#';
-            a.textContent = m.title;
-            wrapper.appendChild(a);
-          });
-        } catch (e) {
-          console.error('[COK Header] Failed to load menu:', e);
-          const header = document.getElementById('cok-header');
-          const spacer = document.querySelector('.cok-header-spacer');
-          if (header) header.remove();
-          if (spacer) spacer.remove();
-        }
-      })();
-
-      // scroll handler — same 105px threshold as the React site
-      let ticking = false;
-      window.addEventListener('scroll', () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            secondary.classList.toggle('hidden', window.scrollY > 105);
-            ticking = false;
-          });
-          ticking = true;
-        }
-      }, { passive: true });
-    })();
   </script>
 </body>
 </html>
