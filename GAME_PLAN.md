@@ -392,7 +392,255 @@ relies on whatever the host property already loads.
 > ponytail: emoji + text over custom sprites. Swap to real food photos/SVGs
 > when the game earns polish.
 
+### Pixel Art Enhancement — Full Plan
+
+Replace emoji-and-text visuals with a pixel-art makeover. Character, tokens,
+environment, HUD — all rendered on canvas via color-indexed pixel arrays.
+No images, no SVG, no external files.
+
 ---
+
+#### 1. Color Palette (Game-Wide)
+
+A shared 16-color palette keeps everything coherent. Index 0 = transparent.
+
+| Index | Hex | Usage |
+|-------|-----|-------|
+| 0 | — | Transparent (skip) |
+| 1 | `#131110` | bg fill, outlines |
+| 2 | `#1E1B18` | token bg, stall shadow |
+| 3 | `#332F2A` | stall edge, separator |
+| 4 | `#F5C518` | accent (gold) |
+| 5 | `#D4542E` | wrong-catch flash, accent-2 |
+| 6 | `#2ECC54` | correct-catch flash |
+| 7 | `#E74C3C` | baskets, red alert |
+| 8 | `#F0EDE8` | text light |
+| 9 | `#7A756E` | text muted |
+| 10 | `#D4A574` | character skin |
+| 11 | `#2C1810` | character hair, dark cloth |
+| 12 | `#C0392B` | character cloth (dhoti/ kurta) |
+| 13 | `#B8860B` | baskets (warm straw) |
+| 14 | `#4A3525` | vendor silhouette |
+| 15 | `#1A1A1A` | extra shadow / detail |
+
+---
+
+#### 2. Character — Market Seller
+
+24w × 36h pixels, 7 colors per frame (drawn from the 16-color palette).
+
+**Frames:**
+- 4 walk frames (cycle when moving, 120ms per frame)
+- 1 jump frame (arms up, baskets rise ~4px)
+- 1 idle frame (subtle bob, 400ms cycle)
+
+**Baskets as lives:**
+- 3 baskets rendered at the character's waist (left, center, right)
+- Each basket is 6×5 pixels
+- Wrong catch → corresponding basket falls off-screen (animate X frames)
+- 0 baskets → game over
+- Basket positions tracked independently from character render
+
+```
+Walk frame 1 (pseudocode — 24 columns × 36 rows):
+  . . . . . . 1 1 1 1 1 1 . . . . . . . . .
+  . . . . . 1 1 1 1 1 1 1 1 . . . . . . . .
+  . . . . 1 1 1 1 1 1 1 1 1 . . . . . . . .
+  . . . . 1 1 . . . . . . . . . . . . . . .     ← head + face
+  . . . . . 1 . 2 2 2 2 2 . . . . . . . . .     ← body (cloth)
+  ...
+```
+
+**Render function:**
+```js
+function drawChar(x, y, frame, baskets) {
+  const data = CHAR_FRAMES[frame];
+  for (let row = 0; row < 36; row++) {
+    for (let col = 0; col < 24; col++) {
+      const c = data[row][col];
+      if (c === 0) continue;
+      ctx.fillStyle = PALETTE[c];
+      ctx.fillRect(x + col, y + row, 1, 1);
+    }
+  }
+  // Basket overlay (drawn on top, independent of frame)
+  for (let i = 0; i < 3; i++) {
+    if (baskets[i]) drawBasket(x + basketOffsets[i].x, y + basketOffsets[i].y);
+  }
+}
+```
+
+**Performance:** 24×36 = 864 fillRect calls per frame at most. With 60fps
+and a 16ms budget, this is well within canvas 2D limits (tested to ~5000
+fillRect per frame before dropping frames).
+
+---
+
+#### 3. Falling Tokens — Pixel Cards
+
+Replace rounded-rect emoji tokens with pixel-art ingredient cards.
+
+**Specs:** 42w × 42h pixels (square), 5 colors per card
+
+**Layout per token:**
+```
+┌─ ─ ─ ─ ─ ─ ─ ┐
+│  [4×4 icon]   │     ← 4×4 pixel ingredient icon
+│               │
+│  Ingredient   │     ← 7px pixel text or second row
+│    Name       │
+└─ ─ ─ ─ ─ ─ ─ ┘
+```
+
+**Ingredient icons (4×4 pixels each):** A tiny pixel icon for each ingredient.
+~30 icons × 16 values = ~480 array entries. Examples:
+
+| Ingredient | 4×4 pixel icon description |
+|-----------|---------------------------|
+| Chicken | Drumstick shape (bone + meat) |
+| Mutton | Bone with meat chunks |
+| Fish | Fish silhouette |
+| Rice | Small grain cluster |
+| Coconut | Round with inner circle |
+| Curry Leaves | Leaf cluster |
+| Garlic | Small bulb |
+| Ginger | Knobby root |
+
+**Card states (border color changes):**
+- Normal: medium border (`#332F2A`)
+- Correct catch flash: gold border animation (`#F5C518`, 250ms)
+- Wrong catch flash: red border animation (`#D4542E`, 250ms)
+
+---
+
+#### 4. Environment — Indian Market
+
+Scrolling background layers that create a bazaar atmosphere.
+
+**Layer 1 — Sky / Backdrop (static):**
+- Warm amber-to-saffron gradient at the top 30% of canvas
+- Pixel gradient banding (8 rows of solid color)
+
+**Layer 2 — Stall silhouettes (slow scroll ~10% of game speed):**
+- Vendor stalls on left and right edges, leaving the 3 play lanes open
+- Stalls are 32w × 48h pixel tiles: canvas awning, wooden counter, pots
+- 2-3 stall variations cycled as the screen scrolls
+- Repeats: 3-4 stalls visible at any time
+
+**Layer 3 — Ground / Floor (fast scroll ~50% of game speed):**
+- Stone or earth texture strip at the bottom 8% of canvas
+- 2x repeated pattern, 32px wide
+- Scrolls faster to create depth parallax
+
+**Layer 4 — Vendor silhouettes (mid scroll ~25%):**
+- 3-4 sitting vendor silhouettes (16×20 px) scattered along the ground
+- Subtle idle animation (slight sway, 1-2 frames)
+
+```
+Visual depth order (back to front):
+  1. Sky gradient                       ← static
+  2. Stall silhouettes (far)            ← slow scroll
+  3. Lane dividers (subtle)             ← static
+  4. Falling tokens                     ← game movement
+  5. Vendor silhouettes (near)          ← mid scroll
+  6. Character + baskets                ← player control
+  7. Ground / floor                     ← fast scroll
+```
+
+**Rendering priority:** Layers 1-3 can be skipped on weak devices or when
+frame rate drops below 30fps. The game remains playable without them.
+
+---
+
+#### 5. HUD — Pixel Styling
+
+Current DOM-based HUD stays DOM-based but gets pixel-themed styling.
+
+- **Font:** Use a pixel-style monospace font via CSS (`'Courier New', monospace`
+  or `font-family: 'Press Start 2P', monospace` — if we load it, or just
+  fake it with letter-spacing + uppercase)
+- **Score display:** `SCORE: 0420` in pixel-style text
+- **Level badge:** `L-3` in pixel font with gold border
+- **Timer bar:** Pixel-segment style (notched bar like a health bar, not smooth)
+- **Checklist items:** Pixel checkbox (unfilled square → filled gold square)
+
+**Canvas HUD elements (on-canvas for consistency):**
+- Streak counter with flame icon (pixel flame, 8×10 px)
+- Hearts replaced by pixel basket icons (already covered in character section)
+
+---
+
+#### 6. Animation System
+
+| Element | Frames | Cycle | Trigger |
+|---------|--------|-------|---------|
+| Character walk | 4 | 120ms per frame | While moving |
+| Character idle | 2 | 400ms | Stationary |
+| Character jump | 1 (held) | 400ms | Jump |
+| Basket fall | 4 | 80ms per frame | Wrong catch |
+| Vendor sway | 2 | 600ms | Always |
+| Correct catch sparkle | 3 | 50ms | Correct catch |
+| Wrong catch shake | 2 | 100ms | Wrong catch |
+| Level up banner | pixel gradient | 800ms | Level change |
+
+**Frame scheduler:**
+```js
+const ANIMS = {
+  walk: { frames:4, msPerFrame:120, loop:true },
+  idle: { frames:2, msPerFrame:400, loop:true },
+  jump: { frames:1, msPerFrame:400, loop:false },
+  ...
+};
+let animState = { name:'idle', frame:0, timer:0 };
+```
+
+---
+
+#### 7. Implementation Phases
+
+| Phase | What | Data size | Effort |
+|-------|------|-----------|--------|
+| **P1** | Character (24×36, 4 walk + 1 jump + 1 idle) + basket-as-lives | ~6 KB | High |
+| **P2** | Falling tokens as pixel cards with 4×4 ingredient icons | ~3 KB | Medium |
+| **P3** | Market background (sky, stalls, ground) | ~2 KB | Medium |
+| **P4** | Vendor silhouettes + idle animation | ~1 KB | Low |
+| **P5** | HUD pixel restyle (fonts, borders, icons) | ~1 KB | Low |
+| **P6** | Polish: particles, screen shake, transition effects | ~1 KB | Low |
+
+**Total added data:** ~14 KB (compressed JS arrays + render functions)
+
+**Rollback strategy:** Each phase can be merged or skipped independently.
+The game at P1 (character-only) is already a visible improvement over
+the emoji baseline. P2-P6 are additive.
+
+---
+
+#### 8. File Structure (within game.html)
+
+```text
+<!-- Sprite data (inline JS arrays) -->
+const PALETTE = [...];                    // 16 colors
+const CHAR_FRAMES = { run1, run2, ... };  // ~5 KB
+const TOKEN_ICONS = { chicken, rice, ... }; // ~2 KB
+const STALL_TILES = [tile1, tile2];       // ~1 KB
+const VENDOR_SPRITES = [sit1, sit2];      // ~0.5 KB
+
+<!-- Render functions -->
+function drawChar(x, y, frame, baskets) { ... }
+function drawToken(x, y, ingredient, state) { ... }
+function drawBackground(scrollX) { ... }
+function drawVendors(scrollX) { ... }
+
+<!-- Animation state -->
+const animState = { ... };
+const basketState = [true, true, true];
+```
+
+All within `<script>` tags in the single HTML file.
+
+> ponytail: Character alone (P1) is the biggest visual lift per byte.
+> Market background + vendors can wait until the core pixel look is validated.
+> The palette is shared — adding layers later doesn't require redoing the character.
 
 ## Technical Approach
 
