@@ -51,7 +51,7 @@ html, body { margin:0; padding:0; overflow:hidden; height:100%; background:var(-
   font-family:var(--font-heading); font-weight:600; font-size:14px;
   color:var(--accent); margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-#checklist { display:flex; flex-wrap:wrap; gap:4px; }
+#checklist { display:flex; flex-wrap:wrap; gap:4px; justify-content:center; }
 .check-item {
   display:inline-flex; flex-direction:column; align-items:center; gap:1px;
   padding:4px 8px 3px; background:#1E1B18; border:1px solid #D4542E;
@@ -900,12 +900,10 @@ function completeDishAdvance() {
     lvlNum.textContent = 'Level '+newLevel;
     setTimeout(() => {
       levelUpBanner.classList.remove('visible');
-      pickNewDish();
-      state = STATE.PLAYING;
+      showRecipePreview();
     }, LEVEL_UP_MS);
   } else {
-    pickNewDish();
-    state = STATE.PLAYING;
+    showRecipePreview();
   }
 }
 
@@ -1049,8 +1047,10 @@ function showTitleScreen() {
 
 function showRecipePreview() {
   resetGame();
-  // Pick a random dish to preview
-  const idx = Math.floor(Math.random()*DISHES.length);
+  // Pick a random dish (exclude last)
+  let available = DISHES.map((d,i)=>i).filter(i => i !== lastDishIndex);
+  if (available.length === 0) available = DISHES.map((d,i)=>i);
+  const idx = available[Math.floor(Math.random()*available.length)];
   const dish = DISHES[idx];
   rpDishName.textContent = dish.name;
   let html = '';
