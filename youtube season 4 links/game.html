@@ -83,7 +83,8 @@ html, body { margin:0; padding:0; overflow:hidden; height:100%; background:var(-
 }
 
 /* ---- RECIPE PREVIEW ---- */
-#recipePreview h1 { font-size:20px; margin-bottom:10px; }
+#recipePreview h1 { font-size:20px; margin-bottom:4px; }
+#rpDesc { font-size:12px; color:var(--text-muted); margin:0 0 12px; max-width:280px; line-height:1.4; }
 #rpIngredients { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:18px; }
 #rpIngredients .check-item {
   cursor:default; padding:8px 10px 6px; background:#1E1B18; border:1px solid #332F2A;
@@ -315,6 +316,7 @@ html, body { margin:0; padding:0; overflow:hidden; height:100%; background:var(-
     <!-- RECIPE PREVIEW -->
     <div id="recipePreview" class="overlay">
       <h1 id="rpDishName"></h1>
+      <p id="rpDesc"></p>
       <div id="rpIngredients"></div>
       <button class="btn" id="rpProceed"><span>Proceed</span></button>
     </div>
@@ -917,7 +919,7 @@ function transitionToDishComplete() {
   let ingHtml = '';
   for (const ing of currentDish.ingredients) {
     const emoji = INGREDIENT_EMOJI[ing]||'';
-    ingHtml += '<span class="check-item" style="border-color:var(--accent);color:var(--accent);"><em>'+emoji+'</em>'+ing+'</span>';
+    ingHtml += '<span class="check-item" style="border-color:#2ECC54;color:#2ECC54;"><em>'+emoji+'</em>'+ing+'</span>';
   }
   modalIngredients.innerHTML = ingHtml;
   modalVideo.src = 'https://www.youtube.com/embed/'+currentDish.videoId+'?rel=0';
@@ -1053,6 +1055,8 @@ function showRecipePreview() {
   const idx = available[Math.floor(Math.random()*available.length)];
   const dish = DISHES[idx];
   rpDishName.textContent = dish.name;
+  var ingNames = dish.ingredients.join(', ');
+  document.getElementById('rpDesc').textContent = 'Let\'s make ' + dish.name + '! We need to get ' + ingNames + ' from the market.';
   let html = '';
   dish.ingredients.forEach(function(ing, idx) {
     const emoji = INGREDIENT_EMOJI[ing] || '';
