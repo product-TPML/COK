@@ -844,6 +844,7 @@ function completeDishAdvance() {
 
   // Clean up modal
   completeModal.classList.remove('visible');
+  modalVideo.src = '';
 
   // Level up?
   if (newLevel > oldLevel) {
@@ -985,6 +986,7 @@ function resetGame() {
   titleScreen.classList.remove('visible');
   gameOver.classList.remove('visible');
   completeModal.classList.remove('visible');
+  modalVideo.src = '';
   levelUpBanner.classList.remove('visible');
   recipePreview.classList.remove('visible');
   flashOverlay.style.opacity = '0';
