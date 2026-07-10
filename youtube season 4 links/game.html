@@ -367,6 +367,7 @@ html, body { margin:0; padding:0; overflow:hidden; height:100%; background:var(-
   </div>
 </div>
 
+<script src="icon_data.js"></script>
 <script>
 /* ============================================================
    RECIPE CATCHER — Cuisines of Karnataka
@@ -486,6 +487,18 @@ function drawChar(ctx, x, y, sc, lift) {
     ctx.fillRect(bx + sc, by + 2 * sc, sc, 3 * sc);
     ctx.fillRect(bx + 4 * sc, by + 2 * sc, sc, 3 * sc);
   }
+}
+
+function drawPixelIcon(ctx, ing, x, y, sc) {
+  var icon = INGREDIENT_ICONS[ing];
+  if (!icon) return;
+  var data = icon.data;
+  var pal = icon.pal;
+  for (var r = 0; r < icon.h; r++)
+    for (var c = 0; c < icon.w; c++) {
+      var ci = data[r][c];
+      if (ci) { ctx.fillStyle = pal[ci - 1]; ctx.fillRect(x + c * sc, y + r * sc, sc, sc); }
+    }
 }
 
 // ---- CONSTANTS ----
@@ -1343,12 +1356,16 @@ function render() {
     roundRect(ctx, finalX, finalY, finalW, finalH, Math.min(cornerR, finalW/2, finalH/2));
     ctx.stroke();
 
-    // Label: card style — emoji on top, text below
-    ctx.fillStyle = '#F0EDE8';
+    // Label: pixel icon or emoji on top, text below
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = '20px sans-serif';
-    ctx.fillText(INGREDIENT_EMOJI[token.ingredient]||'', finalX + finalW/2, finalY + finalH/2 - 6);
+    if (typeof INGREDIENT_ICONS !== 'undefined' && INGREDIENT_ICONS[token.ingredient]) {
+      drawPixelIcon(ctx, token.ingredient, finalX + finalW/2 - 12, finalY + finalH/2 - 18, 1);
+    } else {
+      ctx.fillStyle = '#F0EDE8';
+      ctx.font = '20px sans-serif';
+      ctx.fillText(INGREDIENT_EMOJI[token.ingredient]||'', finalX + finalW/2, finalY + finalH/2 - 6);
+    }
     ctx.font = '10px "DM Sans", sans-serif';
     ctx.fillText(token.ingredient, finalX + finalW/2, finalY + finalH/2 + 10);
   }
