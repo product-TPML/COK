@@ -366,6 +366,78 @@ const DISHES = [
 
 const YT_LIST_ID = 'PL4tXltXT0TCWhrTT31fLGpTr2VoHHHov5';
 
+// ---- CHARACTER SPRITE (24×36 pixel market seller) ----
+const CHAR_PAL = ['transparent','#131110','#1e1b18','#332f2a','#f5c518','#d4542e','#2ecc54','#e74c3c','#f0ede8','#7a756e','#d4a574','#2c1810','#c0392b','#b8860b','#4a3525','#1a1a1a'];
+
+function genSprite(p) {
+  const a = Array.from({length:36},()=>Array(24).fill(0));
+  const put = (x,y,w,h,c) => {
+    for (let j=0; j<h; j++)
+      for (let i=0; i<w; i++)
+        if (x+i>=0 && x+i<24 && y+j>=0 && y+j<36) a[y+j][x+i] = c;
+  };
+  put(7,0,10,1,15);put(5,1,14,1,15);put(4,2,16,1,15);put(3,3,18,5,15);
+  put(5,3,14,4,8);put(7,2,10,1,8);put(4,6,16,2,8);put(5,7,14,1,3);
+  put(4,8,16,2,15);put(5,8,14,1,4);put(4,9,16,1,5);
+  put(5,10,14,7,15);put(7,10,10,6,11);put(6,11,2,3,5);put(16,11,2,3,5);
+  put(8,11,2,1,10);put(14,11,2,1,10);put(8,13,8,3,11);put(9,15,6,2,15);
+  put(4,16,16,1,15);put(3,17,18,5,15);put(4,17,16,4,12);put(6,16,12,1,7);
+  put(1,19,3,4,15);put(2,19,2,3,5);put(20,19,3,4,15);put(20,19,2,3,5);
+  put(7,20,10,8,15);put(8,20,8,7,11);
+  put(5,28,14,1,15);put(6,29,12,3,11);put(6,31,4,4,11);put(14,31,4,4,11);
+  put(7,32,2,2,15);put(15,32,2,2,15);put(6,35,4,1,5);put(14,35,4,1,5);
+  const clearLegs = () => put(5,30,14,6,0);
+  if (p===1){clearLegs();put(1,18,3,3,12);put(20,20,3,3,12);put(6,31,4,4,11);put(14,30,3,3,11);put(6,35,4,1,5);put(14,33,3,1,5)}
+  if (p===2){clearLegs();put(2,20,3,3,12);put(19,18,3,3,12);put(8,31,4,4,11);put(12,31,4,4,11);put(8,35,4,1,5);put(12,35,4,1,5)}
+  if (p===3){clearLegs();put(1,20,3,3,12);put(20,18,3,3,12);put(7,30,3,3,11);put(14,31,4,4,11);put(7,33,3,1,5);put(14,35,4,1,5)}
+  if (p>=4&&p<=8){const cl=(x,y,w,h)=>put(x,y,w,h,0);put(2,8,4,2,12);put(18,8,4,2,12);put(5,6,2,4,12);put(17,6,2,4,12);cl(5,28,14,8);
+    if(p===4){put(6,27,12,2,11);put(7,30,3,3,11);put(14,30,3,3,11);put(6,33,4,2,15);put(14,33,4,2,15);put(6,35,4,1,5);put(14,35,4,1,5)}
+    if(p===5){put(6,27,12,2,11);put(7,30,3,4,11);put(14,30,3,4,11);put(6,34,4,1,5);put(14,34,4,1,5)}
+    if(p===6){put(7,27,10,2,11);put(7,29,3,2,11);put(14,29,3,2,11);put(6,31,4,1,5);put(14,31,4,1,5)}
+    if(p===7){put(6,27,12,2,11);put(6,29,4,2,11);put(14,29,4,2,11);put(7,31,3,1,5);put(14,31,3,1,5)}
+    if(p===8){put(6,28,12,2,11);put(6,30,4,4,11);put(14,30,4,4,11);put(6,34,4,1,5);put(14,34,4,1,5)}}
+  return a;
+}
+
+const CHAR_FRAMES = {
+  run: [genSprite(0), genSprite(1), genSprite(2), genSprite(3)],
+  idle: [genSprite(0), genSprite(2)],
+  jump: [genSprite(4), genSprite(5), genSprite(6), genSprite(7), genSprite(8)],
+};
+
+let charPose = 'run';
+let charFrame = 0;
+let charAnimTimer = 0;
+let charRunTimer = 0;
+const CHAR_ANIM_MS = 150;
+
+function drawChar(ctx, x, y, sc, lift) {
+  const list = CHAR_FRAMES.run;
+  const data = list[charFrame % list.length];
+  const ox = x - 12 * sc;
+  const oy = y - 18 * sc - lift;
+  for (let r = 0; r < 36; r++)
+    for (let c = 0; c < 24; c++) {
+      const ci = data[r][c];
+      if (ci) { ctx.fillStyle = CHAR_PAL[ci]; ctx.fillRect(ox + c * sc, oy + r * sc, sc, sc); }
+    }
+  // Baskets at waist
+  for (let i = 0; i < hearts; i++) {
+    const bx = ox + (3 + i * 7) * sc;
+    const by = oy + 21 * sc;
+    ctx.fillStyle = CHAR_PAL[15];
+    ctx.fillRect(bx, by, 6 * sc, 8 * sc);
+    ctx.fillStyle = CHAR_PAL[13];
+    ctx.fillRect(bx + sc, by + sc, 4 * sc, sc);
+    ctx.fillRect(bx, by + 2 * sc, sc, 4 * sc);
+    ctx.fillRect(bx + 5 * sc, by + 2 * sc, sc, 4 * sc);
+    ctx.fillRect(bx + sc, by + 6 * sc, 4 * sc, sc);
+    ctx.fillStyle = CHAR_PAL[5];
+    ctx.fillRect(bx + sc, by + 2 * sc, sc, 3 * sc);
+    ctx.fillRect(bx + 4 * sc, by + 2 * sc, sc, 3 * sc);
+  }
+}
+
 // ---- CONSTANTS ----
 const TOKEN_HEIGHT = 42;
 const BASKET_HEIGHT = 48;
@@ -707,10 +779,6 @@ function checkCollisions() {
         flashOverlay.style.opacity = '1';
         setTimeout(() => { flashOverlay.style.opacity = '0'; }, 100);
 
-        // Heart break animation (canvas-based)
-        heartAnimTimer = 350;
-        heartAnimIdx = hearts;
-
         trackEvent('wrong_ingredient_caught', {
           dish_name: currentDish.name,
           caught_ingredient: token.ingredient
@@ -889,8 +957,6 @@ function resetGame() {
   streak = 0;
   comboCount = 0;
   hearts = 3;
-  heartAnimTimer = 0;
-  heartAnimIdx = 0;
   currentDish = null;
   currentDishIndex = -1;
   caughtIngredients = new Set();
@@ -902,6 +968,10 @@ function resetGame() {
   basket.animating = false;
   basket.jumpTimer = 0;
   basket.jumpDuration = 0;
+  charPose = 'run';
+  charFrame = 0;
+  charAnimTimer = 0;
+  charRunTimer = 0;
   basket.x = laneWidth * 1 + laneWidth/2;
   basket.targetX = basket.x;
   basket.startX = basket.x;
@@ -1005,6 +1075,9 @@ function startBasketAnim() {
   basket.animStart = performance.now();
   basket.startX = basket.x;
   basket.targetX = getLaneCenter(basket.targetLane);
+  // Walk animation
+  charPose = 'run';
+  charRunTimer = 400; // stay in run pose for 400ms after last move
 }
 
 function updateBasket(now) {
@@ -1027,8 +1100,6 @@ let basketBounceTimer = 0;
 let basketShakeTimer = 0;
 let basketShakeOffset = 0;
 let basketJumpOffset = 0;
-let heartAnimTimer = 0;
-let heartAnimIdx = 0;
 
 function bounceBasket() {
   basketBounceTimer = 200;
@@ -1042,6 +1113,8 @@ function doJump() {
   const scale = [0, 1.2, 1, 0.7][getLevel(streak)];
   basket.jumpTimer = JUMP_DURATION * scale;
   basket.jumpDuration = basket.jumpTimer;
+  charPose = 'jump';
+  charFrame = 0;
 }
 
 function updateVisualEffects(dt) {
@@ -1053,12 +1126,23 @@ function updateVisualEffects(dt) {
   } else {
     basketShakeOffset = 0;
   }
-  if (heartAnimTimer > 0) heartAnimTimer -= dt * 1000;
   if (basket.jumpTimer > 0) {
     basket.jumpTimer -= dt * 1000;
     basketJumpOffset = Math.sin((1 - basket.jumpTimer / basket.jumpDuration) * Math.PI) * 50;
+    // Advance jump frames
+    if (charPose === 'jump' && charFrame < CHAR_FRAMES.jump.length - 1) {
+      charAnimTimer += dt * 1000;
+      if (charAnimTimer > 80) { charFrame++; charAnimTimer = 0; }
+    }
   } else {
     basketJumpOffset = 0;
+    if (charPose === 'jump') { charPose = 'run'; charFrame = 0; }
+  }
+  // Run animation cycle (advance frames on timer)
+  if (charPose === 'run') {
+    charAnimTimer += dt * 1000;
+    charRunTimer -= dt * 1000;
+    if (charAnimTimer > 70) { charFrame = (charFrame + 1) % CHAR_FRAMES.run.length; charAnimTimer = 0; }
   }
 }
 
@@ -1173,56 +1257,10 @@ function render() {
   }
   ctx.globalAlpha = 1;
 
-  // Draw basket (with shake offset and bounce scale)
-  const bScale = basketBounceTimer > 0 ? 1 + 0.15 * (basketBounceTimer/200) : 1;
-  const bw = basketWidth * bScale;
-  const bh = BASKET_HEIGHT * bScale;
-  const bx = basket.x + basketShakeOffset - bw/2;
-  const by = catchLineY - bh/2 - basketJumpOffset;
-  // Basket bg
-  ctx.fillStyle = '#1E1B18';
-  ctx.beginPath();
-  roundRect(ctx, bx, by, bw, bh, 10);
-  ctx.fill();
-  ctx.strokeStyle = '#F5C518';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  roundRect(ctx, bx, by, bw, bh, 10);
-  ctx.stroke();
-
-  // Basket emoji
-  ctx.font = '28px sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('🧺', basket.x + basketShakeOffset, by + bh/2);
-
-  // Hearts above basket
-  ctx.fillStyle = '#E74C3C';
-  ctx.font = '14px sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  for (let i=0; i<3; i++) {
-    const hx = basket.x + basketShakeOffset + (i - 1) * 18;
-    const hy = by - 8;
-    if (i >= hearts) {
-      if (i === heartAnimIdx && heartAnimTimer > 0) {
-        const t = 1 - heartAnimTimer / 350;
-        const s = t < 0.4 ? 1 + t : 1.4 - 1.1 * (t - 0.4) / 0.6;
-        ctx.save();
-        ctx.translate(hx, hy);
-        ctx.scale(s, s);
-        ctx.globalAlpha = 0.2 + (1 - t) * 0.8;
-        ctx.fillText('❤', 0, 0);
-        ctx.restore();
-      } else {
-        ctx.globalAlpha = 0.2;
-        ctx.fillText('❤', hx, hy);
-      }
-    } else {
-      ctx.globalAlpha = 1;
-      ctx.fillText('❤', hx, hy);
-    }
-  }
+  // Draw character (replaces basket emoji + hearts)
+  const charScale = Math.max(1, Math.floor(basketWidth / 24 * 0.85));
+  const charLift = charPose === 'jump' ? [0,1,3,3,1][charFrame] || 0 : 0;
+  drawChar(ctx, basket.x + basketShakeOffset, catchLineY - basketJumpOffset, charScale, charLift * charScale);
   ctx.globalAlpha = 1;
 }
 
