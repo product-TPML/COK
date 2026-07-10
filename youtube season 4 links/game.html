@@ -271,10 +271,22 @@ html, body { margin:0; padding:0; overflow:hidden; height:100%; background:var(-
       <img src="logo.jpg" alt="COK" id="titleLogo">
       <h1>Santhe Catch</h1>
       <div class="slideshow" id="slideshow">
-        <div class="slide active" style="gap:6px;">
-          <div style="font-size:48px;margin-bottom:2px;">👈👉</div>
-          <p>Swipe or tap left/right to <strong>move</strong> between lanes</p>
-          <p style="font-size:12px;color:var(--text-muted);margin-top:2px;">⬆ Swipe up to jump</p>
+         <div class="slide active" style="gap:4px;">
+          <div style="display:flex;gap:16px;align-items:center;justify-content:center;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <span style="font-size:28px;">⬅</span>
+              <span style="font-size:11px;color:var(--text-muted);">Left</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <span style="font-size:28px;">➡</span>
+              <span style="font-size:11px;color:var(--text-muted);">Right</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-left:16px;padding-left:16px;border-left:1px solid var(--border);">
+              <span style="font-size:28px;">⬆</span>
+              <span style="font-size:11px;color:var(--text-muted);">Up</span>
+            </div>
+          </div>
+          <p>Swipe or tap left/right to <strong>move</strong>, up to <strong>jump</strong></p>
         </div>
         <div class="slide">
           <div class="slide-icon" id="slideCorrect">🍗</div>
@@ -285,12 +297,8 @@ html, body { margin:0; padding:0; overflow:hidden; height:100%; background:var(-
           <p>Avoid wrong ones — you only have <strong>3 baskets</strong>!</p>
         </div>
         <div class="slide">
-          <div class="slide-icon">⬆</div>
-          <p>Swipe <strong>up</strong> to jump over spoilers</p>
-        </div>
-        <div class="slide">
-          <div class="slide-icon">🏆</div>
-          <p>Complete 2 dishes to level up and unlock <strong>harder recipes</strong></p>
+          <div class="slide-icon">🍽🍽</div>
+          <p>Complete <strong>2 dishes</strong> to level up and unlock harder recipes</p>
         </div>
         <div class="slide-dots" id="slideDots"></div>
       </div>
