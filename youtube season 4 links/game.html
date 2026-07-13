@@ -626,6 +626,7 @@ let ingredientCooldowns = {};  // name -> expiry timestamp
 let lastSpawnTime = 0;
 let lastDishIndex = -1;
 let particles = [];
+let kerbOffset = 0;
 
 // Basket
 const basket = {
@@ -1336,14 +1337,37 @@ function updateVisualEffects(dt) {
 function render() {
   ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
 
-  // Background
-  ctx.fillStyle = '#131110';
+  // Road surface (full canvas)
+  ctx.fillStyle = '#2a2824';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-  // Lane dividers
-  ctx.strokeStyle = '#332F2A';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([4, 6]);
+  // Kerb — left and right edges with smoothly scrolling yellow/white stripes
+  const kerbW = Math.max(6, laneWidth * 0.08);
+  function drawKerb(x) {
+    const stripeH = 12;
+    const stoneH = 48; // 4 stripes = 1 stone block
+    const period = 96; // 2 stones = 1 full color cycle
+    const scrollPos = kerbOffset % period;
+    const colors = ['#A09030', '#706C68'];
+    const firstY = Math.floor((-stoneH * 2 - scrollPos) / stripeH) * stripeH;
+    for (let y = firstY; y < CANVAS_H + stoneH * 2; y += stripeH) {
+      const screenY = y + scrollPos;
+      const ci = Math.abs(Math.floor(y / stoneH) % 2);
+      ctx.fillStyle = colors[ci];
+      ctx.fillRect(x, screenY, kerbW, stripeH);
+    }
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillRect(x + kerbW - 1, 0, 1, CANVAS_H); // edge
+  }
+
+  drawKerb(0);
+  drawKerb(CANVAS_W - kerbW);
+
+  // Lane dividers — thick moving white road markings
+  ctx.strokeStyle = '#C8C8C0';
+  ctx.lineWidth = kerbW;
+  ctx.setLineDash([48, 128]);
+  ctx.lineDashOffset = -kerbOffset;
   for (let i=1; i<3; i++) {
     const x = i * laneWidth;
     ctx.beginPath();
@@ -1504,6 +1528,9 @@ let lastFrameTime = 0;
 function gameLoop(time) {
   const dt = Math.min((time - lastFrameTime) / 1000, 0.05);
   lastFrameTime = time;
+
+  // Kerb scrolls at ingredient speed
+  kerbOffset += dt * LEVELS[getLevel(streak) - 1].speed;
 
   if (state === STATE.PLAYING) {
     // Update visual effects (basket bounce/shake)
