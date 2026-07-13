@@ -120,11 +120,17 @@
       gap: 1rem;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
-      scrollbar-width: none;
       padding: 0.25rem 0.25rem 0.5rem;
       -webkit-overflow-scrolling: touch;
     }
-    .carousel::-webkit-scrollbar { display: none; }
+    .carousel::-webkit-scrollbar { height: 6px; }
+    .carousel::-webkit-scrollbar-track { background: transparent; }
+    .carousel::-webkit-scrollbar-thumb { background: #332F2A; border-radius: 3px; }
+    .carousel::-webkit-scrollbar-thumb:hover { background: #4A453E; }
+    @media (max-width: 768px) {
+      .carousel { scrollbar-width: none; }
+      .carousel::-webkit-scrollbar { display: none; }
+    }
     .carousel-card {
       flex: 0 0 280px;
       scroll-snap-align: start;
