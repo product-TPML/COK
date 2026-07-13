@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Cuisines of Karnataka</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #131110;
+      --surface: #1E1B18;
+      --surface-hover: #2A2622;
+      --border: #332F2A;
+      --text: #F0EDE8;
+      --text-muted: #7A756E;
+      --accent: #F5C518;
+      --accent-secondary: #D4542E;
+      --radius: 12px;
+    }
+    html { height: 100%; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100%;
+      padding-bottom: 72px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 2rem;
+    }
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+    .page-header h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 480px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 768px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .page { padding: 2rem 2rem 3rem; }
+    }
+    @media (min-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .gallery-item:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+    .gallery-item-bg {
+      position: absolute;
+      inset: -15px;
+      background-size: cover;
+      background-position: center;
+      filter: blur(16px);
+      opacity: 0.55;
+      transition: opacity 0.3s;
+    }
+    .gallery-item:hover .gallery-item-bg {
+      opacity: 0.7;
+    }
+    .gallery-item img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      padding: 2px;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s, visibility 0.25s;
+      padding: 1rem;
+      cursor: pointer;
+    }
+    .lightbox.open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+      cursor: default;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body>
+
+<div id="nav-header"></div>
+
+<div class="page">
+  <div class="page-header">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 11-1.296-1.296a2.4 2.4 0 0 0-3.408 0L11 16"/><path d="M4 8a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2"/><rect x="8" y="2" width="14" height="14" rx="2"/></svg>
+    <h1>Gallery</h1>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<div id="nav-bottom"></div>
+
+<script src="nav.js"></script>
+<script>
+  injectNav('gallery');
+
+  var images = [
+    "20-hubli-18-Cuisines of Karnataka.JPG",
+    "20-hubli-19-Cuisines of Karnataka.JPG",
+    "20-hubli-2-Cuisines of Karnataka.JPG",
+    "BNG31 FOOD award 05.jpg",
+    "DSC_0790.jpg",
+    "MNG 22 Participants (2).jpg",
+    "MNG 22 Winners (1).jpg",
+    "MYS23 - PV - Cuisines Karnataka 1.jpg",
+    "MYS23 - PV - Cuisines Karnataka 17.jpg",
+    "MYS23 - PV - Cuisines Karnataka 23.jpg",
+    "MYS23 - PV - Cuisines Karnataka 31.jpg",
+    "MYS23 - PV - Cuisines Karnataka 32.jpg",
+    "MYS23 - PV - Cuisines Karnataka 35.jpg",
+    "MYS23 - PV - Cuisines Karnataka 38.jpg",
+    "MYS23 - PV - Cuisines Karnataka 49.jpg",
+    "MYS23 - PV - Cuisines Karnataka 54.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 1.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 25.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 28.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 3.jpg"
+  ];
+
+  var base = '../Cookery Contest/';
+  var grid = document.getElementById('galleryGrid');
+  var lightbox = document.getElementById('lightbox');
+  var lightboxImg = document.getElementById('lightboxImg');
+  var lightboxClose = document.getElementById('lightboxClose');
+
+  images.forEach(function(name) {
+    var src = base + encodeURI(name);
+    var item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.innerHTML = '<div class="gallery-item-bg" style="background-image:url('+src+')"></div><img src="'+src+'" alt="" loading="lazy">';
+    item.addEventListener('click', function() {
+      lightboxImg.src = src;
+      lightbox.classList.add('open');
+    });
+    grid.appendChild(item);
+  });
+
+  lightbox.addEventListener('click', function() { lightbox.classList.remove('open'); });
+  lightboxClose.addEventListener('click', function(e) { e.stopPropagation(); lightbox.classList.remove('open'); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+</script>
+</body>
+</html>
