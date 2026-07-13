@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
 <style>
 :root {
   --bg: #131110;
@@ -255,6 +256,14 @@ html, body { margin:0; padding:0; overflow:hidden; height:100%; background:var(-
 </style>
 </head>
 <body>
+<div id="nav-header"></div>
+
+<style>
+#game { top:75px; height:calc(100dvh - 75px); }
+@media (min-width:768px) { #game { top:117px; height:calc(100dvh - 117px); } }
+.site-header { position:fixed; top:0; left:0; right:0; z-index:100; }
+</style>
+
 <div id="game">
   <div id="game-inner">
     <canvas id="playCanvas"></canvas>
@@ -1638,5 +1647,9 @@ init();
 
 })();
 </script>
+
+<div id="nav-bottom"></div>
+<script src="nav.js"></script>
+<script>injectNav('game');</script>
 </body>
 </html>
