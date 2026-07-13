@@ -125,6 +125,39 @@
       transition: background 0.2s;
     }
     .lightbox-close:hover { background: rgba(255,255,255,0.2); }
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 2;
+    }
+    .lightbox-arrow:hover { background: rgba(255,255,255,0.25); }
+    .lightbox-arrow.prev { left: 1rem; }
+    .lightbox-arrow.next { right: 1rem; }
+    .lightbox-counter {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.6);
+      background: rgba(0,0,0,0.5);
+      padding: 4px 12px;
+      border-radius: 20px;
+      z-index: 2;
+    }
   </style>
 </head>
 <body>
@@ -141,7 +174,10 @@
 
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <button class="lightbox-arrow prev" id="lbPrev">&#8249;</button>
   <img id="lightboxImg" src="" alt="">
+  <button class="lightbox-arrow next" id="lbNext">&#8250;</button>
+  <div class="lightbox-counter" id="lbCounter"></div>
 </div>
 
 <div id="nav-bottom"></div>
@@ -178,22 +214,51 @@
   var lightbox = document.getElementById('lightbox');
   var lightboxImg = document.getElementById('lightboxImg');
   var lightboxClose = document.getElementById('lightboxClose');
+  var lbPrev = document.getElementById('lbPrev');
+  var lbNext = document.getElementById('lbNext');
+  var lbCounter = document.getElementById('lbCounter');
+  var currentIdx = 0;
 
-  images.forEach(function(name) {
+  function openLightbox(idx) {
+    currentIdx = idx;
+    var src = base + encodeURI(images[idx]);
+    lightboxImg.src = src;
+    lbCounter.textContent = (idx + 1) + ' / ' + images.length;
+    lightbox.classList.add('open');
+  }
+
+  function nextImage() { openLightbox((currentIdx + 1) % images.length); }
+  function prevImage() { openLightbox((currentIdx - 1 + images.length) % images.length); }
+
+  images.forEach(function(name, idx) {
     var src = base + encodeURI(name);
     var item = document.createElement('div');
     item.className = 'gallery-item';
-    item.innerHTML = '<div class="gallery-item-bg" style="background-image:url('+src+')"></div><img src="'+src+'" alt="" loading="lazy">';
-    item.addEventListener('click', function() {
-      lightboxImg.src = src;
-      lightbox.classList.add('open');
-    });
+    item.innerHTML = '<div class="gallery-item-bg" style="background-image:url(\''+src+'\')"></div><img src="'+src+'" alt="" loading="lazy">';
+    item.addEventListener('click', function() { openLightbox(idx); });
     grid.appendChild(item);
   });
 
-  lightbox.addEventListener('click', function() { lightbox.classList.remove('open'); });
+  lightbox.addEventListener('click', function(e) { if (e.target === lightbox) lightbox.classList.remove('open'); });
   lightboxClose.addEventListener('click', function(e) { e.stopPropagation(); lightbox.classList.remove('open'); });
-  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+  lbPrev.addEventListener('click', function(e) { e.stopPropagation(); prevImage(); });
+  lbNext.addEventListener('click', function(e) { e.stopPropagation(); nextImage(); });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') lightbox.classList.remove('open');
+    if (e.key === 'ArrowLeft' && lightbox.classList.contains('open')) prevImage();
+    if (e.key === 'ArrowRight' && lightbox.classList.contains('open')) nextImage();
+  });
+
+  /* Touch swipe */
+  var touchStartX = 0;
+  lightbox.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+  lightbox.addEventListener('touchend', function(e) {
+    if (!lightbox.classList.contains('open')) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) {
+      if (dx < 0) nextImage(); else prevImage();
+    }
+  }, { passive: true });
 </script>
 </body>
 </html>
