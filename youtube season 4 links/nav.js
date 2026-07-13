@@ -44,7 +44,19 @@ function injectNav(active) {
         </nav>\
       </div>\
     </div>\
-  </header>';
+  </header>\
+  <div class="sponsor-bar">\
+    <div class="sponsor-track">\
+      <a href="https://www.freedomhealthyoil.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/freedom.png" alt="Freedom Healthy Oil"></a>\
+      <a href="https://iocl.com/pages/indane-cooking-gas-overview" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/lpg.png" alt="Indane"></a>\
+      <a href="https://ttkprestige.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/prestige.png" alt="Prestige"></a>\
+      <a href="https://www.bhimagold.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/bhima.png" alt="Bhima Gold"></a>\
+      <a href="https://www.lays.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/lays.png" alt="Lays"></a>\
+      <a href="https://www.sbicard.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/sbi.png" alt="SBI Card"></a>\
+      <a href="https://vencobbchicken.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/vencobb.png" alt="Vencobb"></a>\
+      <a href="https://www.ecocrystal.in/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/eco-crystal.png" alt="Eco Crystal"></a>\
+    </div>\
+  </div>';
 
   var bottomHTML = '<nav class="bottom-nav">\
     <div class="bottom-nav-inner">\
