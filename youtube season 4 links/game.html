@@ -1338,7 +1338,7 @@ function render() {
   ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
 
   // Road surface (full canvas)
-  ctx.fillStyle = '#2a2824';
+  ctx.fillStyle = '#1E1C1A';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
   // Kerb — left and right edges with smoothly scrolling yellow/white stripes
@@ -1364,7 +1364,7 @@ function render() {
   drawKerb(CANVAS_W - kerbW);
 
   // Lane dividers — thick moving white road markings
-  ctx.strokeStyle = '#C8C8C0';
+  ctx.strokeStyle = '#8A8A84';
   ctx.lineWidth = kerbW;
   ctx.setLineDash([48, 128]);
   ctx.lineDashOffset = -kerbOffset;
@@ -1376,14 +1376,6 @@ function render() {
     ctx.stroke();
   }
   ctx.setLineDash([]);
-
-  // Catch line (subtle)
-  ctx.strokeStyle = 'rgba(245,197,24,0.12)';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(0, catchLineY);
-  ctx.lineTo(CANVAS_W, catchLineY);
-  ctx.stroke();
 
   // Draw tokens
   const now = performance.now();
@@ -1529,10 +1521,9 @@ function gameLoop(time) {
   const dt = Math.min((time - lastFrameTime) / 1000, 0.05);
   lastFrameTime = time;
 
-  // Kerb scrolls at ingredient speed
-  kerbOffset += dt * LEVELS[getLevel(streak) - 1].speed;
-
   if (state === STATE.PLAYING) {
+    // Kerb and lane scroll
+    kerbOffset += dt * LEVELS[getLevel(streak) - 1].speed;
     // Update visual effects (basket bounce/shake)
     updateVisualEffects(dt);
 
