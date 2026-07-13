@@ -444,7 +444,7 @@ function loadSVGs() {
 
 function ingredientIconHTML(ing) {
   var p = SVG_INGREDIENTS[ing];
-  if (p) return '<img src="'+p+'" alt="" style="width:26px;height:26px;vertical-align:middle">';
+  if (p) return '<img src="'+p+'" alt="" style="width:37px;height:37px;vertical-align:middle">';
   return INGREDIENT_EMOJI[ing] || '';
 }
 
@@ -1386,30 +1386,12 @@ function render() {
     const finalX = drawX, finalY = drawY, finalW = drawW, finalH = drawH;
     const cornerR = token.scale !== undefined ? Math.max(1, r * (drawW / w)) : r;
 
-    // Card bg
-    ctx.fillStyle = '#1E1B18';
-    ctx.beginPath();
-    roundRect(ctx, finalX, finalY, finalW, finalH, Math.min(cornerR, finalW/2, finalH/2));
-    ctx.fill();
-
-    // Border
-    if (token.flashTimer !== undefined && token.flashTimer > 0) {
-      ctx.strokeStyle = token.flashColor || '#332F2A';
-      ctx.lineWidth = 2.5;
-    } else {
-      ctx.strokeStyle = '#332F2A';
-      ctx.lineWidth = 1.5;
-    }
-    ctx.beginPath();
-    roundRect(ctx, finalX, finalY, finalW, finalH, Math.min(cornerR, finalW/2, finalH/2));
-    ctx.stroke();
-
     // Label: SVG or emoji on top, text below
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     const svgImg = INGREDIENT_SVG_IMAGES[token.ingredient];
     if (svgImg && svgImg.complete && svgImg.naturalWidth > 0) {
-      ctx.drawImage(svgImg, finalX + finalW/2 - 21, finalY + finalH/2 - 21, 42, 42);
+      ctx.drawImage(svgImg, finalX + finalW/2 - 30, finalY + finalH/2 - 30, 60, 60);
     } else if (typeof INGREDIENT_ICONS !== 'undefined' && INGREDIENT_ICONS[token.ingredient]) {
       drawPixelIcon(ctx, token.ingredient, finalX + finalW/2 - 12, finalY + finalH/2 - 18, 1);
     } else {
