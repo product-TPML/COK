@@ -105,14 +105,8 @@ function injectNav(active) {
       var items = outer.querySelectorAll('.sponsor-item');
       var current = outer.querySelector('.sponsor-item.active');
       var next = current && current.nextElementSibling ? current.nextElementSibling : items[0];
-      var currentImg = current.querySelector('img');
-      var nextImg = next.querySelector('img');
-      if (currentImg) currentImg.style.opacity = '0';
-      setTimeout(function() {
-        current.classList.remove('active');
-        next.classList.add('active');
-        if (nextImg) { nextImg.style.opacity = '0'; setTimeout(function() { nextImg.style.opacity = '1'; }, 50); }
-      }, 1000);
+      current.classList.remove('active');
+      next.classList.add('active');
     }
     setInterval(function() { rotateSponsor('sponsorCarousel1'); }, 3000);
     setInterval(function() { rotateSponsor('sponsorCarousel2'); }, 3000);
