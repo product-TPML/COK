@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cuisines of Karnataka</title>
+  <title>Recipes — Cuisines of Karnataka</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -1072,27 +1072,65 @@
 <body>
 <div id="nav-header"></div>
 
-  <section class="hero">
-    <div class="hero-badge">Season 5</div>
-    <h1>Cuisines of <span>Karnataka</span></h1>
-    <p>Cuisines of Karnataka returns with its fifth season, celebrating the rich culinary heritage, diverse flavours, and timeless food traditions of Karnataka. Bringing together culture and storytelling, the platform showcases the state's iconic recipes and the people behind them. This season features 15 exclusive recipe videos curated and prepared by renowned celebrity chefs, while introducing the exciting concept of food pairing to highlight combinations that elevate the authentic flavours of Karnataka's regional cuisines. The journey continues right here on this microsite, your destination to explore recipes, watch videos, participate in contests, engage with interactive experiences, and discover the unique tastes that make Karnataka's cuisine truly unforgettable.</p>
-  </section>
+  <div class="container">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="#F5C518" stroke="#F5C518" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"/><path d="m4 8 16-4"/><path d="m8.86 6.78-.45-1.81a2 2 0 0 1 1.45-2.43l1.94-.48a2 2 0 0 1 2.43 1.46l.45 1.8"/></svg>
+      Recipes
+    </h1>
+    <nav class="season-tabs" id="season-tabs"></nav>
 
-  <section class="featured" id="featured">
-    <div class="featured-header">
-      <h2>Season 4 <small>Highlights</small></h2>
+    <div class="grid" id="video-grid"></div>
+
+    <footer>
+      <p>Playlist: PL4tXltXT0TCWhrTT31fLGpTr2VoHHHov5</p>
+    </footer>
+  </div>
+
+  <button class="jump-fab" id="jump-fab" aria-label="Jump to episode">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3.01" y2="6"></line>
+      <line x1="3" y1="12" x2="3.01" y2="12"></line>
+      <line x1="3" y1="18" x2="3.01" y2="18"></line>
+    </svg>
+  </button>
+
+  <div class="jump-overlay" id="jump-overlay"></div>
+
+  <div class="jump-panel" id="jump-panel">
+    <div class="jump-panel-header">
+      <h3>Jump to Episode</h3>
+      <button class="jump-panel-close" id="jump-close" aria-label="Close panel">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
-    <div class="carousel" id="featuredCarousel"></div>
-    <div class="view-more-wrap">
-      <a href="recipes.html" class="view-more-btn">View All Recipes <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+    <div class="jump-search">
+      <span class="jump-search-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </span>
+      <input type="text" id="jump-search-input" placeholder="Search episodes..." autocomplete="off">
+      <button class="jump-search-clear" id="jump-search-clear" aria-label="Clear search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
-  </section>
+    <div class="jump-panel-body" id="jump-panel-body"></div>
+  </div>
 
 <div id="nav-bottom"></div>
 
   <script src="nav.js"></script>
   <script>
-    injectNav('home');
+    injectNav('recipes');
 
     const seasons = [
       {
@@ -1181,28 +1219,204 @@
       }
     ];
 
-    /* Featured carousel */
-    function buildFeaturedCarousel() {
-      var container = document.getElementById('featuredCarousel');
-      if (!container || !seasons || !seasons[0]) return;
-      var s4 = seasons[0];
-      s4.videos.forEach(function(video) {
-        const card = document.createElement('div');
-        card.className = 'carousel-card';
-        card.innerHTML = `
-          <img class="thumb" src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" alt="" loading="lazy">
-          <div class="info">
-            <div class="ep">Episode ${video.episode}</div>
-            <div class="title">${video.title}</div>
+    const grid = document.getElementById('video-grid');
+    const tabsContainer = document.getElementById('season-tabs');
+    const footerText = document.querySelector('footer p');
+
+    let currentSeason = 0;
+
+    function buildCard(video, index, season) {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.style.setProperty('--i', index);
+
+      const playlistIndex = index + 1;
+      const embedUrl = `https://www.youtube.com/embed/${video.id}?autoplay=1&list=${season.playlist}&index=${playlistIndex}`;
+      const thumbUrl = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+
+      card.innerHTML = `
+        <div class="video-wrapper">
+          <div class="poster" role="button" aria-label="Play Episode ${video.episode}">
+            <img src="${thumbUrl}" alt="Episode ${video.episode} thumbnail" loading="lazy">
+            <div class="play-overlay">
+              <div class="play-btn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+            <span class="loading-hint">Click to load video</span>
           </div>
-        `;
-        card.addEventListener('click', function() {
-          window.open('https://www.youtube.com/embed/'+video.id+'?autoplay=1&list='+s4.playlist+'&index='+video.episode, '_blank');
+          <div class="player"></div>
+        </div>
+        <div class="card-info">
+          <div class="episode-label">Episode ${video.episode}</div>
+          <div class="episode-title">${video.title}</div>
+        </div>
+      `;
+
+      const poster = card.querySelector('.poster');
+      const playerContainer = card.querySelector('.player');
+
+      poster.addEventListener('click', () => {
+        if (card.classList.contains('active')) return;
+
+        // stop any previously playing video
+        const prevActive = grid.querySelector('.card.active');
+        if (prevActive) {
+          prevActive.classList.remove('active');
+          const prevPlayer = prevActive.querySelector('.player');
+          if (prevPlayer) prevPlayer.innerHTML = '';
+        }
+
+        card.classList.add('active');
+
+        const iframe = document.createElement('iframe');
+        iframe.setAttribute('src', embedUrl);
+        iframe.setAttribute('title', `YouTube video player - Episode ${video.episode}`);
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        iframe.setAttribute('allowfullscreen', '');
+
+        playerContainer.appendChild(iframe);
+      });
+
+      return card;
+    }
+
+    function renderSeason(index, onDone) {
+      const season = seasons[index];
+
+      document.title = `Season ${season.number} — Complete Collection`;
+      footerText.textContent = `Playlist: ${season.playlist}`;
+
+      tabsContainer.querySelectorAll('.season-tab').forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
+
+      grid.classList.add('switching');
+
+      setTimeout(() => {
+        grid.innerHTML = '';
+        season.videos.forEach((video, i) => {
+          grid.appendChild(buildCard(video, i, season));
         });
-        container.appendChild(card);
+        grid.classList.remove('switching');
+        if (onDone) onDone();
+      }, 220);
+    }
+
+    seasons.forEach((s, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'season-tab';
+      btn.textContent = `Season ${s.number}`;
+      btn.addEventListener('click', () => {
+        if (i === currentSeason) return;
+        currentSeason = i;
+        renderSeason(i);
+      });
+      tabsContainer.appendChild(btn);
+    });
+
+    renderSeason(0);
+
+    const jumpFab = document.getElementById('jump-fab');
+    const jumpOverlay = document.getElementById('jump-overlay');
+    const jumpPanel = document.getElementById('jump-panel');
+    const jumpClose = document.getElementById('jump-close');
+    const jumpPanelBody = document.getElementById('jump-panel-body');
+    const jumpSearchInput = document.getElementById('jump-search-input');
+    const jumpSearchClear = document.getElementById('jump-search-clear');
+
+    let jumpEpisodeItems = [];
+
+    function highlightCard(card) {
+      if (!card) return;
+      card.classList.remove('highlight');
+      void card.offsetWidth;
+      card.classList.add('highlight');
+    }
+
+    function buildJumpPanel() {
+      jumpPanelBody.innerHTML = '';
+      jumpEpisodeItems = [];
+      seasons.forEach(season => {
+        const group = document.createElement('div');
+        group.className = 'jump-season-group';
+
+        const label = document.createElement('div');
+        label.className = 'jump-season-label';
+        label.textContent = `Season ${season.number}`;
+        group.appendChild(label);
+
+        season.videos.forEach((video, idx) => {
+          const item = document.createElement('div');
+          item.className = 'jump-episode';
+          item.dataset.title = video.title.toLowerCase();
+          item.innerHTML = `
+            <span class="jump-episode-num">${video.episode}</span>
+            <span class="jump-episode-title">${video.title}</span>
+          `;
+          item.addEventListener('click', () => {
+            closeJumpPanel();
+            const seasonIdx = seasons.indexOf(season);
+            if (seasonIdx !== currentSeason) {
+              currentSeason = seasonIdx;
+              renderSeason(seasonIdx, () => {
+                const card = grid.children[idx];
+                if (card) { card.scrollIntoView({ behavior: 'smooth', block: 'start' }); highlightCard(card); }
+              });
+            } else {
+              const card = grid.children[idx];
+              if (card) { card.scrollIntoView({ behavior: 'smooth', block: 'start' }); highlightCard(card); }
+            }
+          });
+          group.appendChild(item);
+          jumpEpisodeItems.push({ item, group });
+        });
+
+        jumpPanelBody.appendChild(group);
       });
     }
-    buildFeaturedCarousel();
+
+    function filterJumpPanel(query) {
+      const q = query.trim().toLowerCase();
+      jumpSearchClear.classList.toggle('visible', q.length > 0);
+
+      jumpEpisodeItems.forEach(({ item, group }) => {
+        const matches = !q || item.dataset.title.includes(q);
+        item.style.display = matches ? '' : 'none';
+      });
+
+      jumpPanelBody.querySelectorAll('.jump-season-group').forEach(group => {
+        const visible = group.querySelectorAll('.jump-episode:not([style*="display: none"])').length > 0;
+        group.style.display = visible ? '' : 'none';
+      });
+    }
+
+    function openJumpPanel() {
+      jumpOverlay.classList.add('open');
+      jumpPanel.classList.add('open');
+      jumpSearchInput.focus();
+    }
+
+    function closeJumpPanel() {
+      jumpOverlay.classList.remove('open');
+      jumpPanel.classList.remove('open');
+      jumpSearchInput.value = '';
+      filterJumpPanel('');
+    }
+
+    jumpFab.addEventListener('click', openJumpPanel);
+    jumpClose.addEventListener('click', closeJumpPanel);
+    jumpOverlay.addEventListener('click', closeJumpPanel);
+    jumpSearchInput.addEventListener('input', (e) => filterJumpPanel(e.target.value));
+    jumpSearchClear.addEventListener('click', () => {
+      jumpSearchInput.value = '';
+      filterJumpPanel('');
+      jumpSearchInput.focus();
+    });
+
+    buildJumpPanel();
   </script>
 </body>
 </html>
