@@ -161,6 +161,7 @@
     .carousel-card .player iframe { width:100%; height:100%; border:none; display:block; }
     .carousel-card.active .poster { opacity:0; visibility:hidden; pointer-events:none; }
     .carousel-card.active .player { opacity:1; visibility:visible; }
+    .carousel-card .thumb { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; background:var(--surface); }
     .carousel-card .info .ep {
       font-size: 0.7rem;
       font-weight: 600;
@@ -228,6 +229,16 @@
     <div class="carousel" id="featuredCarousel"></div>
     <div class="view-more-wrap">
       <a href="recipes.html" class="view-more-btn">View All Recipes <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+    </div>
+  </section>
+
+  <section class="featured" id="featuredGallery">
+    <div class="featured-header">
+      <h2>Gallery <small>Contest Moments</small></h2>
+    </div>
+    <div class="carousel" id="galleryCarousel"></div>
+    <div class="view-more-wrap">
+      <a href="gallery.html" class="view-more-btn">View All Photos <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
     </div>
   </section>
 
@@ -354,6 +365,34 @@
       });
     }
     buildFeaturedCarousel();
+
+    /* Gallery carousel */
+    function buildGalleryCarousel() {
+      var container = document.getElementById('galleryCarousel');
+      if (!container) return;
+      var imgs = [
+        "20-hubli-18-Cuisines of Karnataka.JPG","20-hubli-19-Cuisines of Karnataka.JPG",
+        "20-hubli-2-Cuisines of Karnataka.JPG","BNG31 FOOD award 05.jpg","DSC_0790.jpg",
+        "MNG 22 Participants (2).jpg","MNG 22 Winners (1).jpg",
+        "MYS23 - PV - Cuisines Karnataka 1.jpg","MYS23 - PV - Cuisines Karnataka 17.jpg",
+        "MYS23 - PV - Cuisines Karnataka 23.jpg","MYS23 - PV - Cuisines Karnataka 31.jpg",
+        "MYS23 - PV - Cuisines Karnataka 32.jpg","MYS23 - PV - Cuisines Karnataka 35.jpg",
+        "MYS23 - PV - Cuisines Karnataka 38.jpg","MYS23 - PV - Cuisines Karnataka 49.jpg",
+        "MYS23 - PV - Cuisines Karnataka 54.jpg",
+        "MYS30 - PV-DH Karunadu Saviyuta 1.jpg","MYS30 - PV-DH Karunadu Saviyuta 25.jpg",
+        "MYS30 - PV-DH Karunadu Saviyuta 28.jpg","MYS30 - PV-DH Karunadu Saviyuta 3.jpg"
+      ];
+      var base = '../Cookery Contest/';
+      imgs.forEach(function(name) {
+        var src = base + encodeURI(name);
+        var card = document.createElement('div');
+        card.className = 'carousel-card';
+        card.innerHTML = '<img class="thumb" src="'+src+'" alt="" loading="lazy">';
+        card.addEventListener('click', function() { window.location.href = 'gallery.html'; });
+        container.appendChild(card);
+      });
+    }
+    buildGalleryCarousel();
   </script>
 </body>
 </html>
