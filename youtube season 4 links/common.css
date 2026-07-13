@@ -36,7 +36,7 @@ body::-webkit-scrollbar-thumb:hover { background: #4A453E; }
 /* Site Header */
 .site-header { font-family: 'Sora', sans-serif; position: relative; z-index: 50; }
 
-.header-top { background: #A5161C; height: 75px; position: relative; }
+.header-top { background: #be1622; height: 75px; position: relative; }
 
 .header-top-inner {
   max-width: 1440px; margin: 0 auto; height: 100%;
@@ -115,7 +115,7 @@ body::-webkit-scrollbar-thumb:hover { background: #4A453E; }
 
 .mobile-nav-panel {
   position: absolute; top: 0; right: 0; width: 280px; max-width: 80vw;
-  height: 100%; background: #A5161C; padding: 1.5rem;
+  height: 100%; background: #be1622; padding: 1.5rem;
   transform: translateX(100%); transition: transform 0.3s ease;
 }
 .mobile-nav.open .mobile-nav-panel { transform: translateX(0); }
@@ -143,7 +143,7 @@ body::-webkit-scrollbar-thumb:hover { background: #4A453E; }
   .bottom-nav {
     display: flex; position: fixed; bottom: 0; left: 0; right: 0;
     height: 64px;
-    background: linear-gradient(180deg, #A5161C 0%, #8C1217 100%);
+    background: linear-gradient(180deg, #be1622 0%, #8C1217 100%);
     z-index: 90; box-shadow: 0 -3px 12px rgba(0,0,0,0.3);
   }
   .bottom-nav-inner {
