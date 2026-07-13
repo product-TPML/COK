@@ -46,15 +46,29 @@ function injectNav(active) {
     </div>\
   </header>\
   <div class="sponsor-bar">\
-    <div class="sponsor-track">\
-      <a href="https://www.freedomhealthyoil.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/freedom.png" alt="Freedom Healthy Oil"></a>\
-      <a href="https://iocl.com/pages/indane-cooking-gas-overview" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/lpg.png" alt="Indane"></a>\
-      <a href="https://ttkprestige.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/prestige.png" alt="Prestige"></a>\
-      <a href="https://www.bhimagold.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/bhima.png" alt="Bhima Gold"></a>\
-      <a href="https://www.lays.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/lays.png" alt="Lays"></a>\
-      <a href="https://www.sbicard.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/sbi.png" alt="SBI Card"></a>\
-      <a href="https://vencobbchicken.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/vencobb.png" alt="Vencobb"></a>\
-      <a href="https://www.ecocrystal.in/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/eco-crystal.png" alt="Eco Crystal"></a>\
+    <div class="sponsor-container">\
+      <div class="sponsor-card">\
+        <a href="https://www.freedomhealthyoil.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/freedom.png" alt="Presents"></a>\
+      </div>\
+      <div class="sponsor-slider">\
+        <div id="sponsorCarousel1" class="sponsor-carousel">\
+          <div class="sponsor-carousel-inner">\
+            <div class="sponsor-item active"><a href="https://iocl.com/pages/indane-cooking-gas-overview" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/lpg.png" alt="Indane"></a></div>\
+            <div class="sponsor-item"><a href="https://ttkprestige.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/prestige.png" alt="Prestige"></a></div>\
+            <div class="sponsor-item"><a href="https://www.bhimagold.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/bhima.png" alt="Bhima Gold"></a></div>\
+            <div class="sponsor-item"><a href="https://www.lays.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/lays.png" alt="Lays"></a></div>\
+          </div>\
+        </div>\
+      </div>\
+      <div class="sponsor-slider">\
+        <div id="sponsorCarousel2" class="sponsor-carousel">\
+          <div class="sponsor-carousel-inner">\
+            <div class="sponsor-item active"><a href="https://www.sbicard.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/sbi.png" alt="SBI Card"></a></div>\
+            <div class="sponsor-item"><a href="https://vencobbchicken.com/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/vencobb.png" alt="Vencobb"></a></div>\
+            <div class="sponsor-item"><a href="https://www.ecocrystal.in/" target="_blank" rel="noopener"><img src="https://tpml-sites.s3.ap-south-1.amazonaws.com/images/eco-crystal.png" alt="Eco Crystal"></a></div>\
+          </div>\
+        </div>\
+      </div>\
     </div>\
   </div>';
 
@@ -83,5 +97,24 @@ function injectNav(active) {
     if (mn) mn.addEventListener('click', function(e) { if (e.target === mn) close(); });
     if (mmb) mmb.addEventListener('click', open);
     if (dmb) dmb.addEventListener('click', open);
+
+    /* Sponsor carousels */
+    function rotateSponsor(id) {
+      var outer = document.getElementById(id);
+      if (!outer) return;
+      var items = outer.querySelectorAll('.sponsor-item');
+      var current = outer.querySelector('.sponsor-item.active');
+      var next = current && current.nextElementSibling ? current.nextElementSibling : items[0];
+      var currentImg = current.querySelector('img');
+      var nextImg = next.querySelector('img');
+      if (currentImg) currentImg.style.opacity = '0';
+      setTimeout(function() {
+        current.classList.remove('active');
+        next.classList.add('active');
+        if (nextImg) { nextImg.style.opacity = '0'; setTimeout(function() { nextImg.style.opacity = '1'; }, 50); }
+      }, 1000);
+    }
+    setInterval(function() { rotateSponsor('sponsorCarousel1'); }, 3000);
+    setInterval(function() { rotateSponsor('sponsorCarousel2'); }, 3000);
   }, 0);
 }
