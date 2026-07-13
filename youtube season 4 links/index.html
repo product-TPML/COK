@@ -198,6 +198,35 @@
     .view-more-btn:hover {
       background: rgba(245,197,24,0.1);
     }
+    .lightbox {
+      position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.92);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; visibility:hidden; transition:opacity .25s,visibility .25s;
+      padding:1rem; cursor:pointer;
+    }
+    .lightbox.open { opacity:1; visibility:visible; }
+    .lightbox img { max-width:100%; max-height:100%; object-fit:contain; border-radius:6px; cursor:default; }
+    .lightbox-close {
+      position:absolute; top:1rem; right:1rem; width:40px; height:40px; border:none;
+      background:rgba(255,255,255,0.1); border-radius:50%; color:#fff; font-size:1.5rem;
+      cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:3;
+    }
+    .lightbox-close:hover { background:rgba(255,255,255,0.2); }
+    .lightbox-arrow {
+      position:absolute; top:50%; transform:translateY(-50%);
+      width:44px; height:44px; border:none;
+      background:rgba(255,255,255,0.1); border-radius:50%;
+      color:#fff; font-size:1.4rem; cursor:pointer; z-index:3;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .lightbox-arrow:hover { background:rgba(255,255,255,0.25); }
+    .lightbox-arrow.prev { left:1rem; }
+    .lightbox-arrow.next { right:1rem; }
+    .lightbox-counter {
+      position:absolute; bottom:1rem; left:50%; transform:translateX(-50%);
+      font-size:.8rem; color:rgba(255,255,255,0.6);
+      background:rgba(0,0,0,0.5); padding:4px 12px; border-radius:20px; z-index:3;
+    }
     @media (min-width: 640px) {
       .featured { padding: 1rem 2rem 2.5rem; }
       .featured-header h2 { font-size: 1.4rem; }
@@ -241,6 +270,14 @@
       <a href="gallery.html" class="view-more-btn">View All Photos <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
     </div>
   </section>
+
+<div class="lightbox" id="galleryLightbox">
+  <button class="lightbox-close" id="glbClose">&times;</button>
+  <button class="lightbox-arrow prev" id="glbPrev">&#8249;</button>
+  <img id="glbImg" src="" alt="">
+  <button class="lightbox-arrow next" id="glbNext">&#8250;</button>
+  <div class="lightbox-counter" id="glbCounter"></div>
+</div>
 
 <div id="nav-bottom"></div>
 
@@ -367,32 +404,63 @@
     buildFeaturedCarousel();
 
     /* Gallery carousel */
+    var galleryImages = [
+      "20-hubli-18-Cuisines of Karnataka.JPG","20-hubli-19-Cuisines of Karnataka.JPG",
+      "20-hubli-2-Cuisines of Karnataka.JPG","BNG31 FOOD award 05.jpg","DSC_0790.jpg",
+      "MNG 22 Participants (2).jpg","MNG 22 Winners (1).jpg",
+      "MYS23 - PV - Cuisines Karnataka 1.jpg","MYS23 - PV - Cuisines Karnataka 17.jpg",
+      "MYS23 - PV - Cuisines Karnataka 23.jpg","MYS23 - PV - Cuisines Karnataka 31.jpg",
+      "MYS23 - PV - Cuisines Karnataka 32.jpg","MYS23 - PV - Cuisines Karnataka 35.jpg",
+      "MYS23 - PV - Cuisines Karnataka 38.jpg","MYS23 - PV - Cuisines Karnataka 49.jpg",
+      "MYS23 - PV - Cuisines Karnataka 54.jpg",
+      "MYS30 - PV-DH Karunadu Saviyuta 1.jpg","MYS30 - PV-DH Karunadu Saviyuta 25.jpg",
+      "MYS30 - PV-DH Karunadu Saviyuta 28.jpg","MYS30 - PV-DH Karunadu Saviyuta 3.jpg"
+    ];
+    var glbBase = '../Cookery Contest/';
+    var glbIdx = 0;
+    var glb = document.getElementById('galleryLightbox');
+    var glbImg = document.getElementById('glbImg');
+    var glbClose = document.getElementById('glbClose');
+    var glbPrev = document.getElementById('glbPrev');
+    var glbNext = document.getElementById('glbNext');
+    var glbCounter = document.getElementById('glbCounter');
+    function openGLB(idx) {
+      glbIdx = idx;
+      glbImg.src = glbBase + encodeURI(galleryImages[idx]);
+      glbCounter.textContent = (idx+1)+' / '+galleryImages.length;
+      glb.classList.add('open');
+    }
+    function prevGLB() { openGLB((glbIdx-1+galleryImages.length)%galleryImages.length); }
+    function nextGLB() { openGLB((glbIdx+1)%galleryImages.length); }
     function buildGalleryCarousel() {
       var container = document.getElementById('galleryCarousel');
       if (!container) return;
-      var imgs = [
-        "20-hubli-18-Cuisines of Karnataka.JPG","20-hubli-19-Cuisines of Karnataka.JPG",
-        "20-hubli-2-Cuisines of Karnataka.JPG","BNG31 FOOD award 05.jpg","DSC_0790.jpg",
-        "MNG 22 Participants (2).jpg","MNG 22 Winners (1).jpg",
-        "MYS23 - PV - Cuisines Karnataka 1.jpg","MYS23 - PV - Cuisines Karnataka 17.jpg",
-        "MYS23 - PV - Cuisines Karnataka 23.jpg","MYS23 - PV - Cuisines Karnataka 31.jpg",
-        "MYS23 - PV - Cuisines Karnataka 32.jpg","MYS23 - PV - Cuisines Karnataka 35.jpg",
-        "MYS23 - PV - Cuisines Karnataka 38.jpg","MYS23 - PV - Cuisines Karnataka 49.jpg",
-        "MYS23 - PV - Cuisines Karnataka 54.jpg",
-        "MYS30 - PV-DH Karunadu Saviyuta 1.jpg","MYS30 - PV-DH Karunadu Saviyuta 25.jpg",
-        "MYS30 - PV-DH Karunadu Saviyuta 28.jpg","MYS30 - PV-DH Karunadu Saviyuta 3.jpg"
-      ];
-      var base = '../Cookery Contest/';
-      imgs.forEach(function(name) {
-        var src = base + encodeURI(name);
+      galleryImages.forEach(function(name, idx) {
+        var src = glbBase + encodeURI(name);
         var card = document.createElement('div');
         card.className = 'carousel-card';
         card.innerHTML = '<img class="thumb" src="'+src+'" alt="" loading="lazy">';
-        card.addEventListener('click', function() { window.location.href = 'gallery.html'; });
+        card.addEventListener('click', function() { openGLB(idx); });
         container.appendChild(card);
       });
     }
     buildGalleryCarousel();
+    glb.addEventListener('click', function(e) { if (e.target===glb) glb.classList.remove('open'); });
+    glbClose.addEventListener('click', function(e) { e.stopPropagation(); glb.classList.remove('open'); });
+    glbPrev.addEventListener('click', function(e) { e.stopPropagation(); prevGLB(); });
+    glbNext.addEventListener('click', function(e) { e.stopPropagation(); nextGLB(); });
+    document.addEventListener('keydown', function(e) {
+      if (e.key==='Escape') glb.classList.remove('open');
+      if (e.key==='ArrowLeft' && glb.classList.contains('open')) prevGLB();
+      if (e.key==='ArrowRight' && glb.classList.contains('open')) nextGLB();
+    });
+    var glbTouch = 0;
+    glb.addEventListener('touchstart', function(e) { glbTouch=e.changedTouches[0].clientX; }, {passive:true});
+    glb.addEventListener('touchend', function(e) {
+      if (!glb.classList.contains('open')) return;
+      var dx=e.changedTouches[0].clientX-glbTouch;
+      if (Math.abs(dx)>40) { if (dx<0) nextGLB(); else prevGLB(); }
+    }, {passive:true});
   </script>
 </body>
 </html>
