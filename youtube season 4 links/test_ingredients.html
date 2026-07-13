@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ingredient SVGs</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#1E1B18; color:#F0EDE8; font-family:system-ui,sans-serif; padding:40px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:20px; }
+.card { background:#2A2622; border-radius:10px; padding:16px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.card img { width:60px; height:60px; object-fit:contain; }
+.card span { font-size:13px; }
+</style>
+</head>
+<body>
+<div class="grid" id="grid"></div>
+<script>
+const SVG_DIR = 'indian_market_assets_48x48_svg/';
+const INGREDIENTS = [
+  'Chicken','Mutton','Fish','Rice','Coconut','Curry Leaves','Mustard',
+  'Tamarind','Garlic','Ginger','Pepper','Chilli','Mint','Coriander',
+  'Dill','Ivy Gourd','Chickpeas','Peas','Potato','Cashews','Urad Dal',
+  'Moong Dal','Cucumber','Hyacinth Beans','Fried Gram','Rice Flour',
+  'Jackfruit','Jaggery','Spices'
+];
+const SVG_MAP = {
+  'Chicken':'chicken','Mutton':'mutton','Fish':'fish','Rice':'rice',
+  'Coconut':'coconut','Curry Leaves':'curry_leaves','Mustard':'mustard',
+  'Tamarind':'tamarind','Garlic':'garlic','Ginger':'ginger',
+  'Pepper':'pepper','Chilli':'chilli','Mint':'mint','Coriander':'coriander',
+  'Dill':'dill','Ivy Gourd':'ivy_gourd','Chickpeas':'chickpeas',
+  'Peas':'peas','Potato':'potato','Cashews':'cashews','Urad Dal':'urad_dal',
+  'Moong Dal':'moong_dal','Cucumber':'cucumber',
+  'Hyacinth Beans':'hyacinth_beans','Fried Gram':'fried_gram',
+  'Rice Flour':'rice_flour','Jackfruit':'jackfruit','Jaggery':'jaggery',
+  'Spices':'spices'
+};
+const grid = document.getElementById('grid');
+for (const name of INGREDIENTS) {
+  const file = SVG_MAP[name];
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `<img src="${SVG_DIR}${file}.svg" alt="${name}" loading="lazy"><span>${name}</span>`;
+  grid.appendChild(card);
+}
+</script>
+</body>
+</html>
