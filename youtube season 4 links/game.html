@@ -1066,7 +1066,6 @@ function pickNewDish() {
 
 function resetGame() {
   score = 0;
-  streak = 0;
   comboCount = 0;
   hearts = 3;
   currentDish = null;
@@ -1104,6 +1103,7 @@ function resetGame() {
 }
 
 function showTitleScreen() {
+  streak = 0;
   resetGame();
   state = STATE.IDLE;
   titleScreen.classList.add('visible');
