@@ -230,13 +230,26 @@
   function nextImage() { openLightbox((currentIdx + 1) % images.length); }
   function prevImage() { openLightbox((currentIdx - 1 + images.length) % images.length); }
 
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (!e.isIntersecting) return;
+      var item = e.target;
+      var src = item.dataset.src;
+      item.querySelector('img').src = src;
+      item.querySelector('.gallery-item-bg').style.backgroundImage = 'url('+src+')';
+      io.unobserve(item);
+    });
+  }, { rootMargin: '200px' });
+
   images.forEach(function(name, idx) {
     var src = base + encodeURI(name);
     var item = document.createElement('div');
     item.className = 'gallery-item';
-    item.innerHTML = '<div class="gallery-item-bg" style="background-image:url(\''+src+'\')"></div><img src="'+src+'" alt="" loading="lazy">';
+    item.dataset.src = src;
+    item.innerHTML = '<div class="gallery-item-bg"></div><img alt="">';
     item.addEventListener('click', function() { openLightbox(idx); });
     grid.appendChild(item);
+    io.observe(item);
   });
 
   lightbox.addEventListener('click', function(e) { if (e.target === lightbox) lightbox.classList.remove('open'); });
