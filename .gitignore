@@ -1,0 +1,5 @@
+.playwright-mcp/
+*-snapshot.yml
+*-snapshot.txt
+screenshot.png
+char-snapshot.txt
