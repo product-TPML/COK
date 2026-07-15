@@ -852,7 +852,7 @@ function checkCollisions() {
 
         // Basket bounce
         const basketCx = basket.x;
-        const basketCy = catchLineY;
+        const basketCy = catchLineY + 20;
         bounceBasket();
 
         // Green screen flash (mirrors red flash for wrong)
@@ -864,7 +864,7 @@ function checkCollisions() {
         }, 100);
 
         // Particle burst
-        const pColors = ['#F5C518','#FFF8DC','#FFD700','#FFFFFF'];
+        const pColors = ['#2ECC54','#27AE60','#82E0AA','#1ABC9C','#F0EDE8'];
         for (let i=0; i<8; i++) {
           const angle = Math.random() * Math.PI * 2;
           const speed = 60 + Math.random() * 100;
@@ -885,6 +885,24 @@ function checkCollisions() {
         token.flashColor = '#D4542E';
         token.flashTimer = 250;
         token.scale = 1;
+
+        // Basket break particle burst
+        const basketCx = basket.x;
+        const basketCy = catchLineY + 20;
+        const bColors = ['#D4542E','#E74C3C','#FF6B6B','#8B0000','#FF4444'];
+        for (let i = 0; i < 10; i++) {
+          const angle = -Math.PI/2 + (Math.random() - 0.5) * Math.PI;
+          const speed = 40 + Math.random() * 80;
+          particles.push({
+            x: basketCx + (Math.random() - 0.5) * 30,
+            y: basketCy + (Math.random() - 0.5) * 20,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            alpha: 1,
+            radius: 2 + Math.random() * 3,
+            color: bColors[Math.floor(Math.random() * bColors.length)]
+          });
+        }
 
         // Basket shake
         shakeBasket();
@@ -1420,7 +1438,12 @@ function render() {
     ctx.fillText(token.ingredient, finalX + finalW/2, finalY + finalH/2 + 26);
   }
 
-  // Draw particles
+  // Draw character (replaces basket emoji + hearts)
+  const charScale = Math.max(1, Math.floor(basketWidth / 24 * 0.85));
+  const charLift = charPose === 'jump' ? [0,1,3,3,1][charFrame] || 0 : 0;
+  drawChar(ctx, basket.x + basketShakeOffset, catchLineY - basketJumpOffset, charScale, charLift * charScale);
+
+  // Draw particles (on top of character)
   for (const p of particles) {
     ctx.globalAlpha = p.alpha;
     ctx.fillStyle = p.color;
@@ -1428,12 +1451,6 @@ function render() {
     ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
     ctx.fill();
   }
-  ctx.globalAlpha = 1;
-
-  // Draw character (replaces basket emoji + hearts)
-  const charScale = Math.max(1, Math.floor(basketWidth / 24 * 0.85));
-  const charLift = charPose === 'jump' ? [0,1,3,3,1][charFrame] || 0 : 0;
-  drawChar(ctx, basket.x + basketShakeOffset, catchLineY - basketJumpOffset, charScale, charLift * charScale);
   ctx.globalAlpha = 1;
 }
 
