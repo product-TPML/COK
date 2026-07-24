@@ -214,7 +214,7 @@ body.game-active .bottom-nav {
 
 /* Mobile: 3 equal cols edge to edge */
 @media (max-width: 768px) {
-  .sponsor-container { gap: 0; padding: 8px 12px; }
+  .sponsor-container { gap: 4px; padding: 8px 12px; }
   .sponsor-card, .sponsor-slider { flex: 1; min-width: 0; }
   .sponsor-container img { max-width: 100%; max-height: none; width: 100%; height: auto; }
   .sponsor-item:not(.active) { display: none; }
