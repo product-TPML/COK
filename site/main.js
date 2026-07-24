@@ -6,8 +6,32 @@
   'use strict';
 
   var BASE = 'https://product-tpml.github.io/COK/site/';
-  var ASSETS = BASE + 'assets/';
   var SVG_DIR = BASE + 'svg/';
+
+  // ---- IMAGE URL MAP (CDN for photos, GitHub Pages for logos/SVGs) ----
+  var IMAGE_CDN = {
+    "20-hubli-18-Cuisines of Karnataka.JPG": "https://images.assettype.com/deccanherald/2lsy16sj/20-hubli-18-Cuisines-of-Karnataka.JPG",
+    "20-hubli-19-Cuisines of Karnataka.JPG": "https://images.assettype.com/deccanherald/sbcf41ld/20-hubli-19-Cuisines-of-Karnataka.JPG",
+    "20-hubli-2-Cuisines of Karnataka.JPG": "https://images.assettype.com/deccanherald/k57krih4/20-hubli-2-Cuisines-of-Karnataka.JPG",
+    "BNG31 FOOD award 05.jpg": "https://images.assettype.com/deccanherald/7akybzep/BNG31-FOOD-award-05.jpg",
+    "DSC_0790.jpg": "https://images.assettype.com/deccanherald/4dduj0ei/DSC0790.jpg",
+    "MNG 22 Participants (2).jpg": "https://images.assettype.com/deccanherald/dacku40x/MNG-22-Participants-2.jpg",
+    "MNG 22 Winners (1).jpg": "https://images.assettype.com/deccanherald/dog2j2r8/MNG-22-Winners-1.jpg",
+    "MYS23 - PV - Cuisines Karnataka 1.jpg": "https://images.assettype.com/deccanherald/seo5bea1/MYS23-PV-Cuisines-Karnataka-1.jpg",
+    "MYS23 - PV - Cuisines Karnataka 17.jpg": "https://images.assettype.com/deccanherald/4lo29p00/MYS23-PV-Cuisines-Karnataka-17.jpg",
+    "MYS23 - PV - Cuisines Karnataka 23.jpg": "https://images.assettype.com/deccanherald/wxm54ip0/MYS23-PV-Cuisines-Karnataka-23.jpg",
+    "MYS23 - PV - Cuisines Karnataka 31.jpg": "https://images.assettype.com/deccanherald/yh9khtqo/MYS23-PV-Cuisines-Karnataka-31.jpg",
+    "MYS23 - PV - Cuisines Karnataka 32.jpg": "https://images.assettype.com/deccanherald/l8wzm1zz/MYS23-PV-Cuisines-Karnataka-32.jpg",
+    "MYS23 - PV - Cuisines Karnataka 35.jpg": "https://images.assettype.com/deccanherald/5tk1axuq/MYS23-PV-Cuisines-Karnataka-35.jpg",
+    "MYS23 - PV - Cuisines Karnataka 38.jpg": "https://images.assettype.com/deccanherald/gi0xewe3/MYS23-PV-Cuisines-Karnataka-38.jpg",
+    "MYS23 - PV - Cuisines Karnataka 49.jpg": "https://images.assettype.com/deccanherald/kts6j1yr/MYS23-PV-Cuisines-Karnataka-49.jpg",
+    "MYS23 - PV - Cuisines Karnataka 54.jpg": "https://images.assettype.com/deccanherald/ys2uj3r7/MYS23-PV-Cuisines-Karnataka-54.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 1.jpg": "https://images.assettype.com/deccanherald/8ujijs7a/MYS30-PV-DH-Karunadu-Saviyuta-1.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 3.jpg": "https://images.assettype.com/deccanherald/0wcppvg5/MYS30-PV-DH-Karunadu-Saviyuta-3.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 25.jpg": "https://images.assettype.com/deccanherald/sodto22v/MYS30-PV-DH-Karunadu-Saviyuta-25.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 28.jpg": "https://images.assettype.com/deccanherald/uqzvpoqb/MYS30-PV-DH-Karunadu-Saviyuta-28.jpg"
+  };
+  function imageUrl(name) { return IMAGE_CDN[name] || BASE + 'assets/' + encodeURI(name); }
 
   // ---- SEASON / VIDEO DATA (deduplicated) ----
   var seasons = [
@@ -117,35 +141,35 @@
     {
       slug: 'celebrating-karnataka-cuisine',
       headline: 'Celebrating the Rich Culinary Heritage of Karnataka',
-      hero: BASE + 'assets/' + encodeURI('MYS23 - PV - Cuisines Karnataka 1.jpg'),
+      hero: imageUrl('MYS23 - PV - Cuisines Karnataka 1.jpg'),
       excerpt: 'A journey through Karnataka\'s diverse food traditions, brought to life with the support of our valued partners.',
       content: '<p>Karnataka\'s culinary landscape is as diverse as its geography — from the coastal flavours of Mangalorean cuisine to the rich, aromatic dishes of North Karnataka, every region tells a story through its food.</p><p>This season, we are proud to partner with brands that share our commitment to celebrating authentic culinary traditions and bringing them to a wider audience. Together, we explore the recipes, techniques, and stories that make Karnataka\'s cuisine truly unforgettable.</p><p>Join us as we travel through the state, discovering hidden gems and timeless classics that have been passed down through generations.</p>'
     },
     {
       slug: 'supporting-local-traditions',
       headline: 'Supporting Local Food Traditions Together',
-      hero: BASE + 'assets/' + encodeURI('MYS30 - PV-DH Karunadu Saviyuta 1.jpg'),
+      hero: imageUrl('MYS30 - PV-DH Karunadu Saviyuta 1.jpg'),
       excerpt: 'How our partners help preserve the authentic flavours and cooking techniques of Karnataka.',
       content: '<p>Local food traditions are the backbone of Karnataka\'s culinary identity. From the way spices are tempered to the unique cooking vessels used in different regions, every detail matters.</p><p>Our partners understand the importance of preserving these traditions while making them accessible to modern audiences. Through their support, we are able to document and share these authentic practices with the world.</p><p>This article highlights some of the key initiatives that help keep Karnataka\'s food heritage alive and thriving.</p>'
     },
     {
       slug: 'journey-of-flavours',
       headline: 'A Journey Through Karnataka\'s Regional Flavours',
-      hero: BASE + 'assets/' + encodeURI('20-hubli-18-Cuisines of Karnataka.JPG'),
+      hero: imageUrl('20-hubli-18-Cuisines of Karnataka.JPG'),
       excerpt: 'Exploring the unique taste profiles that define Karnataka\'s regional cuisines from coast to coast.',
       content: '<p>From the fiery heat of North Karnataka curries to the subtle sweetness of coastal preparations, Karnataka offers a spectrum of flavours that is unmatched.</p><p>Each region brings its own unique ingredients and techniques — the use of coconut in coastal areas, the generous use of tamarind and spices in the southern districts, and the rich, ghee-laden dishes of the northern plains.</p><p>Our partner brands have helped us showcase this incredible diversity through the season, ensuring that every recipe is presented with the respect and authenticity it deserves.</p>'
     },
     {
       slug: 'partner-spotlight-culinary-heritage',
       headline: 'Partner Spotlight: Celebrating Culinary Heritage',
-      hero: BASE + 'assets/' + encodeURI('BNG31 FOOD award 05.jpg'),
+      hero: imageUrl('BNG31 FOOD award 05.jpg'),
       excerpt: 'A spotlight on the brands and organisations that share our vision for culinary excellence.',
       content: '<p>Behind every great season of Cuisines of Karnataka are the partners who make it possible. Their commitment to quality, tradition, and innovation aligns perfectly with our mission.</p><p>This spotlight features the stories of organisations that have been instrumental in bringing Karnataka\'s culinary heritage to audiences across the country. From kitchen essentials to premium ingredients, these partners embody the spirit of Karnataka\'s food culture.</p><p>We thank them for their continued support and shared passion for great food.</p>'
     },
     {
       slug: 'community-and-culture',
       headline: 'Community & Culture: Food That Brings Us Together',
-      hero: BASE + 'assets/' + encodeURI('DSC_0790.jpg'),
+      hero: imageUrl('DSC_0790.jpg'),
       excerpt: 'How food acts as a bridge between communities, cultures, and generations in Karnataka.',
       content: '<p>Food in Karnataka is more than just sustenance — it is a celebration of community, culture, and togetherness. From festive feasts to everyday meals, the act of cooking and sharing food is deeply woven into the social fabric.</p><p>This season, we celebrate the role of food in bringing people together. Through the stories of home cooks, chefs, and food enthusiasts, we explore how traditional recipes create bonds that transcend generations.</p><p>Our partners have been integral to this journey, helping us create a platform that celebrates not just the food, but the people behind it.</p>'
     }
@@ -278,7 +302,7 @@
     var glbIdx = 0;
 
     galleryImages.forEach(function (name, idx) {
-      var src = ASSETS + encodeURI(name);
+      var src = imageUrl(name);
       var card = document.createElement('div');
       card.className = 'carousel-card';
       card.innerHTML = '<img class="thumb" src="' + src + '" alt="" loading="lazy">';
@@ -288,7 +312,7 @@
 
     function openLightbox(idx) {
       glbIdx = idx;
-      glbImg.src = ASSETS + encodeURI(galleryImages[idx]);
+      glbImg.src = imageUrl(galleryImages[idx]);
       document.getElementById('glbCounter').textContent = (idx + 1) + ' / ' + galleryImages.length;
       glb.classList.add('open');
     }
@@ -508,7 +532,7 @@
 
     function openLightbox(idx) {
       currentIdx = idx;
-      lightboxImg.src = ASSETS + encodeURI(galleryImages[idx]);
+      lightboxImg.src = imageUrl(galleryImages[idx]);
       lbCounter.textContent = (idx + 1) + ' / ' + galleryImages.length;
       lightbox.classList.add('open');
     }
@@ -528,7 +552,7 @@
     }, { rootMargin: '200px' });
 
     galleryImages.forEach(function (name, idx) {
-      var src = ASSETS + encodeURI(name);
+      var src = imageUrl(name);
       var item = document.createElement('div');
       item.className = 'gallery-item';
       item.dataset.src = src;

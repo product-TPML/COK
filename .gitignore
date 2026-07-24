@@ -10,3 +10,9 @@ char-snapshot.txt
 /youtube season 4 links/transcripts/
 /youtube season 4 links/widget_embed.html
 .slim/deepwork/
+# Ignore all CDN-served photos; only keep local logo files
+/site/assets/*
+!/site/assets/PVlogo.jpg
+!/site/assets/S5 Logo Circle PV.png
+!/site/assets/S5 Logo Rect PV.png
+!/site/assets/logo.jpg
