@@ -631,23 +631,24 @@
     var featured = partnerArticles[0];
     if (featured) {
       featuredContainer.innerHTML =
-        '<div class="ps-featured-card">' +
+        '<a href="#article/' + featured.slug + '" class="ps-featured-card">' +
           '<div class="ps-featured-image">' +
             '<img src="' + featured.hero + '" alt="' + featured.headline.replace(/"/g, '&quot;') + '">' +
           '</div>' +
           '<div class="ps-featured-body">' +
             '<h2>' + featured.headline + '</h2>' +
             '<p>' + featured.excerpt + '</p>' +
-            '<a href="#article/' + featured.slug + '" class="ps-read-link">Read story &rarr;</a>' +
+            '<span class="ps-read-link">Read story &rarr;</span>' +
           '</div>' +
-        '</div>';
+        '</a>';
     }
 
     // Additional cards (indices 1-4)
     for (var i = 1; i < partnerArticles.length; i++) {
       var a = partnerArticles[i];
-      var card = document.createElement('div');
+      var card = document.createElement('a');
       card.className = 'ps-card';
+      card.href = '#article/' + a.slug;
       card.innerHTML =
         '<div class="ps-card-image">' +
           '<img src="' + a.hero + '" alt="' + a.headline.replace(/"/g, '&quot;') + '" loading="lazy">' +
@@ -655,7 +656,7 @@
         '<div class="ps-card-body">' +
           '<h3>' + a.headline + '</h3>' +
           '<p>' + a.excerpt + '</p>' +
-          '<a href="#article/' + a.slug + '" class="ps-read-link">Read story &rarr;</a>' +
+          '<span class="ps-read-link">Read story &rarr;</span>' +
         '</div>';
       cardsContainer.appendChild(card);
     }

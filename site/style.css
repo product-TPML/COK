@@ -1207,6 +1207,20 @@ footer {
 }
 .ps-read-link:hover { color: var(--accent-secondary); gap: 8px; }
 
+/* Anchor card wrappers — inherit visual from the old div cards */
+a.ps-featured-card,
+a.ps-card {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+a.ps-featured-card:focus-visible,
+a.ps-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
 /* Article detail */
 #ps-detail {
   max-width: 900px; margin: 0 auto; padding: 1rem 1rem 3rem;
