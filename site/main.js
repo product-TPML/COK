@@ -10,26 +10,26 @@
 
   // ---- IMAGE URL MAP (CDN for photos, GitHub Pages for logos/SVGs) ----
   var IMAGE_CDN = {
-    "20-hubli-18-Cuisines of Karnataka.JPG": "https://images.assettype.com/deccanherald/2lsy16sj/20-hubli-18-Cuisines-of-Karnataka.JPG",
-    "20-hubli-19-Cuisines of Karnataka.JPG": "https://images.assettype.com/deccanherald/sbcf41ld/20-hubli-19-Cuisines-of-Karnataka.JPG",
-    "20-hubli-2-Cuisines of Karnataka.JPG": "https://images.assettype.com/deccanherald/k57krih4/20-hubli-2-Cuisines-of-Karnataka.JPG",
-    "BNG31 FOOD award 05.jpg": "https://images.assettype.com/deccanherald/7akybzep/BNG31-FOOD-award-05.jpg",
-    "DSC_0790.jpg": "https://images.assettype.com/deccanherald/4dduj0ei/DSC0790.jpg",
-    "MNG 22 Participants (2).jpg": "https://images.assettype.com/deccanherald/dacku40x/MNG-22-Participants-2.jpg",
-    "MNG 22 Winners (1).jpg": "https://images.assettype.com/deccanherald/dog2j2r8/MNG-22-Winners-1.jpg",
-    "MYS23 - PV - Cuisines Karnataka 1.jpg": "https://images.assettype.com/deccanherald/seo5bea1/MYS23-PV-Cuisines-Karnataka-1.jpg",
-    "MYS23 - PV - Cuisines Karnataka 17.jpg": "https://images.assettype.com/deccanherald/4lo29p00/MYS23-PV-Cuisines-Karnataka-17.jpg",
-    "MYS23 - PV - Cuisines Karnataka 23.jpg": "https://images.assettype.com/deccanherald/wxm54ip0/MYS23-PV-Cuisines-Karnataka-23.jpg",
-    "MYS23 - PV - Cuisines Karnataka 31.jpg": "https://images.assettype.com/deccanherald/yh9khtqo/MYS23-PV-Cuisines-Karnataka-31.jpg",
-    "MYS23 - PV - Cuisines Karnataka 32.jpg": "https://images.assettype.com/deccanherald/l8wzm1zz/MYS23-PV-Cuisines-Karnataka-32.jpg",
-    "MYS23 - PV - Cuisines Karnataka 35.jpg": "https://images.assettype.com/deccanherald/5tk1axuq/MYS23-PV-Cuisines-Karnataka-35.jpg",
-    "MYS23 - PV - Cuisines Karnataka 38.jpg": "https://images.assettype.com/deccanherald/gi0xewe3/MYS23-PV-Cuisines-Karnataka-38.jpg",
-    "MYS23 - PV - Cuisines Karnataka 49.jpg": "https://images.assettype.com/deccanherald/kts6j1yr/MYS23-PV-Cuisines-Karnataka-49.jpg",
-    "MYS23 - PV - Cuisines Karnataka 54.jpg": "https://images.assettype.com/deccanherald/ys2uj3r7/MYS23-PV-Cuisines-Karnataka-54.jpg",
-    "MYS30 - PV-DH Karunadu Saviyuta 1.jpg": "https://images.assettype.com/deccanherald/8ujijs7a/MYS30-PV-DH-Karunadu-Saviyuta-1.jpg",
-    "MYS30 - PV-DH Karunadu Saviyuta 3.jpg": "https://images.assettype.com/deccanherald/0wcppvg5/MYS30-PV-DH-Karunadu-Saviyuta-3.jpg",
-    "MYS30 - PV-DH Karunadu Saviyuta 25.jpg": "https://images.assettype.com/deccanherald/sodto22v/MYS30-PV-DH-Karunadu-Saviyuta-25.jpg",
-    "MYS30 - PV-DH Karunadu Saviyuta 28.jpg": "https://images.assettype.com/deccanherald/uqzvpoqb/MYS30-PV-DH-Karunadu-Saviyuta-28.jpg"
+    "20-hubli-18-Cuisines of Karnataka.JPG": "https://images.assettype.com/deccanherald/2026-07-24/2lsy16sj/20-hubli-18-Cuisines-of-Karnataka.JPG",
+    "20-hubli-19-Cuisines of Karnataka.JPG": "https://images.assettype.com/deccanherald/2026-07-24/sbcf41ld/20-hubli-19-Cuisines-of-Karnataka.JPG",
+    "20-hubli-2-Cuisines of Karnataka.JPG": "https://images.assettype.com/deccanherald/2026-07-24/k57krih4/20-hubli-2-Cuisines-of-Karnataka.JPG",
+    "BNG31 FOOD award 05.jpg": "https://images.assettype.com/deccanherald/2026-07-24/7akybzep/BNG31-FOOD-award-05.jpg",
+    "DSC_0790.jpg": "https://images.assettype.com/deccanherald/2026-07-24/4dduj0ei/DSC0790.jpg",
+    "MNG 22 Participants (2).jpg": "https://images.assettype.com/deccanherald/2026-07-24/dacku40x/MNG-22-Participants-2.jpg",
+    "MNG 22 Winners (1).jpg": "https://images.assettype.com/deccanherald/2026-07-24/dog2j2r8/MNG-22-Winners-1.jpg",
+    "MYS23 - PV - Cuisines Karnataka 1.jpg": "https://images.assettype.com/deccanherald/2026-07-24/seo5bea1/MYS23-PV-Cuisines-Karnataka-1.jpg",
+    "MYS23 - PV - Cuisines Karnataka 17.jpg": "https://images.assettype.com/deccanherald/2026-07-24/4lo29p00/MYS23-PV-Cuisines-Karnataka-17.jpg",
+    "MYS23 - PV - Cuisines Karnataka 23.jpg": "https://images.assettype.com/deccanherald/2026-07-24/wxm54ip0/MYS23-PV-Cuisines-Karnataka-23.jpg",
+    "MYS23 - PV - Cuisines Karnataka 31.jpg": "https://images.assettype.com/deccanherald/2026-07-24/yh9khtqo/MYS23-PV-Cuisines-Karnataka-31.jpg",
+    "MYS23 - PV - Cuisines Karnataka 32.jpg": "https://images.assettype.com/deccanherald/2026-07-24/l8wzm1zz/MYS23-PV-Cuisines-Karnataka-32.jpg",
+    "MYS23 - PV - Cuisines Karnataka 35.jpg": "https://images.assettype.com/deccanherald/2026-07-24/5tk1axuq/MYS23-PV-Cuisines-Karnataka-35.jpg",
+    "MYS23 - PV - Cuisines Karnataka 38.jpg": "https://images.assettype.com/deccanherald/2026-07-24/gi0xewe3/MYS23-PV-Cuisines-Karnataka-38.jpg",
+    "MYS23 - PV - Cuisines Karnataka 49.jpg": "https://images.assettype.com/deccanherald/2026-07-24/kts6j1yr/MYS23-PV-Cuisines-Karnataka-49.jpg",
+    "MYS23 - PV - Cuisines Karnataka 54.jpg": "https://images.assettype.com/deccanherald/2026-07-24/ys2uj3r7/MYS23-PV-Cuisines-Karnataka-54.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 1.jpg": "https://images.assettype.com/deccanherald/2026-07-24/8ujijs7a/MYS30-PV-DH-Karunadu-Saviyuta-1.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 3.jpg": "https://images.assettype.com/deccanherald/2026-07-24/0wcppvg5/MYS30-PV-DH-Karunadu-Saviyuta-3.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 25.jpg": "https://images.assettype.com/deccanherald/2026-07-24/sodto22v/MYS30-PV-DH-Karunadu-Saviyuta-25.jpg",
+    "MYS30 - PV-DH Karunadu Saviyuta 28.jpg": "https://images.assettype.com/deccanherald/2026-07-24/uqzvpoqb/MYS30-PV-DH-Karunadu-Saviyuta-28.jpg"
   };
   function imageUrl(name) { return IMAGE_CDN[name] || BASE + 'assets/' + encodeURI(name); }
 
