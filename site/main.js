@@ -135,6 +135,16 @@
       initSection(id);
     }
 
+    // Game-mode shell hiding
+    if (id === 'game') {
+      document.body.classList.add('game-active');
+      // Close any open mobile drawer
+      var mn = document.getElementById('mobile-nav');
+      if (mn) mn.classList.remove('open');
+    } else {
+      document.body.classList.remove('game-active');
+    }
+
     // Game lifecycle
     if (id === 'game') {
       resumeGame();

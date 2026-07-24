@@ -167,6 +167,17 @@ body::-webkit-scrollbar-thumb:hover { background: #4A453E; }
   }
 }
 
+/* Game mode: hide shared site shell */
+body.game-active {
+  overflow: hidden;
+  padding-bottom: 0 !important;
+}
+body.game-active .site-header,
+body.game-active .mobile-nav,
+body.game-active .bottom-nav {
+  display: none !important;
+}
+
 /* Sponsor bar */
 .sponsor-bar {
   background: #1E1B18;
