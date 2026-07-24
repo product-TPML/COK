@@ -1343,12 +1343,12 @@ a.ps-card:focus-visible {
 #gRpIngredients .check-item::before { display:none; }
 #gRpIngredients .check-item em { font-size:52px; font-style:normal; line-height:1; display:block; }
 #gRpProceed {
-  position:relative; overflow:hidden; background:var(--border); border:none; color:var(--text);
+  position:relative; z-index:0; overflow:hidden; background:var(--border); border:none; color:var(--text);
   font-family:var(--font-heading); font-weight:700; font-size:14px; padding:10px 32px; border-radius:8px;
   cursor:pointer; transition:color .2s;
 }
 #gRpProceed::after {
-  content:''; position:absolute; inset:0; background:var(--accent);
+  content:''; position:absolute; inset:0; z-index:-1; pointer-events:none; background:var(--accent);
   animation:fillBtn 3s linear forwards; border-radius:8px;
 }
 #gRpProceed span { position:relative; z-index:1; }

@@ -56,7 +56,7 @@
     var parts = path.split('.');
     var val = i18nData;
     for (var i = 0; i < parts.length; i++) {
-      if (val && typeof val === 'object' && !Array.isArray(val)) { val = val[parts[i]]; }
+      if (val && typeof val === 'object') { val = val[parts[i]]; }
       else { return path; }
     }
     if (val && typeof val === 'object' && !Array.isArray(val)) { val = val[ACTIVE_LANGUAGE]; }
@@ -1032,18 +1032,6 @@
   function getLevel(s) { return s <= 1 ? 1 : s <= 3 ? 2 : 3; }
   function getMultiplier(c) { return c <= 1 ? 1 : c === 2 ? 1.2 : c === 3 ? 1.5 : 2; }
 
-  function roundRect(ctx, x, y, w, h, r) {
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    ctx.lineTo(x + r, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-    ctx.lineTo(x, y + r);
-    ctx.quadraticCurveTo(x, y, x + r, y);
-  }
-
   function shuffle(arr) {
     for (var i = arr.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
@@ -1706,18 +1694,11 @@
       var y = token.y;
       var w = s.tokenWidth;
       var h = TOKEN_HEIGHT;
-      var r = 8;
       if (token.flashTimer !== undefined) { token.flashTimer -= 16; if (token.flashTimer <= 0) token.flashTimer = undefined; }
       var drawW = token.scale !== undefined ? w * Math.max(0.01, token.scale) : w;
       var drawH = token.scale !== undefined ? h * Math.max(0.01, token.scale) : h;
       var drawX = x + (w - drawW) / 2;
       var drawY = y + (h - drawH) / 2;
-
-      // Background
-      ctx.fillStyle = token.correct ? '#2A2A28' : '#2A1E1C';
-      ctx.beginPath();
-      roundRect(ctx, drawX, drawY, drawW, drawH, 8);
-      ctx.fill();
 
       var svgImg = INGREDIENT_SVG_IMAGES[token.ingredient];
       if (svgImg && svgImg.complete && svgImg.naturalWidth > 0) {
