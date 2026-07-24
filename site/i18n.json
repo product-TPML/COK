@@ -1,0 +1,328 @@
+{
+  "schemaVersion": "1.0",
+  "defaultLanguage": "en",
+  "languages": {
+    "en": "English",
+    "kn": "ಕನ್ನಡ"
+  },
+  "site": {
+    "title": { "en": "Cuisines of Karnataka", "kn": "ಕರ್ನಾಟಕದ ಭೋಜನ ಶೈಲಿಗಳು" },
+    "documentLanguageLabels": {
+      "en": { "en": "English", "kn": "English" },
+      "kn": { "en": "ಕನ್ನಡ", "kn": "Kannada" }
+    },
+    "logoAlt": { "en": "COK", "kn": "COK" }
+  },
+  "header": {
+    "menuOpenAria": { "en": "Open menu", "kn": "ಮೆನು ತೆರೆಯಿರಿ" },
+    "menuCloseAria": { "en": "Close menu", "kn": "ಮೆನು ಮುಚ್ಚಿರಿ" },
+    "logoAlt": { "en": "COK", "kn": "COK" },
+    "sponsorAltLabels": {
+      "presents": { "en": "Presents", "kn": "ಪ್ರಸ್ತುತಪಡಿಸುತ್ತದೆ" },
+      "indane": { "en": "Indane", "kn": "ಇಂಡೇನ್" },
+      "prestige": { "en": "Prestige", "kn": "ಪ್ರೆಸ್ಟೀಜ್" },
+      "bhimaGold": { "en": "Bhima Gold", "kn": "ಭೀಮಾ ಗೋಲ್ಡ್" },
+      "lays": { "en": "Lays", "kn": "ಲೇಸ್" },
+      "sbiCard": { "en": "SBI Card", "kn": "ಎಸ್ಬಿಐ ಕಾರ್ಡ್" },
+      "vencobb": { "en": "Vencobb", "kn": "ವೆನ್‌ಕಾಬ್" },
+      "ecoCrystal": { "en": "Eco Crystal", "kn": "ಈಕೋ ಕ್ರಿಸ್ಟಲ್" }
+    }
+  },
+  "nav": {
+    "home": { "en": "Home", "kn": "ಮುಖಪುಟ" },
+    "recipes": { "en": "Recipes", "kn": "ಪಾಕವಿಧಾನಗಳು" },
+    "gallery": { "en": "Gallery", "kn": "ಗ್ಯಾಲರಿ" },
+    "partnerStories": { "en": "Partner Stories", "kn": "ಪಾಲುದಾರರ ಕಥೆಗಳು" },
+    "stories": { "en": "Stories", "kn": "ಕಥೆಗಳು" },
+    "game": { "en": "Game", "kn": "ಆಟ" }
+  },
+  "home": {
+    "badge": { "en": "Season 5", "kn": "ಸೀಸನ್ ೫" },
+    "heroTitle": { "en": "Cuisines of <span>Karnataka</span>", "kn": "ಕರ್ನಾಟಕದ <span>ಭೋಜನ ಶೈಲಿಗಳು</span>" },
+    "heroDescription": {
+      "en": "Cuisines of Karnataka returns with its fifth season, celebrating the rich culinary heritage, diverse flavours, and timeless food traditions of Karnataka. Bringing together culture and storytelling, the platform showcases the state's iconic recipes and the people behind them. This season features 15 exclusive recipe videos curated and prepared by renowned celebrity chefs, while introducing the exciting concept of food pairing to highlight combinations that elevate the authentic flavours of Karnataka's regional cuisines. The journey continues right here on this microsite, your destination to explore recipes, watch videos, explore Partner Stories and interactive experiences, and discover the unique tastes that make Karnataka's cuisine truly unforgettable.",
+      "kn": "ಕರ್ನಾಟಕದ ಭೋಜನ ಶೈಲಿಗಳು ತನ್ನ ಐದನೇ ಸೀಸನ್‌ನೊಂದಿಗೆ ಮರಳಿ ಬಂದಿದೆ, ಕರ್ನಾಟಕದ ಶ್ರೀಮಂತ ಪಾಕಶಾಸ್ತ್ರ ಪರಂಪರೆ, ವೈವಿಧ್ಯಮಯ ರುಚಿಗಳು ಮತ್ತು ಕಾಲಾತೀತ ಆಹಾರ ಸಂಪ್ರದಾಯಗಳನ್ನು ಆಚರಿಸುತ್ತದೆ. ಸಂಸ್ಕೃತಿ ಮತ್ತು ಕಥೆ ಹೇಳುವಿಕೆಯನ್ನು ಒಟ್ಟುಗೂಡಿಸಿ, ಈ ವೇದಿಕೆಯು ರಾಜ್ಯದ ಪ್ರತಿಷ್ಠಿತ ಪಾಕವಿಧಾನಗಳು ಮತ್ತು ಅವುಗಳ ಹಿಂದಿನ ಜನರನ್ನು ಪ್ರದರ್ಶಿಸುತ್ತದೆ. ಈ ಸೀಸನ್‌ನಲ್ಲಿ ಪ್ರಸಿದ್ಧ ಶೆಫ್‌ಗಳು ಸಂಗ್ರಹಿಸಿ ತಯಾರಿಸಿದ ೧೫ ವಿಶೇಷ ಪಾಕವಿಧಾನ ವೀಡಿಯೊಗಳಿವೆ, ಜೊತೆಗೆ ಕರ್ನಾಟಕದ ಪ್ರಾದೇಶಿಕ ಭೋಜನ ಶೈಲಿಗಳ ನೈಜ ರುಚಿಯನ್ನು ಹೆಚ್ಚಿಸುವ ಸಂಯೋಜನೆಗಳನ್ನು ಎತ್ತಿ ತೋರಿಸಲು ಆಹಾರ ಜೊತೆಯಾಟದ ರೋಚಕ ಪರಿಕಲ್ಪನೆಯನ್ನು ಪರಿಚಯಿಸಲಾಗಿದೆ. ಈ ಪ್ರಯಾಣವು ಇಲ್ಲಿಯೇ ಮೈಕ್ರೋಸೈಟ್‌ನಲ್ಲಿ ಮುಂದುವರಿಯುತ್ತದೆ — ಪಾಕವಿಧಾನಗಳನ್ನು ಅನ್ವೇಷಿಸಲು, ವೀಡಿಯೊಗಳನ್ನು ವೀಕ್ಷಿಸಲು, ಪಾಲುದಾರರ ಕಥೆಗಳು ಮತ್ತು ಸಂವಾದಾತ್ಮಕ ಅನುಭವಗಳನ್ನು ಅನುಭವಿಸಲು ಮತ್ತು ಕರ್ನಾಟಕದ ಭೋಜನ ಶೈಲಿಯನ್ನು ನಿಜಕ್ಕೂ ಮರೆಯಲಾಗದಂತೆ ಮಾಡುವ ವಿಶಿಷ್ಟ ರುಚಿಗಳನ್ನು ಕಂಡುಕೊಳ್ಳಲು ನಿಮ್ಮ ತಾಣ ಇದು."
+    },
+    "featuredHeading": { "en": "Season 4 <small>Highlights</small>", "kn": "ಸೀಸನ್ ೪ <small>ಮುಖ್ಯಾಂಶಗಳು</small>" },
+    "viewAllRecipes": { "en": "View All Recipes", "kn": "ಎಲ್ಲಾ ಪಾಕವಿಧಾನಗಳನ್ನು ನೋಡಿ" },
+    "galleryHeading": { "en": "Gallery <small>Featured Moments</small>", "kn": "ಗ್ಯಾಲರಿ <small>ವಿಶೇಷ ಕ್ಷಣಗಳು</small>" },
+    "viewAllPhotos": { "en": "View All Photos", "kn": "ಎಲ್ಲಾ ಫೋಟೋಗಳನ್ನು ನೋಡಿ" },
+    "episodeTemplate": { "en": "Episode {number}", "kn": "ಎಪಿಸೋಡ್ {number}" },
+    "clickToLoad": { "en": "Click to load video", "kn": "ವೀಡಿಯೊ ಲೋಡ್ ಮಾಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ" }
+  },
+  "recipes": {
+    "pageTitle": { "en": "Recipes", "kn": "ಪಾಕವಿಧಾನಗಳು" },
+    "seasonTabTemplate": { "en": "Season {number}", "kn": "ಸೀಸನ್ {number}" },
+    "episodeLabelTemplate": { "en": "Episode {number}", "kn": "ಎಪಿಸೋಡ್ {number}" },
+    "clickToLoad": { "en": "Click to load video", "kn": "ವೀಡಿಯೊ ಲೋಡ್ ಮಾಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ" },
+    "playAriaTemplate": { "en": "Play Episode {number}", "kn": "ಎಪಿಸೋಡ್ {number} ಪ್ಲೇ ಮಾಡಿ" },
+    "thumbnailAltTemplate": { "en": "Episode {number} thumbnail", "kn": "ಎಪಿಸೋಡ್ {number} ಥಂಬ್‌ನೇಲ್" },
+    "youtubeTitleTemplate": { "en": "YouTube video player - Episode {number}", "kn": "ಯೂಟ್ಯೂಬ್ ವೀಡಿಯೊ ಪ್ಲೇಯರ್ - ಎಪಿಸೋಡ್ {number}" },
+    "jumpPanelTitle": { "en": "Jump to Episode", "kn": "ಎಪಿಸೋಡ್‌ಗೆ ಹೋಗಿ" },
+    "searchPlaceholder": { "en": "Search episodes...", "kn": "ಎಪಿಸೋಡ್‌ಗಳನ್ನು ಹುಡುಕಿ..." },
+    "clearSearchAria": { "en": "Clear search", "kn": "ಹುಡುಕಾಟ ತೆರವುಗೊಳಿಸಿ" },
+    "jumpAria": { "en": "Jump to episode", "kn": "ಎಪಿಸೋಡ್‌ಗೆ ಹೋಗಿ" },
+    "closePanelAria": { "en": "Close panel", "kn": "ಪ್ಯಾನೆಲ್ ಮುಚ್ಚಿರಿ" },
+    "videos": [
+      {
+        "season": 4,
+        "playlist": "PL4tXltXT0TCWhrTT31fLGpTr2VoHHHov5",
+        "episodes": [
+          { "episode": 1, "id": "9ig2P5uQeLo", "title": { "en": "White Chicken Pulao | Karnataka-Style Recipe", "kn": "ವೈಟ್ ಚಿಕನ್ ಪುಲಾವ್ | ಕರ್ನಾಟಕ ಶೈಲಿಯ ಪಾಕವಿಧಾನ" } },
+          { "episode": 2, "id": "xNlR6VPTUOc", "title": { "en": "Naati Koli Bassaru | Authentic Country Chicken Curry", "kn": "ನಾಟಿ ಕೋಳಿ ಬಸ್ಸಾರು | ಅಥೆಂಟಿಕ್ ನಾಟಿ ಚಿಕನ್ ಕರಿ" } },
+          { "episode": 3, "id": "nol4d9eqjyo", "title": { "en": "The Easiest Mutton Fry Ever", "kn": "ಸುಲಭವಾದ ಮಟನ್ ಫ್ರೈ" } },
+          { "episode": 4, "id": "rtLm3RqLnLc", "title": { "en": "Authentic Mutton Kheema Vade", "kn": "ಅಥೆಂಟಿಕ್ ಮಟನ್ ಖೀಮಾ ವಡೆ" } },
+          { "episode": 5, "id": "Pc1QVxb2V4s", "title": { "en": "Bengaluru's Famous Kaal Soup", "kn": "ಬೆಂಗಳೂರಿನ ಪ್ರಸಿದ್ಧ ಕಾಲ್ ಸೂಪ್" } },
+          { "episode": 6, "id": "SO9jaLxrPsQ", "title": { "en": "Kanakapura Style River Fish Curry", "kn": "ಕನಕಪುರ ಶೈಲಿಯ ನದಿ ಮೀನಿನ ಕರಿ" } },
+          { "episode": 7, "id": "s5jHf8M_hSE", "title": { "en": "Kollegal Style Mutton Pulao with Nalli", "kn": "ಕೊಳ್ಳೇಗಾಲ ಶೈಲಿಯ ಮಟನ್ ಪುಲಾವ್ ನಲ್ಲಿ ಸಹಿತ" } },
+          { "episode": 8, "id": "pESOxDDF7B4", "title": { "en": "Kadle Manoli | Ivy Gourd & Black Chickpeas", "kn": "ಕಡ್ಲೆ ಮನೋಳಿ | ತೊಂಡೆಕಾಯಿ ಮತ್ತು ಕಡ್ಲೆಕಾಳು" } },
+          { "episode": 9, "id": "rsJy07KbZhE", "title": { "en": "Deepavali Special Batani Kurma", "kn": "ದೀಪಾವಳಿ ವಿಶೇಷ ಬಟಾಣಿ ಕುರ್ಮಾ" } },
+          { "episode": 10, "id": "oFWVuSiZZ64", "title": { "en": "Raichur Tuntapur Chicken", "kn": "ರಾಯಚೂರು ತುಂಟಾಪುರ್ ಚಿಕನ್" } },
+          { "episode": 11, "id": "jz7W4rcZYOs", "title": { "en": "Crispy Bonda + Dal Soup", "kn": "ಕ್ರಿಸ್ಪಿ ಬೊಂಡಾ + ದಾಲ್ ಸೂಪ್" } },
+          { "episode": 12, "id": "L-j5T-ZQdMg", "title": { "en": "Cucumber Curry Karnataka Style", "kn": "ಸೌತೆಕಾಯಿ ಪಲ್ಯ ಕರ್ನಾಟಕ ಶೈಲಿ" } },
+          { "episode": 13, "id": "z9Zb3HCb29M", "title": { "en": "Karnataka's Beloved Avarekalu Curry", "kn": "ಕರ್ನಾಟಕದ ಮೆಚ್ಚಿನ ಅವರೆಕಾಳು ಕರಿ" } },
+          { "episode": 15, "id": "4dMkfUiECkc", "title": { "en": "Hurugadle Nippattu Festive Snack", "kn": "ಹುರುಗಡಲೆ ನಿಪ್ಪಾಟ್ಟು ಹಬ್ಬದ ತಿಂಡಿ" } },
+          { "episode": 16, "id": "u1rGS26Likc", "title": { "en": "Traditional Crunchy Jackfruit Snack | Halasina Mulka", "kn": "ಸಾಂಪ್ರದಾಯಿಕ ಕ್ರಂಚಿ ಹಲಸಿನ ತಿಂಡಿ | ಹಲಸಿನ ಮುಲ್ಕಾ" } }
+        ]
+      },
+      {
+        "season": 3,
+        "playlist": "PL4tXltXT0TCU5bijdggUhhp65gaUXp1Pd",
+        "episodes": [
+          { "episode": 1, "id": "JwCSxMWWQ-g", "title": { "en": "Spicy Mutton Nalli Fry: The Unexpected Star", "kn": "ಮಸಾಲೆ ಮಟನ್ ನಲ್ಲಿ ಫ್ರೈ: ಅನಿರೀಕ್ಷಿತ ಸ್ಟಾರ್" } },
+          { "episode": 2, "id": "pZ3pfJVNCms", "title": { "en": "This Smoked Boneless Chicken Fry", "kn": "ಸ್ಮೋಕ್ಡ್ ಬೋನ್‌ಲೆಸ್ ಚಿಕನ್ ಫ್ರೈ" } },
+          { "episode": 3, "id": "U1Co_jCbsfQ", "title": { "en": "Mysuru Mutton Chops", "kn": "ಮೈಸೂರು ಮಟನ್ ಚಾಪ್ಸ್" } },
+          { "episode": 4, "id": "gnMbEjUvhGg", "title": { "en": "Saoji-Style Mutton Khara Boti", "kn": "ಸಾವ್ಜಿ ಶೈಲಿಯ ಮಟನ್ ಖಾರ ಬೋಟಿ" } },
+          { "episode": 5, "id": "mwJB5Z0vdY0", "title": { "en": "Spicy & Tangy Prawn Pulimunchi", "kn": "ಮಸಾಲೆ ಮತ್ತು ಹುಳಿ ಸೀಗಡಿ ಪುಲಿಮುಂಚಿ" } },
+          { "episode": 6, "id": "WdwTo9qc03I", "title": { "en": "Beetroot Veg Soya Pulao", "kn": "ಬೀಟ್‌ರೂಟ್ ವೆಜ್ ಸೋಯಾ ಪುಲಾವ್" } },
+          { "episode": 7, "id": "huescaAAIlY", "title": { "en": "How to Make Raw Banana Curry", "kn": "ಬಾಳೆಕಾಯಿ ಪಲ್ಯ ಮಾಡುವ ವಿಧಾನ" } },
+          { "episode": 8, "id": "H4F_s68bfdM", "title": { "en": "Hubballi Mutton Green Curry", "kn": "ಹುಬ್ಬಳ್ಳಿ ಮಟನ್ ಗ್ರೀನ್ ಕರಿ" } },
+          { "episode": 9, "id": "hyNhPulo2Ec", "title": { "en": "Dandeli Chicken Kadai Roast", "kn": "ಡಾಂಡೇಲಿ ಚಿಕನ್ ಕಡಾಯಿ ರೋಸ್ಟ್" } },
+          { "episode": 10, "id": "Sz25EkQMHys", "title": { "en": "Easy Malnad Chicken Curry", "kn": "ಸುಲಭ ಮಲೆನಾಡು ಚಿಕನ್ ಕರಿ" } },
+          { "episode": 11, "id": "YxZ8gZnjCks", "title": { "en": "Hurali Kaalu Bassaaru", "kn": "ಹುರಳಿ ಕಾಳು ಬಸ್ಸಾರು" } },
+          { "episode": 12, "id": "wuL4uL5Gmoc", "title": { "en": "Paneer Ghee Roast", "kn": "ಪನೀರ್ ತುಪ್ಪ ರೋಸ್ಟ್" } },
+          { "episode": 13, "id": "CHzGK7qoJJE", "title": { "en": "Dasara Special Crisp Karjikai", "kn": "ದಸರಾ ವಿಶೇಷ ಕರಜಿಕಾಯಿ" } },
+          { "episode": 14, "id": "hJ42w9Og0ek", "title": { "en": "Akki Kadlebele Payasa", "kn": "ಅಕ್ಕಿ ಕಡಲೆ ಬೇಳೆ ಪಾಯಸ" } },
+          { "episode": 15, "id": "sd1dJ3WrL-M", "title": { "en": "Perfect Sajjige for Satyanarayana Pooja", "kn": "ಸತ್ಯನಾರಾಯಣ ಪೂಜೆಗೆ ಸಜ್ಜಿಗೆ" } }
+        ]
+      },
+      {
+        "season": 2,
+        "playlist": "PL4tXltXT0TCVjk9lcnaWtr4bXFaqYURaF",
+        "episodes": [
+          { "episode": 1, "id": "pTgU87_KKG0", "title": { "en": "Egg Curry with a Twist", "kn": "ಟ್ವಿಸ್ಟ್ ಜೊತೆ ಎಗ್ ಕರಿ" } },
+          { "episode": 2, "id": "5ZMBCI1I-ZQ", "title": { "en": "Restaurant Style Chicken Sukka", "kn": "ರೆಸ್ಟೋರೆಂಟ್ ಸ್ಟೈಲ್ ಚಿಕನ್ ಸುಕ್ಕ" } },
+          { "episode": 3, "id": "0lKYSrr_mRs", "title": { "en": "Fish Curry from Coastal Karnataka", "kn": "ಕರಾವಳಿ ಕರ್ನಾಟಕದ ಮೀನಿನ ಕರಿ" } },
+          { "episode": 4, "id": "8FUL1OQxisA", "title": { "en": "Coorg Chicken with a Secret Ingredient", "kn": "ಗುಪ್ತ ಘಟಕಾಂಶದ ಕೊಡಗು ಚಿಕನ್" } },
+          { "episode": 5, "id": "FcqBPAK66c0", "title": { "en": "Puneeth Rajkumar's Favourite Biryani", "kn": "ಪುನೀತ್ ರಾಜ್‌ಕುಮಾರ್ ಅವರ ಮೆಚ್ಚಿನ ಬಿರಿಯಾನಿ" } },
+          { "episode": 6, "id": "005KpLOOymM", "title": { "en": "Gadagi Mutton Masala Bijapur Style", "kn": "ಗದಗಿ ಮಟನ್ ಮಸಾಲಾ ವಿಜಾಪುರ ಶೈಲಿ" } },
+          { "episode": 7, "id": "CMaL5byAyQk", "title": { "en": "Authentic Ankola Konkani Fish Recipe", "kn": "ಅಥೆಂಟಿಕ್ ಅಂಕೋಲಾ ಕೊಂಕಣಿ ಮೀನಿನ ಪಾಕವಿಧಾನ" } },
+          { "episode": 8, "id": "V6CfmwQCrZc", "title": { "en": "Hubli Dharwad Street Style Girmit", "kn": "ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ ಸ್ಟ್ರೀಟ್ ಸ್ಟೈಲ್ ಗಿರ್ಮಿಟ್" } },
+          { "episode": 9, "id": "tzFp4sx3o20", "title": { "en": "Donna Menasinakai Palya", "kn": "ದೊಣ್ಣ ಮೆಣಸಿನಕಾಯಿ ಪಲ್ಯ" } },
+          { "episode": 10, "id": "qayD-b28ArE", "title": { "en": "Wadi-style Chicken Biryani", "kn": "ವಾಡಿ ಶೈಲಿಯ ಚಿಕನ್ ಬಿರಿಯಾನಿ" } },
+          { "episode": 11, "id": "PjprZ1H-WFo", "title": { "en": "Scrumptious Goli Bajji", "kn": "ರುಚಿಕರ ಗೋಳಿ ಬಜ್ಜಿ" } },
+          { "episode": 12, "id": "TQioXkVR0Uk", "title": { "en": "Thalipattu | Akki Rotti", "kn": "ತಳಿಪಟ್ಟು | ಅಕ್ಕಿ ರೊಟ್ಟಿ" } },
+          { "episode": 13, "id": "_DUEnhjSMAE", "title": { "en": "Vangi Bath | Brinjal Rice", "kn": "ವಾಂಗಿ ಭಾತ್ | ಬದನೆಕಾಯಿ ಅನ್ನ" } },
+          { "episode": 14, "id": "rgtzrW2aWbA", "title": { "en": "Special Chiroti for Dasara", "kn": "ದಸರಾ ವಿಶೇಷ ಚಿರೋಟಿ" } },
+          { "episode": 15, "id": "BVTgsE8afmg", "title": { "en": "Badam Puri", "kn": "ಬಾದಾಮ್ ಪುರಿ" } }
+        ]
+      },
+      {
+        "season": 1,
+        "playlist": "PL4tXltXT0TCWC5CzGx_f7DhNXw0D24GXz",
+        "episodes": [
+          { "episode": 1, "id": "_BHnfdWDKYw", "title": { "en": "How to make Donne Biryani", "kn": "ದೊಣ್ಣೆ ಬಿರಿಯಾನಿ ಮಾಡುವ ವಿಧಾನ" } },
+          { "episode": 2, "id": "583WfxFQiU8", "title": { "en": "Donne Biryani | Bengaluru's own biryani", "kn": "ದೊಣ್ಣೆ ಬಿರಿಯಾನಿ | ಬೆಂಗಳೂರಿನ ಸ್ವಂತ ಬಿರಿಯಾನಿ" } },
+          { "episode": 3, "id": "H-nUl7If054", "title": { "en": "How to make Nati Koli Masala and Palak Poori", "kn": "ನಾಟಿ ಕೋಳಿ ಮಸಾಲಾ ಮತ್ತು ಪಾಲಕ್ ಪೂರಿ ಮಾಡುವ ವಿಧಾನ" } },
+          { "episode": 4, "id": "zSr-ss5r6-0", "title": { "en": "Nati Koli Masala and Palak Poori", "kn": "ನಾಟಿ ಕೋಳಿ ಮಸಾಲಾ ಮತ್ತು ಪಾಲಕ್ ಪೂರಿ" } },
+          { "episode": 5, "id": "6hugJyRqylc", "title": { "en": "How to make Prawn Fry", "kn": "ಸೀಗಡಿ ಫ್ರೈ ಮಾಡುವ ವಿಧಾನ" } },
+          { "episode": 6, "id": "jhJhsAiVHyE", "title": { "en": "Prawn Fry | Spicy tasty appetiser", "kn": "ಸೀಗಡಿ ಫ್ರೈ | ಮಸಾಲೆ ರುಚಿಕರ ಲಘುತಿಂಡಿ" } },
+          { "episode": 7, "id": "5tQoXV1nLvs", "title": { "en": "How to make Mutton Pepper Fry", "kn": "ಮಟನ್ ಪೆಪ್ಪರ್ ಫ್ರೈ ಮಾಡುವ ವಿಧಾನ" } },
+          { "episode": 8, "id": "fpFX2o4HKKI", "title": { "en": "Mutton Pepper Fry | Lip-smacking favourite", "kn": "ಮಟನ್ ಪೆಪ್ಪರ್ ಫ್ರೈ | ರುಚಿಕರ ಮೆಚ್ಚಿನ ತಿಂಡಿ" } },
+          { "episode": 9, "id": "JccvJGfzUpk", "title": { "en": "How to make Kane Rava Fry", "kn": "ಕಾಣೆ ರವಾ ಫ್ರೈ ಮಾಡುವ ವಿಧಾನ" } },
+          { "episode": 10, "id": "Pys2TonUk0w", "title": { "en": "Kane Rava Fry | Karnataka's coastal favorite", "kn": "ಕಾಣೆ ರವಾ ಫ್ರೈ | ಕರ್ನಾಟಕದ ಕರಾವಳಿಯ ಮೆಚ್ಚಿನ ತಿಂಡಿ" } },
+          { "episode": 11, "id": "10MHb34MjuI", "title": { "en": "How to make Maddur Vada", "kn": "ಮದ್ದೂರು ವಡೆ ಮಾಡುವ ವಿಧಾನ" } },
+          { "episode": 12, "id": "rg24GX7MbGA", "title": { "en": "Maddur Vada", "kn": "ಮದ್ದೂರು ವಡೆ" } },
+          { "episode": 13, "id": "PUmpM8MfTMo", "title": { "en": "How to make Ennegayi", "kn": "ಎಣ್ಣೆಗಾಯಿ ಮಾಡುವ ವಿಧಾನ" } },
+          { "episode": 14, "id": "XjvaRWnqjVI", "title": { "en": "Ennegayi | Super hit from North Karnataka", "kn": "ಎಣ್ಣೆಗಾಯಿ | ಉತ್ತರ ಕರ್ನಾಟಕದ ಸೂಪರ್ ಹಿಟ್" } },
+          { "episode": 15, "id": "W9kFbnnZj34", "title": { "en": "How to make Puliyogare", "kn": "ಹುಣಸೆ ಅನ್ನ ಮಾಡುವ ವಿಧಾನ" } }
+        ]
+      }
+    ]
+  },
+  "gallery": {
+    "pageTitle": { "en": "Gallery", "kn": "ಗ್ಯಾಲರಿ" },
+    "lightboxCounterTemplate": { "en": "{current} / {total}", "kn": "{current} / {total}" }
+  },
+  "partnerStories": {
+    "pageTitle": { "en": "Partner Stories", "kn": "ಪಾಲುದಾರರ ಕಥೆಗಳು" },
+    "pageDescription": {
+      "en": "Stories from the brands and partners that make this celebration of Karnataka cuisine possible.",
+      "kn": "ಕರ್ನಾಟಕದ ಭೋಜನ ಶೈಲಿಯ ಆಚರಣೆಯನ್ನು ಸಾಧ್ಯವಾಗಿಸುವ ಬ್ರ್ಯಾಂಡ್‌ಗಳು ಮತ್ತು ಪಾಲುದಾರರ ಕಥೆಗಳು."
+    },
+    "backLabel": { "en": "← Back to stories", "kn": "← ಕಥೆಗಳಿಗೆ ಹಿಂತಿರುಗಿ" },
+    "readLabel": { "en": "Read story →", "kn": "ಕಥೆ ಓದಿ →" },
+    "articles": [
+      {
+        "slug": "celebrating-karnataka-cuisine",
+        "headline": { "en": "Celebrating the Rich Culinary Heritage of Karnataka", "kn": "ಕರ್ನಾಟಕದ ಶ್ರೀಮಂತ ಪಾಕಶಾಸ್ತ್ರ ಪರಂಪರೆಯನ್ನು ಆಚರಿಸುವುದು" },
+        "excerpt": { "en": "A journey through Karnataka's diverse food traditions, brought to life with the support of our valued partners.", "kn": "ಕರ್ನಾಟಕದ ವೈವಿಧ್ಯಮಯ ಆಹಾರ ಸಂಪ್ರದಾಯಗಳ ಮೂಲಕ ಒಂದು ಪ್ರಯಾಣ, ನಮ್ಮ ಮೌಲ್ಯಯುತ ಪಾಲುದಾರರ ಬೆಂಬಲದೊಂದಿಗೆ ಜೀವಂತಗೊಳಿಸಲಾಗಿದೆ." },
+        "body": [
+          { "en": "Karnataka's culinary landscape is as diverse as its geography — from the coastal flavours of Mangalorean cuisine to the rich, aromatic dishes of North Karnataka, every region tells a story through its food.", "kn": "ಕರ್ನಾಟಕದ ಪಾಕಶಾಸ್ತ್ರ ಭೂದೃಶ್ಯವು ಅದರ ಭೌಗೋಳಿಕತೆಯಷ್ಟೇ ವೈವಿಧ್ಯಮಯವಾಗಿದೆ — ಮಂಗಳೂರಿನ ಪಾಕಶೈಲಿಯ ಕರಾವಳಿ ರುಚಿಗಳಿಂದ ಹಿಡಿದು ಉತ್ತರ ಕರ್ನಾಟಕದ ಶ್ರೀಮಂತ, ಸುಗಂಧಭರಿತ ಭಕ್ಷ್ಯಗಳವರೆಗೆ, ಪ್ರತಿಯೊಂದು ಪ್ರದೇಶವೂ ತನ್ನ ಆಹಾರದ ಮೂಲಕ ಕಥೆಯನ್ನು ಹೇಳುತ್ತದೆ." },
+          { "en": "This season, we are proud to partner with brands that share our commitment to celebrating authentic culinary traditions and bringing them to a wider audience. Together, we explore the recipes, techniques, and stories that make Karnataka's cuisine truly unforgettable.", "kn": "ಈ ಸೀಸನ್‌ನಲ್ಲಿ, ಅಥೆಂಟಿಕ್ ಪಾಕಶಾಸ್ತ್ರ ಸಂಪ್ರದಾಯಗಳನ್ನು ಆಚರಿಸುವ ಮತ್ತು ಅವುಗಳನ್ನು ವ್ಯಾಪಕ ಪ್ರೇಕ್ಷಕರಿಗೆ ತಲುಪಿಸುವ ನಮ್ಮ ಬದ್ಧತೆಯನ್ನು ಹಂಚಿಕೊಳ್ಳುವ ಬ್ರ್ಯಾಂಡ್‌ಗಳೊಂದಿಗೆ ಪಾಲುದಾರಿಕೆ ಹೊಂದಲು ನಾವು ಹೆಮ್ಮೆಪಡುತ್ತೇವೆ. ಒಟ್ಟಾಗಿ, ನಾವು ಕರ್ನಾಟಕದ ಭೋಜನ ಶೈಲಿಯನ್ನು ನಿಜಕ್ಕೂ ಮರೆಯಲಾಗದಂತೆ ಮಾಡುವ ಪಾಕವಿಧಾನಗಳು, ತಂತ್ರಗಳು ಮತ್ತು ಕಥೆಗಳನ್ನು ಅನ್ವೇಷಿಸುತ್ತೇವೆ." },
+          { "en": "Join us as we travel through the state, discovering hidden gems and timeless classics that have been passed down through generations.", "kn": "ನಮ್ಮೊಂದಿಗೆ ರಾಜ್ಯದಾದ್ಯಂತ ಪ್ರಯಾಣಿಸಿ, ತಲೆಮಾರುಗಳ ಮೂಲಕ ರವಾನಿಸಲ್ಪಟ್ಟ ಗುಪ್ತ ರತ್ನಗಳು ಮತ್ತು ಕಾಲಾತೀತ ಕ್ಲಾಸಿಕ್‌ಗಳನ್ನು ಕಂಡುಕೊಳ್ಳಿ." }
+        ]
+      },
+      {
+        "slug": "supporting-local-traditions",
+        "headline": { "en": "Supporting Local Food Traditions Together", "kn": "ಸ್ಥಳೀಯ ಆಹಾರ ಸಂಪ್ರದಾಯಗಳನ್ನು ಒಟ್ಟಾಗಿ ಬೆಂಬಲಿಸುವುದು" },
+        "excerpt": { "en": "How our partners help preserve the authentic flavours and cooking techniques of Karnataka.", "kn": "ನಮ್ಮ ಪಾಲುದಾರರು ಕರ್ನಾಟಕದ ನೈಜ ರುಚಿಗಳು ಮತ್ತು ಅಡುಗೆ ತಂತ್ರಗಳನ್ನು ಸಂರಕ್ಷಿಸಲು ಹೇಗೆ ಸಹಾಯ ಮಾಡುತ್ತಾರೆ." },
+        "body": [
+          { "en": "Local food traditions are the backbone of Karnataka's culinary identity. From the way spices are tempered to the unique cooking vessels used in different regions, every detail matters.", "kn": "ಸ್ಥಳೀಯ ಆಹಾರ ಸಂಪ್ರದಾಯಗಳು ಕರ್ನಾಟಕದ ಪಾಕಶಾಸ್ತ್ರದ ಗುರುತಿನ ಬೆನ್ನೆಲುಬಾಗಿವೆ. ಮಸಾಲೆಗಳನ್ನು ಒಗ್ಗರಿಸುವ ವಿಧಾನದಿಂದ ಹಿಡಿದು ವಿವಿಧ ಪ್ರದೇಶಗಳಲ್ಲಿ ಬಳಸುವ ವಿಶಿಷ್ಟ ಅಡುಗೆ ಪಾತ್ರೆಗಳವರೆಗೆ, ಪ್ರತಿಯೊಂದು ವಿವರವೂ ಮುಖ್ಯವಾಗಿದೆ." },
+          { "en": "Our partners understand the importance of preserving these traditions while making them accessible to modern audiences. Through their support, we are able to document and share these authentic practices with the world.", "kn": "ನಮ್ಮ ಪಾಲುದಾರರು ಈ ಸಂಪ್ರದಾಯಗಳನ್ನು ಸಂರಕ್ಷಿಸುವ ಮತ್ತು ಅವುಗಳನ್ನು ಆಧುನಿಕ ಪ್ರೇಕ್ಷಕರಿಗೆ ಪ್ರವೇಶಿಸುವಂತೆ ಮಾಡುವ ಪ್ರಾಮುಖ್ಯತೆಯನ್ನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದಾರೆ. ಅವರ ಬೆಂಬಲದ ಮೂಲಕ, ನಾವು ಈ ನೈಜ ಅಭ್ಯಾಸಗಳನ್ನು ದಾಖಲಿಸಲು ಮತ್ತು ಜಗತ್ತಿನೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಾಗಿದೆ." },
+          { "en": "This article highlights some of the key initiatives that help keep Karnataka's food heritage alive and thriving.", "kn": "ಈ ಲೇಖನವು ಕರ್ನಾಟಕದ ಆಹಾರ ಪರಂಪರೆಯನ್ನು ಜೀವಂತವಾಗಿ ಮತ್ತು ಅಭಿವೃದ್ಧಿ ಹೊಂದುವಂತೆ ಮಾಡುವ ಕೆಲವು ಪ್ರಮುಖ ಉಪಕ್ರಮಗಳನ್ನು ಎತ್ತಿ ತೋರಿಸುತ್ತದೆ." }
+        ]
+      },
+      {
+        "slug": "journey-of-flavours",
+        "headline": { "en": "A Journey Through Karnataka's Regional Flavours", "kn": "ಕರ್ನಾಟಕದ ಪ್ರಾದೇಶಿಕ ರುಚಿಗಳ ಮೂಲಕ ಒಂದು ಪ್ರಯಾಣ" },
+        "excerpt": { "en": "Exploring the unique taste profiles that define Karnataka's regional cuisines from coast to coast.", "kn": "ಕರಾವಳಿಯಿಂದ ಕರಾವಳಿಯವರೆಗೆ ಕರ್ನಾಟಕದ ಪ್ರಾದೇಶಿಕ ಭೋಜನ ಶೈಲಿಗಳನ್ನು ವ್ಯಾಖ್ಯಾನಿಸುವ ವಿಶಿಷ್ಟ ರುಚಿ ಪ್ರೊಫೈಲ್‌ಗಳನ್ನು ಅನ್ವೇಷಿಸುವುದು." },
+        "body": [
+          { "en": "From the fiery heat of North Karnataka curries to the subtle sweetness of coastal preparations, Karnataka offers a spectrum of flavours that is unmatched.", "kn": "ಉತ್ತರ ಕರ್ನಾಟಕದ ಕರಿಗಳ ಕಾರವಾದ ಮಸಾಲೆಯಿಂದ ಹಿಡಿದು ಕರಾವಳಿ ತಯಾರಿಕೆಗಳ ಸೌಮ್ಯ ಸಿಹಿಯವರೆಗೆ, ಕರ್ನಾಟಕವು ಸ್ಪರ್ಧೆಯಿಲ್ಲದ ರುಚಿಗಳ ಸ್ಪೆಕ್ಟ್ರಮ್ ಅನ್ನು ನೀಡುತ್ತದೆ." },
+          { "en": "Each region brings its own unique ingredients and techniques — the use of coconut in coastal areas, the generous use of tamarind and spices in the southern districts, and the rich, ghee-laden dishes of the northern plains.", "kn": "ಪ್ರತಿಯೊಂದು ಪ್ರದೇಶವೂ ತನ್ನದೇ ಆದ ವಿಶಿಷ್ಟ ಘಟಕಾಂಶಗಳು ಮತ್ತು ತಂತ್ರಗಳನ್ನು ತರುತ್ತದೆ — ಕರಾವಳಿ ಪ್ರದೇಶಗಳಲ್ಲಿ ತೆಂಗಿನಕಾಯಿಯ ಬಳಕೆ, ದಕ್ಷಿಣ ಜಿಲ್ಲೆಗಳಲ್ಲಿ ಹುಣಸೆ ಮತ್ತು ಮಸಾಲೆಗಳ ಉದಾರ ಬಳಕೆ, ಮತ್ತು ಉತ್ತರದ ಬಯಲು ಪ್ರದೇಶಗಳ ಶ್ರೀಮಂತ, ತುಪ್ಪಭರಿತ ಭಕ್ಷ್ಯಗಳು." },
+          { "en": "Our partner brands have helped us showcase this incredible diversity through the season, ensuring that every recipe is presented with the respect and authenticity it deserves.", "kn": "ನಮ್ಮ ಪಾಲುದಾರ ಬ್ರ್ಯಾಂಡ್‌ಗಳು ಈ ಅದ್ಭುತ ವೈವಿಧ್ಯತೆಯನ್ನು ಸೀಸನ್‌ನಾದ್ಯಂತ ಪ್ರದರ್ಶಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡಿವೆ, ಪ್ರತಿಯೊಂದು ಪಾಕವಿಧಾನವೂ ಅದಕ್ಕೆ ಅರ್ಹವಾದ ಗೌರವ ಮತ್ತು ನೈಜತೆಯೊಂದಿಗೆ ಪ್ರಸ್ತುತಪಡಿಸಲ್ಪಡುತ್ತದೆ ಎಂದು ಖಚಿತಪಡಿಸುತ್ತವೆ." }
+        ]
+      },
+      {
+        "slug": "partner-spotlight-culinary-heritage",
+        "headline": { "en": "Partner Spotlight: Celebrating Culinary Heritage", "kn": "ಪಾಲುದಾರರ ಸ್ಪಾಟ್‌ಲೈಟ್: ಪಾಕಶಾಸ್ತ್ರ ಪರಂಪರೆಯನ್ನು ಆಚರಿಸುವುದು" },
+        "excerpt": { "en": "A spotlight on the brands and organisations that share our vision for culinary excellence.", "kn": "ಪಾಕಶಾಸ್ತ್ರದ ಉತ್ಕೃಷ್ಟತೆಯ ನಮ್ಮ ದೃಷ್ಟಿಕೋನವನ್ನು ಹಂಚಿಕೊಳ್ಳುವ ಬ್ರ್ಯಾಂಡ್‌ಗಳು ಮತ್ತು ಸಂಸ್ಥೆಗಳ ಮೇಲೆ ಒಂದು ಸ್ಪಾಟ್‌ಲೈಟ್." },
+        "body": [
+          { "en": "Behind every great season of Cuisines of Karnataka are the partners who make it possible. Their commitment to quality, tradition, and innovation aligns perfectly with our mission.", "kn": "ಕರ್ನಾಟಕದ ಭೋಜನ ಶೈಲಿಗಳ ಪ್ರತಿಯೊಂದು ಉತ್ತಮ ಸೀಸನ್ ಹಿಂದೆ ಅದನ್ನು ಸಾಧ್ಯವಾಗಿಸುವ ಪಾಲುದಾರರಿದ್ದಾರೆ. ಗುಣಮಟ್ಟ, ಸಂಪ್ರದಾಯ ಮತ್ತು ನಾವೀನ್ಯತೆಗೆ ಅವರ ಬದ್ಧತೆಯು ನಮ್ಮ ಧ್ಯೇಯದೊಂದಿಗೆ ಸಂಪೂರ್ಣವಾಗಿ ಹೊಂದಿಕೊಳ್ಳುತ್ತದೆ." },
+          { "en": "This spotlight features the stories of organisations that have been instrumental in bringing Karnataka's culinary heritage to audiences across the country. From kitchen essentials to premium ingredients, these partners embody the spirit of Karnataka's food culture.", "kn": "ಈ ಸ್ಪಾಟ್‌ಲೈಟ್ ದೇಶಾದ್ಯಂತ ಪ್ರೇಕ್ಷಕರಿಗೆ ಕರ್ನಾಟಕದ ಪಾಕಶಾಸ್ತ್ರ ಪರಂಪರೆಯನ್ನು ತಲುಪಿಸುವಲ್ಲಿ ಪ್ರಮುಖ ಪಾತ್ರ ವಹಿಸಿದ ಸಂಸ್ಥೆಗಳ ಕಥೆಗಳನ್ನು ಒಳಗೊಂಡಿದೆ. ಅಡುಗೆಮನೆಯ ಅವಶ್ಯಕತೆಗಳಿಂದ ಹಿಡಿದು ಪ್ರೀಮಿಯಂ ಘಟಕಾಂಶಗಳವರೆಗೆ, ಈ ಪಾಲುದಾರರು ಕರ್ನಾಟಕದ ಆಹಾರ ಸಂಸ್ಕೃತಿಯ ಮನೋಭಾವವನ್ನು ಸಾಕಾರಗೊಳಿಸುತ್ತಾರೆ." },
+          { "en": "We thank them for their continued support and shared passion for great food.", "kn": "ಅವರ ನಿರಂತರ ಬೆಂಬಲ ಮತ್ತು ಉತ್ತಮ ಆಹಾರದ ಹಂಚಿಕೆಯ ಉತ್ಸಾಹಕ್ಕಾಗಿ ನಾವು ಅವರಿಗೆ ಧನ್ಯವಾದಗಳನ್ನು ಅರ್ಪಿಸುತ್ತೇವೆ." }
+        ]
+      },
+      {
+        "slug": "community-and-culture",
+        "headline": { "en": "Community & Culture: Food That Brings Us Together", "kn": "ಸಮುದಾಯ ಮತ್ತು ಸಂಸ್ಕೃತಿ: ನಮ್ಮನ್ನು ಒಂದುಗೂಡಿಸುವ ಆಹಾರ" },
+        "excerpt": { "en": "How food acts as a bridge between communities, cultures, and generations in Karnataka.", "kn": "ಕರ್ನಾಟಕದಲ್ಲಿ ಸಮುದಾಯಗಳು, ಸಂಸ್ಕೃತಿಗಳು ಮತ್ತು ತಲೆಮಾರುಗಳ ನಡುವೆ ಆಹಾರವು ಸೇತುವೆಯಾಗಿ ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ." },
+        "body": [
+          { "en": "Food in Karnataka is more than just sustenance — it is a celebration of community, culture, and togetherness. From festive feasts to everyday meals, the act of cooking and sharing food is deeply woven into the social fabric.", "kn": "ಕರ್ನಾಟಕದಲ್ಲಿ ಆಹಾರವು ಕೇವಲ ಪೋಷಣೆಗಿಂತ ಹೆಚ್ಚಾಗಿದೆ — ಇದು ಸಮುದಾಯ, ಸಂಸ್ಕೃತಿ ಮತ್ತು ಒಗ್ಗಟ್ಟಿನ ಆಚರಣೆಯಾಗಿದೆ. ಹಬ್ಬದ ಔತಣಕೂಟಗಳಿಂದ ಹಿಡಿದು ದೈನಂದಿನ ಊಟಗಳವರೆಗೆ, ಅಡುಗೆ ಮಾಡುವ ಮತ್ತು ಆಹಾರವನ್ನು ಹಂಚಿಕೊಳ್ಳುವ ಕ್ರಿಯೆಯು ಸಾಮಾಜಿಕ ರಚನೆಯಲ್ಲಿ ಆಳವಾಗಿ ಹೆಣೆದುಕೊಂಡಿದೆ." },
+          { "en": "This season, we celebrate the role of food in bringing people together. Through the stories of home cooks, chefs, and food enthusiasts, we explore how traditional recipes create bonds that transcend generations.", "kn": "ಈ ಸೀಸನ್‌ನಲ್ಲಿ, ಜನರನ್ನು ಒಟ್ಟುಗೂಡಿಸುವಲ್ಲಿ ಆಹಾರದ ಪಾತ್ರವನ್ನು ನಾವು ಆಚರಿಸುತ್ತೇವೆ. ಗೃಹ ಅಡುಗೆಯವರು, ಶೆಫ್‌ಗಳು ಮತ್ತು ಆಹಾರ ಉತ್ಸಾಹಿಗಳ ಕಥೆಗಳ ಮೂಲಕ, ಸಾಂಪ್ರದಾಯಿಕ ಪಾಕವಿಧಾನಗಳು ತಲೆಮಾರುಗಳನ್ನು ಮೀರಿದ ಬಂಧಗಳನ್ನು ಹೇಗೆ ಸೃಷ್ಟಿಸುತ್ತವೆ ಎಂಬುದನ್ನು ನಾವು ಅನ್ವೇಷಿಸುತ್ತೇವೆ." },
+          { "en": "Our partners have been integral to this journey, helping us create a platform that celebrates not just the food, but the people behind it.", "kn": "ನಮ್ಮ ಪಾಲುದಾರರು ಈ ಪ್ರಯಾಣದಲ್ಲಿ ಅವಿಭಾಜ್ಯರಾಗಿದ್ದಾರೆ, ಆಹಾರವನ್ನು ಮಾತ್ರವಲ್ಲದೆ ಅದರ ಹಿಂದಿನ ಜನರನ್ನು ಆಚರಿಸುವ ವೇದಿಕೆಯನ್ನು ರಚಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತಿದ್ದಾರೆ." }
+        ]
+      }
+    ]
+  },
+  "game": {
+    "title": { "en": "Santhe Run", "kn": "ಸಂತೆ ರನ್" },
+    "logoAlt": { "en": "COK", "kn": "COK" },
+    "startLabel": { "en": "Tap to Start", "kn": "ಆರಂಭಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ" },
+    "backLabel": { "en": "Back to Home", "kn": "ಮುಖಪುಟಕ್ಕೆ ಹಿಂತಿರುಗಿ" },
+    "bestStreakTemplate": { "en": "Best Streak: <strong>{streak}</strong>", "kn": "ಅತ್ಯುತ್ತಮ ಸ್ಟ್ರೀಕ್: <strong>{streak}</strong>" },
+    "bestScoreTemplate": { "en": "Best Score: <strong>{score}</strong>", "kn": "ಅತ್ಯುತ್ತಮ ಸ್ಕೋರ್: <strong>{score}</strong>" },
+    "slides": [
+      {
+        "labelLeft": { "en": "Left", "kn": "ಎಡ" },
+        "labelRight": { "en": "Right", "kn": "ಬಲ" },
+        "labelUp": { "en": "Up", "kn": "ಮೇಲೆ" },
+        "description": { "en": "Swipe or tap left/right to <strong>move</strong>, up to <strong>jump</strong>", "kn": "ಎಡ/ಬಲ ಸ್ವೈಪ್ ಅಥವಾ ಟ್ಯಾಪ್ ಮಾಡಿ <strong>ಚಲಿಸಲು</strong>, ಮೇಲೆ ಸ್ವೈಪ್ ಮಾಡಿ <strong>ಜಂಪ್</strong> ಮಾಡಲು" }
+      },
+      {
+        "description": { "en": "Catch the <strong>right ingredients</strong> to complete the recipe", "kn": "ಪಾಕವಿಧಾನ ಪೂರ್ಣಗೊಳಿಸಲು <strong>ಸರಿಯಾದ ಘಟಕಾಂಶಗಳನ್ನು</strong> ಹಿಡಿಯಿರಿ" }
+      },
+      {
+        "description": { "en": "Avoid wrong ones — you only have <strong>3 baskets</strong>!", "kn": "ತಪ್ಪಾದವುಗಳನ್ನು ತಪ್ಪಿಸಿ — ನಿಮ್ಮ ಬಳಿ ಕೇವಲ <strong>೩ ಬುಟ್ಟಿಗಳು</strong> ಮಾತ್ರ ಇವೆ!" }
+      },
+      {
+        "description": { "en": "Complete <strong>2 dishes</strong> to level up and unlock harder recipes", "kn": "ಲೆವೆಲ್ ಅಪ್ ಮತ್ತು ಕಠಿಣ ಪಾಕವಿಧಾನಗಳನ್ನು ಅನ್ಲಾಕ್ ಮಾಡಲು <strong>೨ ಭಕ್ಷ್ಯಗಳನ್ನು</strong> ಪೂರ್ಣಗೊಳಿಸಿ" }
+      }
+    ],
+    "hud": {
+      "streakTemplate": { "en": "🔥 Streak: {streak}", "kn": "🔥 ಸ್ಟ್ರೀಕ್: {streak}" },
+      "scoreTemplate": { "en": "🏆 {score}", "kn": "🏆 {score}" },
+      "levelTemplate": { "en": "L{level}", "kn": "ಲೆ{level}" }
+    },
+    "recipePreview": {
+      "descriptionTemplate": { "en": "Let's make {dish_name}! We need to get {ingredient_list} from the market.", "kn": "{dish_name} ಮಾಡೋಣ! ನಾವು ಮಾರುಕಟ್ಟೆಯಿಂದ {ingredient_list} ತರಬೇಕು." },
+      "proceedLabel": { "en": "Proceed", "kn": "ಮುಂದುವರಿಸಿ" }
+    },
+    "dishComplete": {
+      "title": { "en": "🎉 Dish Complete!", "kn": "🎉 ಭಕ್ಷ್ಯ ಸಿದ್ಧ!" },
+      "nextDishLabel": { "en": "Next Dish →", "kn": "ಮುಂದಿನ ಭಕ್ಷ್ಯ →" }
+    },
+    "gameOver": {
+      "title": { "en": "Game Over", "kn": "ಆಟ ಮುಗಿಯಿತು" },
+      "scoreTemplate": { "en": "Score: {score}", "kn": "ಸ್ಕೋರ್: {score}" },
+      "bestStreakTemplate": { "en": "Best Streak: {streak}", "kn": "ಅತ್ಯುತ್ತಮ ಸ್ಟ್ರೀಕ್: {streak}" },
+      "lastDishTemplate": { "en": "Last dish: {dish_name}", "kn": "ಕೊನೆಯ ಭಕ್ಷ್ಯ: {dish_name}" },
+      "watchRecipeLabel": { "en": "Watch this recipe →", "kn": "ಈ ಪಾಕವಿಧಾನ ನೋಡಿ →" },
+      "playAgainLabel": { "en": "Play Again", "kn": "ಮತ್ತೆ ಆಟವಾಡಿ" },
+      "homeLabel": { "en": "Home", "kn": "ಮುಖಪುಟ" },
+      "thumbnailAlt": { "en": "Video thumbnail", "kn": "ವೀಡಿಯೊ ಥಂಬ್‌ನೇಲ್" }
+    },
+    "levelUp": {
+      "title": { "en": "LEVEL UP!", "kn": "ಲೆವೆಲ್ ಅಪ್!" },
+      "levelTemplate": { "en": "Level {level}", "kn": "ಲೆವೆಲ್ {level}" }
+    },
+    "dishes": [
+      { "name": { "en": "White Chicken Pulao", "kn": "ವೈಟ್ ಚಿಕನ್ ಪುಲಾವ್" }, "videoId": "9ig2P5uQeLo", "ingredients": ["Chicken", "Rice", "Coconut", "Spices"] },
+      { "name": { "en": "Naati Koli Bassaru", "kn": "ನಾಟಿ ಕೋಳಿ ಬಸ್ಸಾರು" }, "videoId": "xNlR6VPTUOc", "ingredients": ["Chicken", "Chickpeas", "Mustard", "Spices"] },
+      { "name": { "en": "Quick Mutton Fry", "kn": "ಕ್ವಿಕ್ ಮಟನ್ ಫ್ರೈ" }, "videoId": "nol4d9eqjyo", "ingredients": ["Mutton", "Garlic", "Curry Leaves", "Pepper", "Chilli"] },
+      { "name": { "en": "Mutton Kheema Vade", "kn": "ಮಟನ್ ಖೀಮಾ ವಡೆ" }, "videoId": "rtLm3RqLnLc", "ingredients": ["Mutton", "Mint", "Coriander", "Dill", "Garlic"] },
+      { "name": { "en": "Kaal Soup", "kn": "ಕಾಲ್ ಸೂಪ್" }, "videoId": "Pc1QVxb2V4s", "ingredients": ["Mutton", "Ginger", "Garlic", "Pepper", "Spices"] },
+      { "name": { "en": "Kanakapura Fish Curry", "kn": "ಕನಕಪುರ ಮೀನಿನ ಕರಿ" }, "videoId": "SO9jaLxrPsQ", "ingredients": ["Fish", "Chilli", "Tamarind", "Coconut", "Mustard"] },
+      { "name": { "en": "Kollegal Mutton Pulao", "kn": "ಕೊಳ್ಳೇಗಾಲ ಮಟನ್ ಪುಲಾವ್" }, "videoId": "s5jHf8M_hSE", "ingredients": ["Mutton", "Rice", "Coriander", "Mint", "Spices"] },
+      { "name": { "en": "Kadle Manoli", "kn": "ಕಡ್ಲೆ ಮನೋಳಿ" }, "videoId": "pESOxDDF7B4", "ingredients": ["Ivy Gourd", "Chickpeas", "Coconut", "Mustard"] },
+      { "name": { "en": "Batani Kurma", "kn": "ಬಟಾಣಿ ಕುರ್ಮಾ" }, "videoId": "rsJy07KbZhE", "ingredients": ["Peas", "Potato", "Cashews", "Coconut", "Spices"] },
+      { "name": { "en": "Raichur Tuntapur Chicken", "kn": "ರಾಯಚೂರು ತುಂಟಾಪುರ್ ಚಿಕನ್" }, "videoId": "oFWVuSiZZ64", "ingredients": ["Chicken", "Garlic", "Chilli", "Ginger"] },
+      { "name": { "en": "Bonda Soup", "kn": "ಬೊಂಡಾ ಸೂಪ್" }, "videoId": "jz7W4rcZYOs", "ingredients": ["Urad Dal", "Moong Dal", "Ginger", "Mustard"] },
+      { "name": { "en": "Southekayi Muddipalya", "kn": "ಸೌತೆಕಾಯಿ ಮುದ್ದಿಪಲ್ಯ" }, "videoId": "L-j5T-ZQdMg", "ingredients": ["Cucumber", "Coconut", "Mustard", "Chilli"] },
+      { "name": { "en": "Avarekalu Curry", "kn": "ಅವರೆಕಾಳು ಕರಿ" }, "videoId": "z9Zb3HCb29M", "ingredients": ["Hyacinth Beans", "Coconut", "Mustard", "Chilli"] },
+      { "name": { "en": "Hurugadle Nippattu", "kn": "ಹುರುಗಡಲೆ ನಿಪ್ಪಾಟ್ಟು" }, "videoId": "4dMkfUiECkc", "ingredients": ["Fried Gram", "Rice Flour", "Mustard", "Chilli"] },
+      { "name": { "en": "Halasina Mulka", "kn": "ಹಲಸಿನ ಮುಲ್ಕಾ" }, "videoId": "u1rGS26Likc", "ingredients": ["Jackfruit", "Rice Flour", "Jaggery", "Coconut"] }
+    ]
+  },
+  "ingredients": {
+    "Chicken": { "en": "Chicken", "kn": "ಕೋಳಿ ಮಾಂಸ" },
+    "Mutton": { "en": "Mutton", "kn": "ಮಟನ್" },
+    "Fish": { "en": "Fish", "kn": "ಮೀನು" },
+    "Rice": { "en": "Rice", "kn": "ಅಕ್ಕಿ" },
+    "Coconut": { "en": "Coconut", "kn": "ತೆಂಗಿನಕಾಯಿ" },
+    "Curry Leaves": { "en": "Curry Leaves", "kn": "ಕರಿಬೇವು" },
+    "Mustard": { "en": "Mustard", "kn": "ಸಾಸಿವೆ" },
+    "Tamarind": { "en": "Tamarind", "kn": "ಹುಣಸೆ" },
+    "Garlic": { "en": "Garlic", "kn": "ಬೆಳ್ಳುಳ್ಳಿ" },
+    "Ginger": { "en": "Ginger", "kn": "ಶುಂಠಿ" },
+    "Pepper": { "en": "Pepper", "kn": "ಮೆಣಸು" },
+    "Chilli": { "en": "Chilli", "kn": "ಖಾರದ ಮೆಣಸು" },
+    "Mint": { "en": "Mint", "kn": "ಪುದೀನಾ" },
+    "Coriander": { "en": "Coriander", "kn": "ಕೊತ್ತಂಬರಿ" },
+    "Dill": { "en": "Dill", "kn": "ಸಬ್ಬಸಿಗೆ" },
+    "Ivy Gourd": { "en": "Ivy Gourd", "kn": "ತೊಂಡೆಕಾಯಿ" },
+    "Chickpeas": { "en": "Chickpeas", "kn": "ಕಡ್ಲೆಕಾಳು" },
+    "Peas": { "en": "Peas", "kn": "ಬಟಾಣಿ" },
+    "Potato": { "en": "Potato", "kn": "ಆಲೂಗಡ್ಡೆ" },
+    "Cashews": { "en": "Cashews", "kn": "ಗೋಡಂಬಿ" },
+    "Urad Dal": { "en": "Urad Dal", "kn": "ಉದ್ದಿನ ಬೇಳೆ" },
+    "Moong Dal": { "en": "Moong Dal", "kn": "ಹೆಸರು ಬೇಳೆ" },
+    "Cucumber": { "en": "Cucumber", "kn": "ಸೌತೆಕಾಯಿ" },
+    "Hyacinth Beans": { "en": "Hyacinth Beans", "kn": "ಅವರೆಕಾಳು" },
+    "Fried Gram": { "en": "Fried Gram", "kn": "ಹುರುಗಡಲೆ" },
+    "Rice Flour": { "en": "Rice Flour", "kn": "ಅಕ್ಕಿ ಹಿಟ್ಟು" },
+    "Jackfruit": { "en": "Jackfruit", "kn": "ಹಲಸು" },
+    "Jaggery": { "en": "Jaggery", "kn": "ಬೆಲ್ಲ" },
+    "Spices": { "en": "Spices", "kn": "ಮಸಾಲೆ ಸಾಮಾನು" }
+  },
+  "sponsors": {
+    "freedom": { "en": "Presents", "kn": "ಪ್ರಸ್ತುತಪಡಿಸುತ್ತದೆ" },
+    "indane": { "en": "Indane", "kn": "ಇಂಡೇನ್" },
+    "prestige": { "en": "Prestige", "kn": "ಪ್ರೆಸ್ಟೀಜ್" },
+    "bhimaGold": { "en": "Bhima Gold", "kn": "ಭೀಮಾ ಗೋಲ್ಡ್" },
+    "lays": { "en": "Lays", "kn": "ಲೇಸ್" },
+    "sbiCard": { "en": "SBI Card", "kn": "ಎಸ್ಬಿಐ ಕಾರ್ಡ್" },
+    "vencobb": { "en": "Vencobb", "kn": "ವೆನ್‌ಕಾಬ್" },
+    "ecoCrystal": { "en": "Eco Crystal", "kn": "ಈಕೋ ಕ್ರಿಸ್ಟಲ್" }
+  }
+}

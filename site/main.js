@@ -8,6 +8,73 @@
   var BASE = 'https://product-tpml.github.io/COK/site/';
   var SVG_DIR = BASE + 'svg/';
 
+  // ---- I18N ----
+  var ACTIVE_LANGUAGE = 'en'; // change to 'kn' for Kannada
+  var i18nData = null;
+
+  function t(path, params) {
+    if (!i18nData) return path;
+    var parts = path.split('.');
+    var val = i18nData;
+    for (var i = 0; i < parts.length; i++) {
+      if (val && typeof val === 'object' && !Array.isArray(val)) { val = val[parts[i]]; }
+      else { return path; }
+    }
+    if (val && typeof val === 'object' && !Array.isArray(val)) { val = val[ACTIVE_LANGUAGE]; }
+    if (typeof val !== 'string') return path;
+    if (params) {
+      for (var key in params) {
+        val = val.replace(new RegExp('\\{' + key + '\\}', 'g'), params[key]);
+      }
+    }
+    return val;
+  }
+
+  function getRecipeTitle(seasonIdx, episodeEp) {
+    if (!i18nData) return '';
+    try {
+      var episodes = i18nData.recipes.videos[seasonIdx].episodes;
+      for (var i = 0; i < episodes.length; i++) {
+        if (episodes[i].episode === episodeEp) {
+          return episodes[i].title[ACTIVE_LANGUAGE] || episodes[i].title.en || '';
+        }
+      }
+    } catch (e) {}
+    return '';
+  }
+
+  function getTranslatedIngredientName(eng) { return t('ingredients.' + eng); }
+
+  function getTranslatedDishName(idx) {
+    if (!i18nData) return '';
+    try { return i18nData.game.dishes[idx].name[ACTIVE_LANGUAGE] || i18nData.game.dishes[idx].name.en; }
+    catch (e) { return ''; }
+  }
+
+  function getPartnerArticleField(idx, field) {
+    if (!i18nData) return '';
+    try { return i18nData.partnerStories.articles[idx][field][ACTIVE_LANGUAGE] || i18nData.partnerStories.articles[idx][field].en; }
+    catch (e) { return ''; }
+  }
+
+  function getPartnerBodyHtml(idx) {
+    if (!i18nData) return '';
+    try {
+      var bodyArr = i18nData.partnerStories.articles[idx].body;
+      return bodyArr.map(function (p) { return '<p>' + (p[ACTIVE_LANGUAGE] || p.en || '') + '</p>'; }).join('');
+    } catch (e) { return ''; }
+  }
+
+  function applyI18n() {
+    if (!i18nData) return;
+    document.documentElement.lang = ACTIVE_LANGUAGE;
+    document.title = t('site.title') || document.title;
+    document.querySelectorAll('[data-i18n]').forEach(function (el) { el.innerHTML = t(el.getAttribute('data-i18n')); });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function (el) { el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria'))); });
+    document.querySelectorAll('[data-i18n-alt]').forEach(function (el) { el.setAttribute('alt', t(el.getAttribute('data-i18n-alt'))); });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) { el.setAttribute('placeholder', t(el.getAttribute('data-i18n-placeholder'))); });
+  }
+
   // ---- IMAGE URL MAP (CDN for photos, GitHub Pages for logos/SVGs) ----
   var IMAGE_CDN = {
     "20-hubli-18-Cuisines of Karnataka.JPG": "https://images.assettype.com/deccanherald/2026-07-24/2lsy16sj/20-hubli-18-Cuisines-of-Karnataka.JPG",
@@ -273,6 +340,8 @@
       var card = document.createElement('div');
       card.className = 'carousel-card';
       var embedUrl = 'https://www.youtube.com/embed/' + video.id + '?autoplay=1&list=' + s4.playlist + '&index=' + video.episode;
+      var epLabel = t('home.episodeTemplate', { number: video.episode });
+      var displayTitle = getRecipeTitle(0, video.episode) || video.title;
       card.innerHTML = '<div class="video-wrapper">\
           <div class="poster" role="button">\
             <img src="https://img.youtube.com/vi/' + video.id + '/hqdefault.jpg" alt="" loading="lazy">\
@@ -280,7 +349,7 @@
           </div>\
           <div class="player"></div>\
         </div>\
-        <div class="info"><div class="ep">Episode ' + video.episode + '</div><div class="title">' + video.title + '</div></div>';
+        <div class="info"><div class="ep">' + epLabel + '</div><div class="title">' + displayTitle + '</div></div>';
       card.querySelector('.poster').addEventListener('click', function () {
         if (card.classList.contains('active')) return;
         card.classList.add('active');
@@ -313,7 +382,7 @@
     function openLightbox(idx) {
       glbIdx = idx;
       glbImg.src = imageUrl(galleryImages[idx]);
-      document.getElementById('glbCounter').textContent = (idx + 1) + ' / ' + galleryImages.length;
+      document.getElementById('glbCounter').textContent = t('gallery.lightboxCounterTemplate', { current: idx + 1, total: galleryImages.length });
       glb.classList.add('open');
     }
 
@@ -349,29 +418,35 @@
     var footerText = document.querySelector('#recipes footer p');
     var currentSeason = 0;
 
-    function buildCard(video, index, season) {
+    function buildCard(video, index, season, seasonIdx) {
       var card = document.createElement('article');
       card.className = 'card';
       card.style.setProperty('--i', index);
       var playlistIndex = index + 1;
       var embedUrl = 'https://www.youtube.com/embed/' + video.id + '?autoplay=1&list=' + season.playlist + '&index=' + playlistIndex;
       var thumbUrl = 'https://img.youtube.com/vi/' + video.id + '/hqdefault.jpg';
+      var epLabel = t('recipes.episodeLabelTemplate', { number: video.episode });
+      var displayTitle = getRecipeTitle(seasonIdx, video.episode) || video.title;
+      var playAria = t('recipes.playAriaTemplate', { number: video.episode });
+      var thumbAlt = t('recipes.thumbnailAltTemplate', { number: video.episode });
+      var loadHint = t('recipes.clickToLoad');
+      var ytTitle = t('recipes.youtubeTitleTemplate', { number: video.episode });
       card.innerHTML = '\
         <div class="video-wrapper">\
-          <div class="poster" role="button" aria-label="Play Episode ' + video.episode + '">\
-            <img src="' + thumbUrl + '" alt="Episode ' + video.episode + ' thumbnail" loading="lazy">\
+          <div class="poster" role="button" aria-label="' + playAria + '">\
+            <img src="' + thumbUrl + '" alt="' + thumbAlt + '" loading="lazy">\
             <div class="play-overlay">\
               <div class="play-btn">\
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg>\
               </div>\
             </div>\
-            <span class="loading-hint">Click to load video</span>\
+            <span class="loading-hint">' + loadHint + '</span>\
           </div>\
           <div class="player"></div>\
         </div>\
         <div class="card-info">\
-          <div class="episode-label">Episode ' + video.episode + '</div>\
-          <div class="episode-title">' + video.title + '</div>\
+          <div class="episode-label">' + epLabel + '</div>\
+          <div class="episode-title">' + displayTitle + '</div>\
         </div>';
 
       var poster = card.querySelector('.poster');
@@ -388,7 +463,7 @@
         card.classList.add('active');
         var iframe = document.createElement('iframe');
         iframe.setAttribute('src', embedUrl);
-        iframe.setAttribute('title', 'YouTube video player - Episode ' + video.episode);
+        iframe.setAttribute('title', ytTitle);
         iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
         iframe.setAttribute('allowfullscreen', '');
         playerContainer.appendChild(iframe);
@@ -406,7 +481,7 @@
       setTimeout(function () {
         grid.innerHTML = '';
         season.videos.forEach(function (video, i) {
-          grid.appendChild(buildCard(video, i, season));
+          grid.appendChild(buildCard(video, i, season, index));
         });
         grid.classList.remove('switching');
         if (onDone) onDone();
@@ -416,7 +491,7 @@
     seasons.forEach(function (s, i) {
       var btn = document.createElement('button');
       btn.className = 'season-tab';
-      btn.textContent = 'Season ' + s.number;
+      btn.textContent = t('recipes.seasonTabTemplate', { number: s.number });
       btn.addEventListener('click', function () {
         if (i === currentSeason) return;
         currentSeason = i;
@@ -440,18 +515,19 @@
     function buildJumpPanel() {
       jumpPanelBody.innerHTML = '';
       jumpEpisodeItems = [];
-      seasons.forEach(function (season) {
+      seasons.forEach(function (season, si) {
         var group = document.createElement('div');
         group.className = 'jump-season-group';
         var label = document.createElement('div');
         label.className = 'jump-season-label';
-        label.textContent = 'Season ' + season.number;
+        label.textContent = t('recipes.seasonTabTemplate', { number: season.number });
         group.appendChild(label);
         season.videos.forEach(function (video, idx) {
           var item = document.createElement('div');
           item.className = 'jump-episode';
-          item.dataset.title = video.title.toLowerCase();
-          item.innerHTML = '<span class="jump-episode-num">' + video.episode + '</span><span class="jump-episode-title">' + video.title + '</span>';
+          var jumpTitle = getRecipeTitle(si, video.episode) || video.title;
+          item.dataset.title = jumpTitle.toLowerCase();
+          item.innerHTML = '<span class="jump-episode-num">' + video.episode + '</span><span class="jump-episode-title">' + jumpTitle + '</span>';
           item.addEventListener('click', function () {
             closeJumpPanel();
             var seasonIdx = seasons.indexOf(season);
@@ -533,7 +609,7 @@
     function openLightbox(idx) {
       currentIdx = idx;
       lightboxImg.src = imageUrl(galleryImages[idx]);
-      lbCounter.textContent = (idx + 1) + ' / ' + galleryImages.length;
+      lbCounter.textContent = t('gallery.lightboxCounterTemplate', { current: idx + 1, total: galleryImages.length });
       lightbox.classList.add('open');
     }
 
@@ -606,9 +682,11 @@
 
   function showPartnerArticle(slug) {
     var article = null;
+    var articleIdx = -1;
     for (var i = 0; i < partnerArticles.length; i++) {
       if (partnerArticles[i].slug === slug) {
         article = partnerArticles[i];
+        articleIdx = i;
         break;
       }
     }
@@ -633,36 +711,41 @@
       initPartnerStories();
     }
 
-    renderArticleDetail(article);
+    renderArticleDetail(article, articleIdx);
     setActiveNav('partner-stories');
     document.body.classList.remove('game-active');
     pauseGame();
   }
 
-  function renderArticleDetail(article) {
+  function renderArticleDetail(article, idx) {
     document.getElementById('ps-detail-hero').src = article.hero;
-    document.getElementById('ps-detail-hero').alt = article.headline;
-    document.getElementById('ps-detail-headline').textContent = article.headline;
-    document.getElementById('ps-detail-content').innerHTML = article.content;
+    var headline = idx >= 0 ? (getPartnerArticleField(idx, 'headline') || article.headline) : article.headline;
+    document.getElementById('ps-detail-hero').alt = headline;
+    document.getElementById('ps-detail-headline').textContent = headline;
+    var bodyHtml = idx >= 0 ? getPartnerBodyHtml(idx) : article.content;
+    document.getElementById('ps-detail-content').innerHTML = bodyHtml || article.content;
   }
 
   function initPartnerStories() {
     var featuredContainer = document.getElementById('ps-featured');
     var cardsContainer = document.getElementById('ps-cards');
     if (!featuredContainer || !cardsContainer) return;
+    var readLabel = t('partnerStories.readLabel');
 
     // Featured article (index 0)
     var featured = partnerArticles[0];
     if (featured) {
+      var fHeadline = getPartnerArticleField(0, 'headline') || featured.headline;
+      var fExcerpt = getPartnerArticleField(0, 'excerpt') || featured.excerpt;
       featuredContainer.innerHTML =
         '<a href="#article/' + featured.slug + '" class="ps-featured-card">' +
           '<div class="ps-featured-image">' +
-            '<img src="' + featured.hero + '" alt="' + featured.headline.replace(/"/g, '&quot;') + '">' +
+            '<img src="' + featured.hero + '" alt="' + fHeadline.replace(/"/g, '&quot;') + '">' +
           '</div>' +
           '<div class="ps-featured-body">' +
-            '<h2>' + featured.headline + '</h2>' +
-            '<p>' + featured.excerpt + '</p>' +
-            '<span class="ps-read-link">Read story &rarr;</span>' +
+            '<h2>' + fHeadline + '</h2>' +
+            '<p>' + fExcerpt + '</p>' +
+            '<span class="ps-read-link">' + readLabel + '</span>' +
           '</div>' +
         '</a>';
     }
@@ -670,17 +753,19 @@
     // Additional cards (indices 1-4)
     for (var i = 1; i < partnerArticles.length; i++) {
       var a = partnerArticles[i];
+      var headline = getPartnerArticleField(i, 'headline') || a.headline;
+      var excerpt = getPartnerArticleField(i, 'excerpt') || a.excerpt;
       var card = document.createElement('a');
       card.className = 'ps-card';
       card.href = '#article/' + a.slug;
       card.innerHTML =
         '<div class="ps-card-image">' +
-          '<img src="' + a.hero + '" alt="' + a.headline.replace(/"/g, '&quot;') + '" loading="lazy">' +
+          '<img src="' + a.hero + '" alt="' + headline.replace(/"/g, '&quot;') + '" loading="lazy">' +
         '</div>' +
         '<div class="ps-card-body">' +
-          '<h3>' + a.headline + '</h3>' +
-          '<p>' + a.excerpt + '</p>' +
-          '<span class="ps-read-link">Read story &rarr;</span>' +
+          '<h3>' + headline + '</h3>' +
+          '<p>' + excerpt + '</p>' +
+          '<span class="ps-read-link">' + readLabel + '</span>' +
         '</div>';
       cardsContainer.appendChild(card);
     }
@@ -869,9 +954,9 @@
     g.dishName = document.getElementById('gDishName');
     g.checklist = document.getElementById('gChecklist');
     g.hud = document.getElementById('gHud');
-    g.streakNum = document.getElementById('gStreakNum');
-    g.scoreNum = document.getElementById('gScoreNum');
-    g.levelNum = document.getElementById('gLevelNum');
+    g.streakDisplay = document.getElementById('gStreakDisplay');
+    g.scoreDisplay = document.getElementById('gScoreDisplay');
+    g.levelDisplay = document.getElementById('gLevelDisplay');
     g.titleScreen = document.getElementById('gTitleScreen');
     g.titleBestStreak = document.getElementById('gTitleBestStreak');
     g.titleBestScore = document.getElementById('gTitleBestScore');
@@ -1000,15 +1085,16 @@
     for (var i = 0; i < gameState.currentDish.ingredients.length; i++) {
       var ing = gameState.currentDish.ingredients[i];
       var caught = gameState.caughtIngredients && gameState.caughtIngredients.has(ing);
-      html += '<span class="check-item' + (caught ? ' checked' : '') + '"><em>' + ingredientIconHTML(ing) + '</em>' + ing + '</span>';
+      var label = getTranslatedIngredientName(ing) || ing;
+      html += '<span class="check-item' + (caught ? ' checked' : '') + '"><em>' + ingredientIconHTML(ing) + '</em>' + label + '</span>';
     }
     g.checklist.innerHTML = html;
   }
 
   function updateHud() {
-    g.streakNum.textContent = gameState.streak;
-    g.scoreNum.textContent = gameState.score;
-    g.levelNum.textContent = getLevel(gameState.streak);
+    g.streakDisplay.textContent = t('game.hud.streakTemplate', { streak: gameState.streak });
+    g.scoreDisplay.textContent = t('game.hud.scoreTemplate', { score: gameState.score });
+    g.levelDisplay.textContent = t('game.hud.levelTemplate', { level: getLevel(gameState.streak) });
   }
 
   function showHeader(v) { g.header.classList.toggle('visible', v); }
@@ -1017,7 +1103,7 @@
   function setCta(el, dish) {
     if (dish) {
       el.href = getYtUrl(dish.videoId);
-      el.textContent = 'Watch this recipe →';
+      el.textContent = t('game.gameOver.watchRecipeLabel');
       el.style.display = 'inline-block';
     } else {
       el.style.display = 'none';
@@ -1073,6 +1159,7 @@
     if (lane === -1) return;
     gameState.fallingTokens.push({
       lane: lane, y: -TOKEN_HEIGHT, ingredient: ingredient,
+      displayName: getTranslatedIngredientName(ingredient),
       speed: lv.speed * (0.95 + Math.random() * 0.1),
       correct: gameState.currentDish.ingredients.indexOf(ingredient) !== -1,
       processed: false, missed: false
@@ -1186,7 +1273,7 @@
     g.modalVideo.src = '';
     if (newLevel > oldLevel) {
       g.levelUpBanner.classList.add('visible');
-      g.lvlNum.textContent = 'Level ' + newLevel;
+      g.lvlNum.textContent = t('game.levelUp.levelTemplate', { level: newLevel });
       setTimeout(function () {
         g.levelUpBanner.classList.remove('visible');
         showRecipePreview();
@@ -1199,12 +1286,14 @@
   function transitionToDishComplete() {
     gameState.state = 'dish-complete';
     gameState.particles = [];
-    g.modalDishFront.textContent = gameState.currentDish.name;
-    g.modalDishBack.textContent = gameState.currentDish.name;
+    var dishName = getTranslatedDishName(gameState.currentDishIndex) || gameState.currentDish.name;
+    g.modalDishFront.textContent = dishName;
+    g.modalDishBack.textContent = dishName;
     var ingHtml = '';
     for (var i = 0; i < gameState.currentDish.ingredients.length; i++) {
       var ing = gameState.currentDish.ingredients[i];
-      ingHtml += '<span class="check-item" style="border-color:#2ECC54;color:#2ECC54;"><em>' + ingredientIconHTML(ing) + '</em>' + ing + '</span>';
+      var label = getTranslatedIngredientName(ing) || ing;
+      ingHtml += '<span class="check-item" style="border-color:#2ECC54;color:#2ECC54;"><em>' + ingredientIconHTML(ing) + '</em>' + label + '</span>';
     }
     g.modalIngredients.innerHTML = ingHtml;
     g.modalVideo.src = 'https://www.youtube.com/embed/' + gameState.currentDish.videoId + '?rel=0';
@@ -1224,12 +1313,14 @@
     showHeader(false);
     showHud(false);
     saveBest();
-    g.goScore.textContent = 'Score: ' + gameState.score;
-    g.goBest.textContent = 'Best Streak: ' + gameState.bestStreak;
+    g.goScore.textContent = t('game.gameOver.scoreTemplate', { score: gameState.score });
+    g.goBest.textContent = t('game.gameOver.bestStreakTemplate', { streak: gameState.bestStreak });
     if (gameState.currentDish) {
-      g.goLastDish.textContent = 'Last dish: ' + gameState.currentDish.name;
+      var dishName = getTranslatedDishName(gameState.currentDishIndex) || gameState.currentDish.name;
+      g.goLastDish.textContent = t('game.gameOver.lastDishTemplate', { dish_name: dishName });
       setCta(g.goCta, gameState.currentDish);
       g.goThumb.src = 'https://img.youtube.com/vi/' + gameState.currentDish.videoId + '/hqdefault.jpg';
+      g.goThumb.alt = t('game.gameOver.thumbnailAlt');
       g.goThumbWrap.style.display = 'block';
       g.goThumbWrap.onclick = function () {
         window.open(getYtUrl(gameState.currentDish.videoId), '_blank');
@@ -1255,7 +1346,7 @@
     gameState.fallingTokens = [];
     gameState.ingredientCooldowns = {};
     gameState.lastSpawnTime = performance.now();
-    g.dishName.textContent = gameState.currentDish.name;
+    g.dishName.textContent = getTranslatedDishName(idx) || gameState.currentDish.name;
     updateChecklist();
     showHeader(true);
   }
@@ -1310,14 +1401,18 @@
     if (available.length === 0) available = DISHES.map(function (d, i) { return i; });
     var idx = available[Math.floor(Math.random() * available.length)];
     var dish = DISHES[idx];
-    g.rpDishName.textContent = dish.name;
-    g.rpDesc.textContent = "Let's make " + dish.name + "! We need to get " + dish.ingredients.join(', ') + ' from the market.';
+    var dishName = getTranslatedDishName(idx) || dish.name;
+    var ingNames = dish.ingredients.map(function (ing) { return getTranslatedIngredientName(ing) || ing; });
+    g.rpDishName.textContent = dishName;
+    g.rpDesc.textContent = t('game.recipePreview.descriptionTemplate', { dish_name: dishName, ingredient_list: ingNames.join(', ') });
     var html = '';
     dish.ingredients.forEach(function (ing, i) {
-      html += '<span class="check-item" style="animation-delay:' + (i * 0.08) + 's"><em>' + ingredientIconHTML(ing) + '</em>' + ing + '</span>';
+      var label = getTranslatedIngredientName(ing) || ing;
+      html += '<span class="check-item" style="animation-delay:' + (i * 0.08) + 's"><em>' + ingredientIconHTML(ing) + '</em>' + label + '</span>';
     });
     g.rpIngredients.innerHTML = html;
     g.recipePreview.classList.add('visible');
+    g.rpProceed.textContent = t('game.recipePreview.proceedLabel');
     g.rpProceed.style.animation = 'none';
     void g.rpProceed.offsetWidth;
     g.rpProceed.style.animation = '';
@@ -1338,7 +1433,7 @@
     gameState.fallingTokens = [];
     gameState.ingredientCooldowns = {};
     gameState.lastSpawnTime = performance.now();
-    g.dishName.textContent = gameState.currentDish.name;
+    g.dishName.textContent = getTranslatedDishName(idx) || gameState.currentDish.name;
     updateChecklist();
     showHeader(true);
     updateHud();
@@ -1348,8 +1443,8 @@
 
   function updateTitleStats() {
     loadBest();
-    g.titleBestStreak.innerHTML = gameState.bestStreak > 0 ? 'Best Streak: <strong>' + gameState.bestStreak + '</strong>' : '';
-    g.titleBestScore.innerHTML = gameState.bestScore > 0 ? 'Best Score: <strong>' + gameState.bestScore + '</strong>' : '';
+    g.titleBestStreak.innerHTML = gameState.bestStreak > 0 ? t('game.bestStreakTemplate', { streak: gameState.bestStreak }) : '';
+    g.titleBestScore.innerHTML = gameState.bestScore > 0 ? t('game.bestScoreTemplate', { score: gameState.bestScore }) : '';
   }
 
   /* ---- SLIDESHOW ---- */
@@ -1595,7 +1690,7 @@
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#F0EDE8';
       ctx.font = 'bold 10px "DM Sans", sans-serif';
-      ctx.fillText(token.ingredient, drawX + drawW / 2, drawY + drawH / 2 + 26);
+      ctx.fillText(token.displayName || token.ingredient, drawX + drawW / 2, drawY + drawH / 2 + 26);
     }
 
     // Character
@@ -1784,6 +1879,11 @@
     g.rpProceed.addEventListener('animationend', startGame);
     g.rpProceed.addEventListener('click', startGame);
 
+    // Translate static game labels
+    g.startBtn.textContent = t('game.startLabel');
+    g.restartBtn.textContent = t('game.gameOver.playAgainLabel');
+    g.nextDishBtn.textContent = t('game.dishComplete.nextDishLabel');
+
     document.querySelectorAll('#game .cta-link').forEach(function (el) {
       el.addEventListener('click', function () {
         var dish = gameState.currentDish;
@@ -1842,9 +1942,22 @@
   }
 
   // ===== INIT =====
-  setupMobileNav();
-  setupSponsorCarousels();
-  onHashChange();
-  window.addEventListener('hashchange', onHashChange);
+  function boot() {
+    setupMobileNav();
+    setupSponsorCarousels();
+    onHashChange();
+    window.addEventListener('hashchange', onHashChange);
+  }
+
+  fetch(BASE + 'i18n.json')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      i18nData = data;
+      applyI18n();
+      boot();
+    })
+    .catch(function () {
+      boot(); // English fallback if fetch fails
+    });
 
 })();
