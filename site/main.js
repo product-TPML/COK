@@ -9,7 +9,46 @@
   var SVG_DIR = BASE + 'svg/';
 
   // ---- I18N ----
-  var ACTIVE_LANGUAGE = 'en'; // change to 'kn' for Kannada
+  // Source of truth: HTML data-language attribute, overridable via ?lang=
+  var HTML_LANG = document.documentElement.getAttribute('data-language') || 'en';
+  if (HTML_LANG !== 'en' && HTML_LANG !== 'kn') HTML_LANG = 'en';
+
+  // Remove old localStorage key so it doesn't conflict with the HTML flag
+  try { localStorage.removeItem('cok_language'); } catch (e) {}
+
+  // Check for ?lang= override in URL
+  var _urlLang = null;
+  try {
+    var _m = window.location.search.match(/[?&]lang=(en|kn)(&|$)/);
+    if (_m) _urlLang = _m[1];
+  } catch (e) {}
+
+  var ACTIVE_LANGUAGE = _urlLang || HTML_LANG;
+
+  function _applyLangOverride(lang) {
+    if (lang !== 'en' && lang !== 'kn') {
+      console.warn('COK: invalid language "' + lang + '", use "en" or "kn"');
+      return;
+    }
+    var url = new URL(window.location.href);
+    if (lang === HTML_LANG) {
+      url.searchParams.delete('lang');       // HTML default — remove override
+    } else {
+      url.searchParams.set('lang', lang);
+    }
+    window.location.href = url.toString();
+  }
+
+  // window.ACTIVE_LANGUAGE getter/setter — assignment reloads with ?lang=
+  Object.defineProperty(window, 'ACTIVE_LANGUAGE', {
+    get: function () { return ACTIVE_LANGUAGE; },
+    set: function (v) { _applyLangOverride(v); },
+    configurable: true
+  });
+
+  // Convenience function: setLanguage('kn') / setLanguage('en')
+  window.setLanguage = function (lang) { _applyLangOverride(lang); };
+
   var i18nData = null;
 
   function t(path, params) {
