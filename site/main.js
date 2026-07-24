@@ -112,13 +112,53 @@
     "MYS30 - PV-DH Karunadu Saviyuta 28.jpg", "MYS30 - PV-DH Karunadu Saviyuta 3.jpg"
   ];
 
+  // ---- PARTNER ARTICLES DATA ----
+  var partnerArticles = [
+    {
+      slug: 'celebrating-karnataka-cuisine',
+      headline: 'Celebrating the Rich Culinary Heritage of Karnataka',
+      hero: BASE + 'assets/' + encodeURI('MYS23 - PV - Cuisines Karnataka 1.jpg'),
+      excerpt: 'A journey through Karnataka\'s diverse food traditions, brought to life with the support of our valued partners.',
+      content: '<p>Karnataka\'s culinary landscape is as diverse as its geography — from the coastal flavours of Mangalorean cuisine to the rich, aromatic dishes of North Karnataka, every region tells a story through its food.</p><p>This season, we are proud to partner with brands that share our commitment to celebrating authentic culinary traditions and bringing them to a wider audience. Together, we explore the recipes, techniques, and stories that make Karnataka\'s cuisine truly unforgettable.</p><p>Join us as we travel through the state, discovering hidden gems and timeless classics that have been passed down through generations.</p>'
+    },
+    {
+      slug: 'supporting-local-traditions',
+      headline: 'Supporting Local Food Traditions Together',
+      hero: BASE + 'assets/' + encodeURI('MYS30 - PV-DH Karunadu Saviyuta 1.jpg'),
+      excerpt: 'How our partners help preserve the authentic flavours and cooking techniques of Karnataka.',
+      content: '<p>Local food traditions are the backbone of Karnataka\'s culinary identity. From the way spices are tempered to the unique cooking vessels used in different regions, every detail matters.</p><p>Our partners understand the importance of preserving these traditions while making them accessible to modern audiences. Through their support, we are able to document and share these authentic practices with the world.</p><p>This article highlights some of the key initiatives that help keep Karnataka\'s food heritage alive and thriving.</p>'
+    },
+    {
+      slug: 'journey-of-flavours',
+      headline: 'A Journey Through Karnataka\'s Regional Flavours',
+      hero: BASE + 'assets/' + encodeURI('20-hubli-18-Cuisines of Karnataka.JPG'),
+      excerpt: 'Exploring the unique taste profiles that define Karnataka\'s regional cuisines from coast to coast.',
+      content: '<p>From the fiery heat of North Karnataka curries to the subtle sweetness of coastal preparations, Karnataka offers a spectrum of flavours that is unmatched.</p><p>Each region brings its own unique ingredients and techniques — the use of coconut in coastal areas, the generous use of tamarind and spices in the southern districts, and the rich, ghee-laden dishes of the northern plains.</p><p>Our partner brands have helped us showcase this incredible diversity through the season, ensuring that every recipe is presented with the respect and authenticity it deserves.</p>'
+    },
+    {
+      slug: 'partner-spotlight-culinary-heritage',
+      headline: 'Partner Spotlight: Celebrating Culinary Heritage',
+      hero: BASE + 'assets/' + encodeURI('BNG31 FOOD award 05.jpg'),
+      excerpt: 'A spotlight on the brands and organisations that share our vision for culinary excellence.',
+      content: '<p>Behind every great season of Cuisines of Karnataka are the partners who make it possible. Their commitment to quality, tradition, and innovation aligns perfectly with our mission.</p><p>This spotlight features the stories of organisations that have been instrumental in bringing Karnataka\'s culinary heritage to audiences across the country. From kitchen essentials to premium ingredients, these partners embody the spirit of Karnataka\'s food culture.</p><p>We thank them for their continued support and shared passion for great food.</p>'
+    },
+    {
+      slug: 'community-and-culture',
+      headline: 'Community & Culture: Food That Brings Us Together',
+      hero: BASE + 'assets/' + encodeURI('DSC_0790.jpg'),
+      excerpt: 'How food acts as a bridge between communities, cultures, and generations in Karnataka.',
+      content: '<p>Food in Karnataka is more than just sustenance — it is a celebration of community, culture, and togetherness. From festive feasts to everyday meals, the act of cooking and sharing food is deeply woven into the social fabric.</p><p>This season, we celebrate the role of food in bringing people together. Through the stories of home cooks, chefs, and food enthusiasts, we explore how traditional recipes create bonds that transcend generations.</p><p>Our partners have been integral to this journey, helping us create a platform that celebrates not just the food, but the people behind it.</p>'
+    }
+  ];
+
   // ---- HASH ROUTING ----
   var currentSection = '';
-  var initialised = { home: false, recipes: false, gallery: false, contest: false, game: false };
+  var currentArticleSlug = '';
+  var initialised = { home: false, recipes: false, gallery: false, 'partner-stories': false, game: false };
   var gameActive = false;
 
   function showSection(id) {
-    if (id === currentSection && id !== 'game') return; // allow re-init for game
+    if (id === currentSection && id !== 'game' && id !== 'partner-stories') return;
     // Hide all sections
     document.querySelectorAll('.section').forEach(function (s) { s.classList.remove('active-section'); });
     // Show target
@@ -153,14 +193,26 @@
     }
   }
 
-  function getHash() {
-    var h = window.location.hash.replace(/^#/, '') || 'home';
-    if (['home', 'recipes', 'gallery', 'contest', 'game'].indexOf(h) === -1) h = 'home';
-    return h;
-  }
-
   function onHashChange() {
-    showSection(getHash());
+    var hash = window.location.hash.replace(/^#/, '') || 'home';
+
+    // Article detail route
+    var articleMatch = hash.match(/^article\/(.+)$/);
+    if (articleMatch) {
+      showPartnerArticle(articleMatch[1]);
+      return;
+    }
+
+    // Partner Stories listing
+    if (hash === 'partner-stories') {
+      showPartnerStoriesListing();
+      return;
+    }
+
+    // Normal sections
+    var validSections = ['home', 'recipes', 'gallery', 'partner-stories', 'game'];
+    if (validSections.indexOf(hash) === -1) hash = 'home';
+    showSection(hash);
   }
 
   // ---- NAV ----
@@ -176,7 +228,7 @@
       case 'home': initHome(); break;
       case 'recipes': initRecipes(); break;
       case 'gallery': initGallery(); break;
-      case 'contest': initContest(); break;
+      case 'partner-stories': initPartnerStories(); break;
       case 'game': initGame(); break;
     }
   }
@@ -505,9 +557,108 @@
     }, { passive: true });
   }
 
-  // ===== CONTEST =====
-  function initContest() {
-    // Static content, no dynamic init needed
+  // ===== PARTNER STORIES =====
+  function showPartnerStoriesListing() {
+    document.querySelectorAll('.section').forEach(function (s) { s.classList.remove('active-section'); });
+    var el = document.getElementById('partner-stories');
+    if (el) el.classList.add('active-section');
+    currentSection = 'partner-stories';
+    currentArticleSlug = '';
+
+    var listing = document.getElementById('ps-listing');
+    var detail = document.getElementById('ps-detail');
+    if (listing) listing.style.display = '';
+    if (detail) detail.style.display = 'none';
+
+    if (!initialised['partner-stories']) {
+      initialised['partner-stories'] = true;
+      initPartnerStories();
+    }
+
+    setActiveNav('partner-stories');
+    document.body.classList.remove('game-active');
+    pauseGame();
+  }
+
+  function showPartnerArticle(slug) {
+    var article = null;
+    for (var i = 0; i < partnerArticles.length; i++) {
+      if (partnerArticles[i].slug === slug) {
+        article = partnerArticles[i];
+        break;
+      }
+    }
+    if (!article) {
+      window.location.hash = 'partner-stories';
+      return;
+    }
+
+    document.querySelectorAll('.section').forEach(function (s) { s.classList.remove('active-section'); });
+    var el = document.getElementById('partner-stories');
+    if (el) el.classList.add('active-section');
+    currentSection = 'partner-stories';
+    currentArticleSlug = slug;
+
+    var listing = document.getElementById('ps-listing');
+    var detail = document.getElementById('ps-detail');
+    if (listing) listing.style.display = 'none';
+    if (detail) detail.style.display = 'block';
+
+    if (!initialised['partner-stories']) {
+      initialised['partner-stories'] = true;
+      initPartnerStories();
+    }
+
+    renderArticleDetail(article);
+    setActiveNav('partner-stories');
+    document.body.classList.remove('game-active');
+    pauseGame();
+  }
+
+  function renderArticleDetail(article) {
+    document.getElementById('ps-detail-hero').src = article.hero;
+    document.getElementById('ps-detail-hero').alt = article.headline;
+    document.getElementById('ps-detail-headline').textContent = article.headline;
+    document.getElementById('ps-detail-content').innerHTML = article.content;
+  }
+
+  function initPartnerStories() {
+    var featuredContainer = document.getElementById('ps-featured');
+    var cardsContainer = document.getElementById('ps-cards');
+    if (!featuredContainer || !cardsContainer) return;
+
+    // Featured article (index 0)
+    var featured = partnerArticles[0];
+    if (featured) {
+      featuredContainer.innerHTML =
+        '<div class="ps-featured-card">' +
+          '<div class="ps-featured-image">' +
+            '<img src="' + featured.hero + '" alt="' + featured.headline.replace(/"/g, '&quot;') + '">' +
+          '</div>' +
+          '<div class="ps-featured-body">' +
+            '<h2>' + featured.headline + '</h2>' +
+            '<p>' + featured.excerpt + '</p>' +
+            '<a href="#article/' + featured.slug + '" class="ps-read-link">Read story &rarr;</a>' +
+          '</div>' +
+        '</div>';
+    }
+
+    // Additional cards (indices 1-4)
+    for (var i = 1; i < partnerArticles.length; i++) {
+      var a = partnerArticles[i];
+      var card = document.createElement('div');
+      card.className = 'ps-card';
+      card.innerHTML =
+        '<div class="ps-card-image">' +
+          '<img src="' + a.hero + '" alt="' + a.headline.replace(/"/g, '&quot;') + '" loading="lazy">' +
+        '</div>' +
+        '<div class="ps-card-body">' +
+          '<h3>' + a.headline + '</h3>' +
+          '<p>' + a.excerpt + '</p>' +
+          '<a href="#article/' + a.slug + '" class="ps-read-link">Read story &rarr;</a>' +
+        '</div>';
+      cardsContainer.appendChild(card);
+    }
   }
 
   // ===== GAME =====
