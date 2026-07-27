@@ -34,7 +34,8 @@
     "gallery": { "en": "Gallery", "kn": "ಗ್ಯಾಲರಿ" },
     "partnerStories": { "en": "Partner Stories", "kn": "ಪಾಲುದಾರರ ಕಥೆಗಳು" },
     "stories": { "en": "Stories", "kn": "ಕಥೆಗಳು" },
-    "game": { "en": "Game", "kn": "ಆಟ" }
+    "game": { "en": "Game", "kn": "ಆಟ" },
+    "menu": { "en": "Menu", "kn": "ಮೆನು" }
   },
   "home": {
     "badge": { "en": "Season 5", "kn": "ಸೀಸನ್ ೫" },
