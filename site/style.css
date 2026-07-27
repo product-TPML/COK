@@ -193,10 +193,14 @@ html[lang="kn"] .left-logo-pv { display: block; }
   }
   .desktop-menu-btn { display: none; }
   .bottom-nav-hamburger {
-    border: 0; background: transparent; cursor: pointer;
-    font: inherit; color: inherit;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 0; min-width: 0; border: 0; background: transparent; cursor: pointer;
+    font-family: var(--font-heading); font-size: 0.5rem; font-weight: 600; line-height: 1.2;
+    color: inherit;
   }
   .left-logo img { height: 42px; width: auto; }
+  .header-top-left { width: 100%; }
+  .logo { position: static; margin-left: auto; }
 }
 
 /* Game mode: hide shared site shell */
