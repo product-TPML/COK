@@ -1,3 +1,18 @@
+@font-face {
+  font-family: 'PrajavaniText';
+  src: url('https://fea.assettype.com/tpml/assets/PrajavaniTextSemibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PrajavaniText';
+  src: url('https://fea.assettype.com/tpml/assets/PrajavaniTextRegular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -13,12 +28,14 @@
   --shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -2px rgba(0,0,0,0.2);
   --shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.4), 0 8px 10px -6px rgba(0,0,0,0.3);
   --radius: 16px;
+  --font-heading: 'Sora', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
 }
 
 html { height: 100%; }
 
 body {
-  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
   background-color: var(--bg);
   color: var(--text);
   line-height: 1.6;
@@ -34,7 +51,7 @@ body::-webkit-scrollbar-thumb { background: #332F2A; border-radius: 4px; }
 body::-webkit-scrollbar-thumb:hover { background: #4A453E; }
 
 /* Site Header */
-.site-header { font-family: 'Sora', sans-serif; position: relative; z-index: 50; }
+.site-header { font-family: var(--font-heading); position: relative; z-index: 50; }
 
 .header-top { background: #be1622; height: 75px; position: relative; }
 
@@ -88,7 +105,7 @@ body::-webkit-scrollbar-thumb:hover { background: #4A453E; }
 
 .strip-nav a {
   display: flex; align-items: center; justify-content: center; gap: 6px;
-  color: #fff; text-decoration: none; font-family: 'Sora', sans-serif;
+  color: #fff; text-decoration: none; font-family: var(--font-heading);
   font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
   letter-spacing: 0.04em; height: 100%; transition: background 0.2s ease;
 }
@@ -153,7 +170,7 @@ body::-webkit-scrollbar-thumb:hover { background: #4A453E; }
   .bottom-nav-item {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 3px; color: rgba(255,255,255,0.85); text-decoration: none;
-    font-family: 'Sora', sans-serif; font-size: 0.5rem; font-weight: 600;
+    font-family: var(--font-heading); font-size: 0.5rem; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.06em;
     flex: 1; height: 100%; position: relative; transition: color 0.2s ease;
   }
@@ -274,7 +291,7 @@ body.game-active .bottom-nav {
   gap: 6px;
   background: var(--accent-secondary);
   color: #fff;
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -284,7 +301,7 @@ body.game-active .bottom-nav {
   margin-bottom: 0.75rem;
 }
 #home .hero h1 {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 1.75rem;
   font-weight: 700;
   color: var(--text);
@@ -322,7 +339,7 @@ body.game-active .bottom-nav {
   padding: 0 0.25rem;
 }
 .featured-header h2 {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text);
@@ -394,7 +411,7 @@ body.game-active .bottom-nav {
   margin-bottom: 0.25rem;
 }
 .carousel-card .info .title {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text);
@@ -408,7 +425,7 @@ body.game-active .bottom-nav {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--accent);
@@ -468,7 +485,7 @@ body.game-active .bottom-nav {
   text-align: center;
 }
 #recipes .hero h1 {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 2rem;
   font-weight: 700;
   color: var(--text);
@@ -498,7 +515,7 @@ body.game-active .bottom-nav {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 1.75rem;
   font-weight: 700;
   color: var(--text);
@@ -538,7 +555,7 @@ body.game-active .bottom-nav {
 }
 
 .season-tab {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-muted);
@@ -727,7 +744,7 @@ body.game-active .bottom-nav {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -746,7 +763,7 @@ body.game-active .bottom-nav {
 }
 
 .episode-title {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 1.125rem;
   font-weight: 600;
   line-height: 1.3;
@@ -870,7 +887,7 @@ footer {
 }
 
 .jump-panel-header h3 {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 600;
   color: var(--accent);
@@ -908,7 +925,7 @@ footer {
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 0.5rem 2rem 0.5rem 0.75rem;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.875rem;
   color: var(--text);
   outline: none;
@@ -975,7 +992,7 @@ footer {
 }
 
 .jump-season-label {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -1001,7 +1018,7 @@ footer {
 }
 
 .jump-episode-num {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--accent-secondary);
@@ -1041,7 +1058,7 @@ footer {
   margin-bottom: 1.5rem;
 }
 .page-header h1 {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text);
@@ -1108,7 +1125,7 @@ footer {
 }
 .ps-header-content { text-align: center; }
 .ps-header-content h1 {
-  font-family: 'Sora', sans-serif;
+  font-family: var(--font-heading);
   font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700;
   color: var(--text); margin: 0 0 0.5rem;
 }
@@ -1145,7 +1162,7 @@ footer {
 .ps-featured-card:hover .ps-featured-image img { transform: scale(1.03); }
 .ps-featured-body { padding: 1.25rem 1.25rem 1.5rem; }
 .ps-featured-body h2 {
-  font-family: 'Sora', sans-serif; font-size: 1.25rem; font-weight: 700;
+  font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700;
   color: var(--text); margin: 0 0 0.5rem; line-height: 1.3;
 }
 .ps-featured-body p {
@@ -1191,7 +1208,7 @@ footer {
 .ps-card:hover .ps-card-image img { transform: scale(1.05); }
 .ps-card-body { padding: 1rem 1.25rem 1.25rem; flex: 1; display: flex; flex-direction: column; }
 .ps-card-body h3 {
-  font-family: 'Sora', sans-serif; font-size: 1rem; font-weight: 700;
+  font-family: var(--font-heading); font-size: 1rem; font-weight: 700;
   color: var(--text); margin: 0 0 0.35rem; line-height: 1.3;
 }
 .ps-card-body p {
@@ -1201,7 +1218,7 @@ footer {
 
 .ps-read-link {
   display: inline-flex; align-items: center; gap: 4px;
-  font-family: 'Sora', sans-serif; font-size: 0.8rem; font-weight: 600;
+  font-family: var(--font-heading); font-size: 0.8rem; font-weight: 600;
   color: var(--accent); text-decoration: none;
   transition: color 0.2s ease, gap 0.2s ease;
 }
@@ -1227,7 +1244,7 @@ a.ps-card:focus-visible {
 }
 .ps-back {
   display: inline-flex; align-items: center; gap: 6px;
-  font-family: 'Sora', sans-serif; font-size: 0.85rem; font-weight: 600;
+  font-family: var(--font-heading); font-size: 0.85rem; font-weight: 600;
   color: var(--text-muted); text-decoration: none;
   margin-bottom: 1rem; transition: color 0.2s ease;
 }
@@ -1244,7 +1261,7 @@ a.ps-card:focus-visible {
   max-width: 680px; margin: 0 auto; padding: 1.5rem 1.25rem 2.5rem;
 }
 .ps-article-body h1 {
-  font-family: 'Sora', sans-serif; font-size: clamp(1.3rem, 3vw, 1.75rem);
+  font-family: var(--font-heading); font-size: clamp(1.3rem, 3vw, 1.75rem);
   font-weight: 700; color: var(--text); margin: 0 0 1rem; line-height: 1.3;
 }
 .ps-article-body p {
@@ -1499,4 +1516,12 @@ a.ps-card:focus-visible {
   75% { transform:translateX(-2px); }
   90% { transform:translateX(2px); }
   100% { transform:translateX(0); }
+}
+
+/* ============================================================
+   KANNADA TYPOGRAPHY OVERRIDE
+   ============================================================ */
+html[lang="kn"] {
+  --font-heading: 'PrajavaniText', 'Sora', sans-serif;
+  --font-body: 'PrajavaniText', 'DM Sans', sans-serif;
 }
