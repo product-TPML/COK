@@ -200,7 +200,7 @@ html[lang="kn"] .left-logo-pv { display: block; }
   }
   .left-logo img { height: 42px; width: auto; }
   .header-top-left { width: 100%; }
-  .logo { position: static; margin-left: auto; }
+  .logo { position: static; margin-left: auto; transform: none; }
 }
 
 /* Game mode: hide shared site shell */
