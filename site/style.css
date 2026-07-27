@@ -66,6 +66,12 @@ body::-webkit-scrollbar-thumb:hover { background: #4A453E; }
 
 .header-top-left { display: flex; align-items: center; gap: 0.75rem; }
 
+.left-logo { display: flex; align-items: center; gap: 0.5rem; }
+.left-logo img { display: block; }
+.left-logo-pv { display: none; }
+html[lang="kn"] .left-logo-en { display: none; }
+html[lang="kn"] .left-logo-pv { display: block; }
+
 .logo {
   position: absolute; left: 50%; transform: translateX(-50%);
   top: 2px; display: flex; align-items: center; flex-shrink: 0;
