@@ -1933,14 +1933,14 @@
   function setupMobileNav() {
     var mn = document.getElementById('mobile-nav');
     var mnc = document.getElementById('mobile-nav-close');
-    var mmb = document.getElementById('mobile-menu-btn');
+    var bnh = document.getElementById('bottom-nav-hamburger');
     var dmb = document.getElementById('desktop-menu-btn');
     if (!mn) return;
     function openNav() { mn.classList.add('open'); }
     function closeNav() { mn.classList.remove('open'); }
     if (mnc) mnc.addEventListener('click', closeNav);
     if (mn) mn.addEventListener('click', function (e) { if (e.target === mn) closeNav(); });
-    if (mmb) mmb.addEventListener('click', openNav);
+    if (bnh) bnh.addEventListener('click', openNav);
     if (dmb) dmb.addEventListener('click', openNav);
     document.querySelectorAll('.mobile-nav-links a').forEach(function (link) {
       link.addEventListener('click', closeNav);

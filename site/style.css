@@ -191,6 +191,12 @@ html[lang="kn"] .left-logo-pv { display: block; }
     transform: translateX(-50%); width: 40%; height: 3px;
     background: #fff; border-radius: 3px 3px 0 0;
   }
+  .desktop-menu-btn { display: none; }
+  .bottom-nav-hamburger {
+    border: 0; background: transparent; cursor: pointer;
+    font: inherit; color: inherit;
+  }
+  .left-logo img { height: 42px; width: auto; }
 }
 
 /* Game mode: hide shared site shell */
