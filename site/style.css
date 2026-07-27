@@ -67,8 +67,8 @@ body::-webkit-scrollbar-thumb:hover { background: #4A453E; }
 .header-top-left { display: flex; align-items: center; gap: 0.75rem; }
 
 .left-logo { display: flex; align-items: center; gap: 0.5rem; }
-.left-logo img { display: block; }
-.left-logo-pv { display: none; }
+.left-logo .left-logo-en { display: block; }
+.left-logo .left-logo-pv { display: none; }
 html[lang="kn"] .left-logo-en { display: none; }
 html[lang="kn"] .left-logo-pv { display: block; }
 
