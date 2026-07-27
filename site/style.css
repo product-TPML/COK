@@ -34,6 +34,9 @@
 
 html { height: 100%; }
 
+/* i18n guard: hide body until translations apply (lang=kn) */
+html.i18n-loading body { visibility: hidden; }
+
 body {
   font-family: var(--font-body);
   background-color: var(--bg);

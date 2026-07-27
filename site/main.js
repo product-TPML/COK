@@ -112,6 +112,7 @@
     document.querySelectorAll('[data-i18n-aria]').forEach(function (el) { el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria'))); });
     document.querySelectorAll('[data-i18n-alt]').forEach(function (el) { el.setAttribute('alt', t(el.getAttribute('data-i18n-alt'))); });
     document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) { el.setAttribute('placeholder', t(el.getAttribute('data-i18n-placeholder'))); });
+    document.documentElement.classList.remove('i18n-loading');
   }
 
   // ---- IMAGE URL MAP (CDN for photos, GitHub Pages for logos/SVGs) ----
@@ -1977,6 +1978,7 @@
       boot();
     })
     .catch(function () {
+      document.documentElement.classList.remove('i18n-loading');
       boot(); // English fallback if fetch fails
     });
 
