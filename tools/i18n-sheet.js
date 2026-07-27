@@ -264,7 +264,7 @@ function doExport(jsonPath, csvPath) {
     );
   }
 
-  fs.writeFileSync(csvPath, lines.join('\r\n') + '\r\n', 'utf8');
+  fs.writeFileSync(csvPath, '\uFEFF' + lines.join('\r\n') + '\r\n', 'utf8');
   console.log('Exported ' + leaves.length + ' rows to ' + csvPath);
 }
 
@@ -281,7 +281,8 @@ function doImport(jsonPath, csvPath, outputPath) {
   const sourceKeys = new Set(sourceLeaves.map((l) => l.key));
 
   // --- Parse and validate CSV ---
-  const csvContent = fs.readFileSync(csvPath, 'utf8');
+  let csvContent = fs.readFileSync(csvPath, 'utf8');
+  if (csvContent.charCodeAt(0) === 0xFEFF) csvContent = csvContent.slice(1);
   const rows = csvParse(csvContent);
 
   if (rows.length === 0) die('CSV is empty');
