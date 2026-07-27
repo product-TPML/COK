@@ -326,6 +326,7 @@
 
   function onHashChange() {
     var hash = window.location.hash.replace(/^#/, '') || 'home';
+    window.scrollTo(0, 0);
 
     // Article detail route
     var articleMatch = hash.match(/^article\/(.+)$/);
@@ -1938,9 +1939,10 @@
     if (!mn) return;
     function openNav() { mn.classList.add('open'); }
     function closeNav() { mn.classList.remove('open'); }
+    function toggleNav() { mn.classList.toggle('open'); }
     if (mnc) mnc.addEventListener('click', closeNav);
     if (mn) mn.addEventListener('click', function (e) { if (e.target === mn) closeNav(); });
-    if (bnh) bnh.addEventListener('click', openNav);
+    if (bnh) bnh.addEventListener('click', toggleNav);
     if (dmb) dmb.addEventListener('click', openNav);
     document.querySelectorAll('.mobile-nav-links a').forEach(function (link) {
       link.addEventListener('click', closeNav);
